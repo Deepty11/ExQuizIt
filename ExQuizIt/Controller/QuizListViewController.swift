@@ -14,6 +14,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
     let realm = try! Realm()
     var quizSources = [QuizModel](){
         didSet{
@@ -59,7 +60,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func fetchQuizzes(){
         if self.quizzes.isEmpty{
             self.emptyQuizLabel.text = "Loading ..."
+            self.quizLoadingActivityIndicatorView.startAnimating()
             JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
+                self.quizLoadingActivityIndicatorView.stopAnimating()
+                self.quizLoadingActivityIndicatorView.isHidden = true
                 self.refreshUI()
                 return
             }
@@ -85,42 +89,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
                                                                  target: self,
                                                                  action: #selector(addButtonTapped))
     }
-    // long press to delete a note by its id provided
-//    @objc func handleLongPressed(sender: UILongPressGestureRecognizer){
-//        if sender.state == .began{
-//            let touchPoint = sender.location(in: self.tableView)
-//            if var indexRow = tableView.indexPathForRow(at: touchPoint)?.row{
-//                let alert = UIAlertController(title: "Attention",
-//                                              message: "Do you want to delete the note?",
-//                                              preferredStyle: .alert)
-//                let okAction = UIAlertAction(title: "Confirm",
-//                                             style: .default) { action in
-//                    let note = self.realm.objects(Note.self).filter("id == %d", indexRow)[0]
-//                    let nextNotes = self.realm.objects(Note.self).filter("id > %d", indexRow)
-//                    do{
-//                        try self.realm.write {
-//                            self.realm.delete(note)
-//                            for note in nextNotes{
-//                                note.id = indexRow
-//                                indexRow += 1
-//                            }
-//                            self.realm.add(nextNotes)
-//
-//                        }
-//                    }catch{
-//                        print(error.localizedDescription)
-//                    }
-//                    self.displayAlert(title: nil, message: "Deleted Successfully")
-//                }
-//
-//                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//                alert.addAction(okAction)
-//                alert.addAction(cancelAction)
-//                self.present(alert, animated: true, completion: nil)
-//            }
-//
-//        }
-//    }
     
     func displayAlert(title: String?, message: String?){
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -184,8 +152,24 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
             tableView.beginUpdates()
-            DatabaseManager.shared.deleteQuizFromDatabase(quiz: quizSources[indexPath.row])
-            self.displayAlert(title: nil, message: "Deleted Successfully")
+            let alert = UIAlertController(title: "Attention",
+                                          message: "Do you want to delete the quiz?",
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok",
+                                         style: .default) { _ in
+                self.dismiss(animated: true)
+                DatabaseManager.shared.deleteQuizFromDatabase(quiz: self.quizSources[indexPath.row])
+                self.displayAlert(title: nil, message: "Deleted Successfully")
+            }
+            let cancelAction = UIAlertAction(title: "Cancel",
+                                             style: .cancel,
+                                             handler: nil)
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true)
+            
+            //self.displayAlert(title: nil, message: "Deleted Successfully")
             tableView.endUpdates()
             self.quizSources = quizzes
             tableView.reloadData()
