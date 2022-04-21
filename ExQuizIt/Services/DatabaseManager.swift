@@ -16,8 +16,8 @@ class DatabaseManager{
         var quizEntries = [QuizModel]()
         for quiz in quizzes{
             let quizModel = QuizModel()
-            quizModel.question = quiz.question
-            quizModel.answer = quiz.correct_answer
+            quizModel.question = quiz.question.replacingOccurrences(of: "&#039;", with: "'").replacingOccurrences(of: "&quot;", with: "\"")
+            quizModel.answer = quiz.correct_answer.replacingOccurrences(of: "&#039;", with: "'").replacingOccurrences(of: "&quot;", with: "\"")
             quizModel.isKnown = false
             quizEntries.append(quizModel)
         }

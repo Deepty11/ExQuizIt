@@ -33,10 +33,5 @@ class UtilityService{
         return self.getRandomRangeOfQuizzes(from: quizArray, startIndex: startIndex, endIndex: endIndex)
         
     }
-    
-    func getHTMLNotationsInString(textString: String){
-        let range = NSRange(location: 0, length: textString.utf8.count)
-        let regex = try! NSRegularExpression(pattern: "^&.*;$")
-        let matches = regex.matches(in: textString, range: range)
-    }
+
 }
