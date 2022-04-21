@@ -46,8 +46,12 @@ class DatabaseManager{
         return Array(realm.objects(QuizModel.self))
     }
     
+    func getQuizByQuestion(question: String) -> QuizModel{
+        return realm.objects(QuizModel.self).filter("question == %@", question)[0]
+    }
+    
     func getAllUnknownQuizzes()-> [QuizModel]{
-        return Array(realm.objects(QuizModel.self).filter("isKnown == %@", true).shuffled())
+        return Array(realm.objects(QuizModel.self).filter("isKnown == false"))
     }
     
     func saveQuizToDatabase(question: String, answer: String){
@@ -61,6 +65,17 @@ class DatabaseManager{
             }
            
         } catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteQuizFromDatabase(quiz: QuizModel){
+        do{
+            try realm.write {
+                realm.delete(quiz)
+                print("deleted!!")
+            }
+        }catch{
             print(error.localizedDescription)
         }
     }

@@ -22,7 +22,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-    var quizes: [QuizModel]{
+    var quizzes: [QuizModel]{
         return Array(realm.objects(QuizModel.self))
     }
     
@@ -57,10 +57,11 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func fetchQuizzes(){
-        if self.quizes.isEmpty{
+        if self.quizzes.isEmpty{
             self.emptyQuizLabel.text = "Loading ..."
             JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
                 self.refreshUI()
+                return
             }
         }
         self.refreshUI()
@@ -68,7 +69,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func refreshUI(){
-        self.quizSources = self.quizes
+        self.quizSources = self.quizzes
         for _ in 0 ..< self.quizSources.count{
             AppState.shared.answerViewDisplayed.append(false)
         }
@@ -126,7 +127,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.present(alert, animated: true) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 self.dismiss(animated: true) {
-                    self.quizSources  = self.quizes
+                    self.quizSources  = self.quizzes
                     if self.quizSources.isEmpty{
                         self.tableView.isHidden = true
                         self.emptyQuizLabel.isHidden = false
@@ -175,6 +176,22 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         
         return UITableViewCell()
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            tableView.beginUpdates()
+            DatabaseManager.shared.deleteQuizFromDatabase(quiz: quizSources[indexPath.row])
+            self.displayAlert(title: nil, message: "Deleted Successfully")
+            tableView.endUpdates()
+            self.quizSources = quizzes
+            tableView.reloadData()
+        }
+    }
+    
     
     @objc func handleCommonQuizViewTapped(sender: UITapGestureRecognizer){
         if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)){

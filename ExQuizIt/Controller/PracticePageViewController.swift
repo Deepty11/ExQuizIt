@@ -9,15 +9,20 @@ import UIKit
 
 class PracticePageViewController: UIPageViewController, UIPageViewControllerDataSource {
 
-    var quizzes: [QuizModel]{
-        return DatabaseManager.shared.getAllQuiz()
-    }
+    var quizzes =  [QuizModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSource = self
+        self.quizzes = getQuizSource()
+        print("Practice Quizzes:\(quizzes.count)")
         setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
         
         self.configureNavigationBar()
+    }
+    
+    func getQuizSource() -> [QuizModel]{
+        let unknownQuizArray =  DatabaseManager.shared.getAllUnknownQuizzes()
+        return  UtilityService.shared.getRandomQuizzes(from: unknownQuizArray)
     }
     
     func configureNavigationBar(){

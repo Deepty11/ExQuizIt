@@ -27,6 +27,7 @@
 		BF7C71C527FD5C8B00723BEE /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7C71C427FD5C8B00723BEE /* Note.swift */; };
 		BF7C71C827FD67EA00723BEE /* QuizTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7C71C727FD67EA00723BEE /* QuizTableViewCell.swift */; };
 		BF7C71CA27FD9EC100723BEE /* AddQuizTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7C71C927FD9EC100723BEE /* AddQuizTableViewCell.swift */; };
+		BF8D0D8D2810FE66002E8D2C /* UtilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */; };
 		FD6435F428048FC300137173 /* JSONManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6435F328048FC300137173 /* JSONManager.swift */; };
 		FD6F1DAD280C20F400C9DFC6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD6F1DAC280C20F300C9DFC6 /* Main.storyboard */; };
 		FD894AAD280B3BA300C43AF8 /* PracticePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAC280B3BA300C43AF8 /* PracticePageViewController.swift */; };
@@ -83,6 +84,7 @@
 		BF7C71C427FD5C8B00723BEE /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		BF7C71C727FD67EA00723BEE /* QuizTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTableViewCell.swift; sourceTree = "<group>"; };
 		BF7C71C927FD9EC100723BEE /* AddQuizTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuizTableViewCell.swift; sourceTree = "<group>"; };
+		BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityService.swift; sourceTree = "<group>"; };
 		CCD77A8AFC14F32764A90806 /* Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig"; path = "Target Support Files/Pods-ExQuizIt-ExQuizItUITests/Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F495C154D69D67BE1700BCE5 /* Pods-ExQuizItTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExQuizItTests.release.xcconfig"; path = "Target Support Files/Pods-ExQuizItTests/Pods-ExQuizItTests.release.xcconfig"; sourceTree = "<group>"; };
 		F5584D5512A1F88DF15AAF8C /* Pods-NotesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesApp.release.xcconfig"; path = "Target Support Files/Pods-NotesApp/Pods-NotesApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				FD6435F328048FC300137173 /* JSONManager.swift */,
 				BF60D2392805223F00325024 /* DatabaseManager.swift */,
 				BF60D23B280527EA00325024 /* AppState.swift */,
+				BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				BF7C71C827FD67EA00723BEE /* QuizTableViewCell.swift in Sources */,
 				BF7C71C527FD5C8B00723BEE /* Note.swift in Sources */,
 				BF7C71CA27FD9EC100723BEE /* AddQuizTableViewCell.swift in Sources */,
+				BF8D0D8D2810FE66002E8D2C /* UtilityService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

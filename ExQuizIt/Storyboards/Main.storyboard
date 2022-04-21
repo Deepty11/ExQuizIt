@@ -391,10 +391,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V6k-it-HaE" customClass="CardView" customModule="ExQuizIt" customModuleProvider="target">
-                                <rect key="frame" x="50" y="381" width="314" height="144"/>
+                                <rect key="frame" x="50" y="372.5" width="314" height="161"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="7cy-Aw-enS">
-                                        <rect key="frame" x="0.0" y="76" width="314" height="68"/>
+                                        <rect key="frame" x="0.0" y="93" width="314" height="68"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y9p-ho-CUq">
                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="34"/>
@@ -466,7 +466,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LWb-f1-HYd">
-                                        <rect key="frame" x="5" y="56" width="304" height="0.0"/>
+                                        <rect key="frame" x="5" y="63" width="304" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -477,12 +477,12 @@
                                     <constraint firstAttribute="trailing" secondItem="7cy-Aw-enS" secondAttribute="trailing" id="G8P-Bn-7qn"/>
                                     <constraint firstAttribute="trailing" secondItem="LWb-f1-HYd" secondAttribute="trailing" constant="5" id="ObQ-4M-a81"/>
                                     <constraint firstItem="jSm-yM-tL6" firstAttribute="top" secondItem="V6k-it-HaE" secondAttribute="top" constant="8" id="Obm-zL-Aky"/>
-                                    <constraint firstItem="LWb-f1-HYd" firstAttribute="top" secondItem="jSm-yM-tL6" secondAttribute="bottom" constant="8" id="Thd-TP-Ix9"/>
+                                    <constraint firstItem="LWb-f1-HYd" firstAttribute="top" secondItem="jSm-yM-tL6" secondAttribute="bottom" constant="15" id="Thd-TP-Ix9"/>
                                     <constraint firstItem="LWb-f1-HYd" firstAttribute="leading" secondItem="V6k-it-HaE" secondAttribute="leading" constant="5" id="YHC-6d-WOg"/>
                                     <constraint firstAttribute="trailing" secondItem="jSm-yM-tL6" secondAttribute="trailing" constant="5" id="Ydn-Bc-Fej"/>
                                     <constraint firstItem="7cy-Aw-enS" firstAttribute="leading" secondItem="V6k-it-HaE" secondAttribute="leading" id="aWX-Rd-xAN"/>
                                     <constraint firstAttribute="bottom" secondItem="7cy-Aw-enS" secondAttribute="bottom" id="d74-65-FKF"/>
-                                    <constraint firstItem="7cy-Aw-enS" firstAttribute="top" secondItem="LWb-f1-HYd" secondAttribute="bottom" constant="20" id="mMU-DV-RYW"/>
+                                    <constraint firstItem="7cy-Aw-enS" firstAttribute="top" secondItem="LWb-f1-HYd" secondAttribute="bottom" constant="30" id="mMU-DV-RYW"/>
                                     <constraint firstItem="jSm-yM-tL6" firstAttribute="leading" secondItem="V6k-it-HaE" secondAttribute="leading" constant="5" id="qHd-Bk-b1E"/>
                                 </constraints>
                             </view>
