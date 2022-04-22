@@ -18,14 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="b7J-hk-bjm">
-                                <rect key="frame" x="192" y="460" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="8Ar-R5-w0g"/>
-                                    <constraint firstAttribute="height" constant="30" id="QQR-GF-TD8"/>
-                                </constraints>
-                                <color key="color" name="NavigationBar BG Color"/>
-                            </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Tap on &quot;+&quot; button to add a note" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cw7-OK-qKf">
                                 <rect key="frame" x="20" y="450" width="374" height="50"/>
                                 <constraints>
@@ -229,6 +221,24 @@
                                     <action selector="handlePracticeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bJK-YE-wCf"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIA-Bs-UgY">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="b7J-hk-bjm">
+                                        <rect key="frame" x="192" y="389" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="8Ar-R5-w0g"/>
+                                            <constraint firstAttribute="height" constant="30" id="QQR-GF-TD8"/>
+                                        </constraints>
+                                        <color key="color" name="NavigationBar BG Color"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.6176014072847682" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="b7J-hk-bjm" firstAttribute="centerY" secondItem="qIA-Bs-UgY" secondAttribute="centerY" id="iLj-eP-Ucb"/>
+                                    <constraint firstItem="b7J-hk-bjm" firstAttribute="centerX" secondItem="qIA-Bs-UgY" secondAttribute="centerX" id="jQt-8N-fwm"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="Background Color"/>
@@ -237,13 +247,15 @@
                             <constraint firstItem="cw7-OK-qKf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="AdJ-ng-ZAY"/>
                             <constraint firstItem="cw7-OK-qKf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="BMt-lw-xfn"/>
                             <constraint firstItem="3Il-6H-3nn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Ka2-FK-ZxL"/>
-                            <constraint firstItem="b7J-hk-bjm" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="KbS-Y8-usY"/>
                             <constraint firstItem="1sB-jH-NYw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="QZK-RV-N5O"/>
                             <constraint firstItem="1sB-jH-NYw" firstAttribute="top" secondItem="3Il-6H-3nn" secondAttribute="bottom" constant="2" id="Qft-Ab-9aZ"/>
-                            <constraint firstItem="b7J-hk-bjm" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="d4d-wL-fEW"/>
+                            <constraint firstItem="qIA-Bs-UgY" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="X1E-WI-kcG"/>
                             <constraint firstAttribute="bottom" secondItem="1sB-jH-NYw" secondAttribute="bottom" id="fAw-r9-xix"/>
                             <constraint firstItem="3Il-6H-3nn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="kZ1-Z7-0pv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1sB-jH-NYw" secondAttribute="trailing" id="lFM-d7-GaO"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="qIA-Bs-UgY" secondAttribute="top" id="mwU-Ek-MaY"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qIA-Bs-UgY" secondAttribute="trailing" id="nEL-aI-2lM"/>
+                            <constraint firstItem="qIA-Bs-UgY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="taG-JG-acH"/>
                             <constraint firstItem="3Il-6H-3nn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vpO-IJ-wYw"/>
                             <constraint firstItem="1sB-jH-NYw" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5: 6" id="wVI-nh-hfQ"/>
                         </constraints>
@@ -251,6 +263,7 @@
                     <navigationItem key="navigationItem" id="nDp-uc-rcy"/>
                     <connections>
                         <outlet property="emptyQuizLabel" destination="cw7-OK-qKf" id="0Do-fC-0Pf"/>
+                        <outlet property="opaqueView" destination="qIA-Bs-UgY" id="ei0-Sz-6eX"/>
                         <outlet property="quizLoadingActivityIndicatorView" destination="b7J-hk-bjm" id="0CN-wF-giE"/>
                         <outlet property="tableView" destination="3Il-6H-3nn" id="u5o-eF-U2f"/>
                     </connections>
@@ -524,6 +537,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32E-OZ-RdD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3137.68115942029" y="71.651785714285708"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="4mS-kB-FtI">
+            <objects>
+                <viewController id="Tob-XS-hrk" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QlW-HS-RdZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DU0-HK-TaW">
+                                <rect key="frame" x="75" y="343" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ewP-fT-aZh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dNf-fy-2jb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4006" y="72"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="na6-SL-7hv">

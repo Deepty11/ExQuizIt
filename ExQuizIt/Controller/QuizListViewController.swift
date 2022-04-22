@@ -13,8 +13,9 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
    
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var opaqueView: UIView!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
+    
     let realm = try! Realm()
     var quizSources = [QuizModel](){
         didSet{
@@ -30,6 +31,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         self.fetchQuizzes()
         super.viewDidLoad()
+        self.opaqueView.isHidden = true
         configureNavigationBar()
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -60,9 +62,11 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func fetchQuizzes(){
         if self.quizzes.isEmpty{
             self.emptyQuizLabel.text = "Loading ..."
+            self.opaqueView.isHidden = false
             self.quizLoadingActivityIndicatorView.startAnimating()
             JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
                 self.quizLoadingActivityIndicatorView.stopAnimating()
+                self.opaqueView.isHidden = true
                 self.quizLoadingActivityIndicatorView.isHidden = true
                 self.refreshUI()
                 return
@@ -88,6 +92,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                                  target: self,
                                                                  action: #selector(addButtonTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Icon"),
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(settingsButtonTapped))
     }
     
     func displayAlert(title: String?, message: String?){
@@ -112,6 +120,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             self.navigationController?.pushViewController(vc,
                                                           animated: true)
         }
+    }
+    
+    @objc func settingsButtonTapped(){
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
