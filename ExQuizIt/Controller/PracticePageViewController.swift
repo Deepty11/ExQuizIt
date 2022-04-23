@@ -62,15 +62,15 @@ class PracticePageViewController: UIPageViewController, UIPageViewControllerData
         
     }
     
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return quizzes.count
-    }
-    
-    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        if let currentVc = pageViewController.viewControllers?.first as? CardViewController{
-            return currentVc.pageIndex
-        }
-        return 0
-    }
+//    func presentationCount(for pageViewController: UIPageViewController) -> Int {
+//        return quizzes.count
+//    }
+//    
+//    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
+//        if let currentVc = pageViewController.viewControllers?.first as? CardViewController{
+//            return currentVc.pageIndex
+//        }
+//        return 0
+//    }
 
 }

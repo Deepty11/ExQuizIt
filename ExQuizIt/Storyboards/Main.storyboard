@@ -67,7 +67,7 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" red="1" green="0.65346989122985955" blue="0.6741090484474086" alpha="0.81154283940397354" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <color key="backgroundColor" name="Unknown View BG Color"/>
                                                                     <constraints>
                                                                         <constraint firstItem="XKw-wV-Wqu" firstAttribute="centerX" secondItem="ucR-z8-TSD" secondAttribute="centerX" id="6S7-aq-EJm"/>
                                                                         <constraint firstItem="XKw-wV-Wqu" firstAttribute="top" secondItem="ucR-z8-TSD" secondAttribute="top" constant="2" id="WXL-Om-hUo"/>
@@ -96,7 +96,7 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" red="0.72528564598527367" green="0.86078917980194092" blue="0.63576694438804249" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <color key="backgroundColor" name="Known View BG Color"/>
                                                                     <constraints>
                                                                         <constraint firstItem="52c-id-g85" firstAttribute="top" secondItem="hzg-Bl-9uK" secondAttribute="top" constant="2" id="E7Y-rv-kUT"/>
                                                                         <constraint firstItem="52c-id-g85" firstAttribute="centerX" secondItem="hzg-Bl-9uK" secondAttribute="centerX" id="Kbx-mP-14o"/>
@@ -264,11 +264,11 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kcu-sd-Qyu">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kcu-sd-Qyu">
                                         <rect key="frame" x="257.5" y="104.5" width="131.5" height="32"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKa-7m-yn0">
-                                                <rect key="frame" x="0.0" y="0.0" width="32.5" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="27.5" height="32"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -277,6 +277,9 @@
                                                 <rect key="frame" x="37.5" y="0.0" width="94" height="32"/>
                                                 <color key="backgroundColor" name="AccentColor"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <variation key="heightClass=regular-widthClass=compact">
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </variation>
                                                 <connections>
                                                     <action selector="handleStepperTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="FJU-uU-e3b"/>
                                                 </connections>
@@ -348,6 +351,7 @@
                         <outlet property="opaqueViewForSettingsView" destination="w7q-J8-ubx" id="XvF-FS-1PD"/>
                         <outlet property="practiceQuizStepper" destination="VC4-HP-cWE" id="daG-y5-oax"/>
                         <outlet property="quizLoadingActivityIndicatorView" destination="b7J-hk-bjm" id="0CN-wF-giE"/>
+                        <outlet property="saveSettingsButton" destination="F3U-vN-JIJ" id="RZl-nh-0VW"/>
                         <outlet property="selectedValueForPracticeQuizLabel" destination="rKa-7m-yn0" id="ziV-zX-Bbp"/>
                         <outlet property="settingsView" destination="ZSu-Xo-YOE" id="3EV-Qm-mo4"/>
                         <outlet property="settingsViewBottomConstraint" destination="amB-QA-6kC" id="AkS-61-vU7"/>
@@ -528,7 +532,7 @@
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" red="1" green="0.65346989119999999" blue="0.67410904839999997" alpha="0.81154283940000005" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <color key="backgroundColor" name="Unknown View BG Color"/>
                                                 <constraints>
                                                     <constraint firstItem="H7g-U4-1xq" firstAttribute="top" secondItem="y9p-ho-CUq" secondAttribute="top" constant="2" id="R7B-qX-pvR"/>
                                                     <constraint firstItem="H7g-U4-1xq" firstAttribute="centerX" secondItem="y9p-ho-CUq" secondAttribute="centerX" id="rt3-EY-5qg"/>
@@ -557,7 +561,7 @@
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.72528564600000001" green="0.86078917980000003" blue="0.63576694440000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <color key="backgroundColor" name="Known View BG Color"/>
                                                 <constraints>
                                                     <constraint firstItem="cfT-iI-9Zr" firstAttribute="top" secondItem="DCa-Vd-nuu" secondAttribute="top" constant="2" id="MMy-3Y-uOe"/>
                                                     <constraint firstItem="cfT-iI-9Zr" firstAttribute="centerX" secondItem="DCa-Vd-nuu" secondAttribute="centerX" id="MpW-m3-mK1"/>
@@ -682,8 +686,14 @@
         <namedColor name="Card Background Color">
             <color red="0.98039215686274506" green="0.97647058823529409" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <namedColor name="Known View BG Color">
+            <color red="0.75918271699999995" green="0.88122794240000002" blue="0.74626644119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="NavigationBar BG Color">
             <color red="0.37299999594688416" green="0.37999999523162842" blue="0.59700000286102295" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="Unknown View BG Color">
+            <color red="1" green="0.77014423750000005" blue="0.74026705309999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="checkIcon Color">
             <color red="0.23899999260902405" green="0.46299999952316284" blue="0.24500000476837158" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

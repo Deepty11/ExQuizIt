@@ -20,6 +20,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
     @IBOutlet weak var opaqueViewForSettingsView: UIView!
     @IBOutlet weak var practiceQuizStepper: UIStepper!
+    @IBOutlet weak var saveSettingsButton: UIButton!
     
     var originYofSettingsView = 0.0
     var isSettingsViewVisible = false
@@ -45,7 +46,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.dataSource = self
         
         self.opaqueViewForSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped)))
-        
+        self.practiceQuizStepper.layer.cornerRadius = 5.0
+        self.saveSettingsButton.layer.cornerRadius = 5.0
+        self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
+        self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
 
     }
     
@@ -127,6 +131,8 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func handleAddButtonTapped(){
         if let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddQuizViewController") as? AddQuizViewController{
+            self.isSettingsViewVisible = false
+            self.hideSettingsView()
             self.navigationController?.pushViewController(vc,
                                                           animated: true)
         }
