@@ -17,14 +17,12 @@ class UtilityService{
     func getRange(of quizArray: [QuizModel])-> (Int, Int){
         let totalAvailableQuiz = quizArray.count
         let startIndex = Int.random(in: 0 ..< totalAvailableQuiz/2 )
-        let diff = Int.random(in: 8 ... 30 ) //
-        
-//        if num1 < num2{
-//            return (num1, num2)
-//        } else if num1 > num2{
-//            return (num2, num1)
-//        }
-        return (startIndex , startIndex + diff )
+        // get user selected range from settings
+        if let amountString = UserDefaults.standard.object(forKey: "NumberOfPracticeQuizzes") as? String,
+           let diff = Int(amountString){
+            return (startIndex , startIndex + diff - 1 )
+        }
+        return (startIndex , startIndex + 20 )
     }
     
     func getRandomQuizzes(from quizArray: [QuizModel]) -> [QuizModel]{
@@ -33,5 +31,5 @@ class UtilityService{
         return self.getRandomRangeOfQuizzes(from: quizArray, startIndex: startIndex, endIndex: endIndex)
         
     }
-
+    
 }

@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().barTintColor = UIColor(named: "NavigationBar BG Color")
             UINavigationBar.appearance().tintColor = .white
         }
-        
+        UserDefaults.standard.set("20", forKey: "NumberOfPracticeQuizzes")
         return true
     }
 

@@ -15,6 +15,14 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var opaqueView: UIView!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var settingsView: UIView!
+    @IBOutlet weak var settingsViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
+    @IBOutlet weak var opaqueViewForSettingsView: UIView!
+    @IBOutlet weak var practiceQuizStepper: UIStepper!
+    
+    var originYofSettingsView = 0.0
+    var isSettingsViewVisible = false
     
     let realm = try! Realm()
     var quizSources = [QuizModel](){
@@ -36,12 +44,15 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        self.opaqueViewForSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped)))
+        
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.fetchQuizzes()
         super.viewWillAppear(animated)
+        self.selectedValueForPracticeQuizLabel.text = String(Int(self.practiceQuizStepper.value))
         
         
     }
@@ -91,11 +102,67 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.navigationItem.title = "Quizzes"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                                  target: self,
-                                                                 action: #selector(addButtonTapped))
+                                                                 action: #selector(handleAddButtonTapped))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Icon"),
                                                                 style: .plain,
                                                                 target: self,
-                                                                action: #selector(settingsButtonTapped))
+                                                                action: #selector(handleSettingsButtonTapped))
+    }
+    
+    @IBAction func handleStepperTapped(_ sender: Any) {
+        if let sender = sender as? UIStepper{
+            self.selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
+        }
+    }
+    
+    
+    @IBAction func handleSaveButtonTapped(_ sender: Any) {
+        self.storeNumberOfPracticeQuizzes()
+        self.hideSettingsView()
+    }
+                                                            
+    @objc func handleViewDidTapped(_ sender: UITapGestureRecognizer){
+        self.hideSettingsView()
+    }
+    
+    @objc func handleAddButtonTapped(){
+        if let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddQuizViewController") as? AddQuizViewController{
+            self.navigationController?.pushViewController(vc,
+                                                          animated: true)
+        }
+    }
+    
+    @objc func handleSettingsButtonTapped(){
+        self.isSettingsViewVisible ? self.hideSettingsView() : self.showSettingsView()
+    }
+    
+    func showSettingsView(){
+        UIView.animate(withDuration: 0.3) {
+            self.opaqueViewForSettingsView.isHidden = false
+            self.opaqueViewForSettingsView.alpha = 60
+            self.opaqueViewForSettingsView.isUserInteractionEnabled = true
+            self.originYofSettingsView = self.settingsView.frame.origin.y
+            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
+            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
+            self.isSettingsViewVisible = true
+        }
+        
+    }
+    
+    func hideSettingsView(){
+        UIView.animate(withDuration: 0.25) {
+            self.opaqueViewForSettingsView.alpha = 0
+            self.settingsView.frame.origin.y = self.originYofSettingsView
+            self.settingsViewBottomConstraint.constant = 0
+            self.opaqueViewForSettingsView.isHidden = true
+        }
+        self.isSettingsViewVisible = false
+        self.storeNumberOfPracticeQuizzes()
+        
+    }
+    
+    func storeNumberOfPracticeQuizzes(){
+        UserDefaults.standard.set(self.selectedValueForPracticeQuizLabel.text, forKey: "NumberOfPracticeQuizzes")
     }
     
     func displayAlert(title: String?, message: String?){
@@ -112,17 +179,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         }
-        
-    }
-    
-    @objc func addButtonTapped(){
-        if let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddQuizViewController") as? AddQuizViewController{
-            self.navigationController?.pushViewController(vc,
-                                                          animated: true)
-        }
-    }
-    
-    @objc func settingsButtonTapped(){
         
     }
     
