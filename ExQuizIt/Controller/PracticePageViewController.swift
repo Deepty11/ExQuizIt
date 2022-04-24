@@ -7,14 +7,20 @@
 
 import UIKit
 
-class PracticePageViewController: UIPageViewController, UIPageViewControllerDataSource {
+protocol PageViewDelegate{
+    func gotoNextPage(for index: Int)
+}
+
+class PracticePageViewController: UIPageViewController, /*UIPageViewControllerDataSource,*/ PageViewDelegate {
+    
+    
 
     var quizzes =  [QuizModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dataSource = self
+        //self.dataSource = self
         self.quizzes = getQuizSource()
-        print("Practice Quizzes:\(quizzes.count)")
+        UtilityService.shared.numberOfPracticeQuizzes = self.quizzes.count
         setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
         
         self.configureNavigationBar()
@@ -30,35 +36,43 @@ class PracticePageViewController: UIPageViewController, UIPageViewControllerData
         navigationItem.title = "Practice"
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if let currentVC = viewController as? CardViewController{
-            let pageIndex = currentVC.pageIndex
-            if pageIndex > 0{
-                return getViewController(for: pageIndex - 1)
-            }
-        }
-        return nil
-        
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let currentVC = viewController as? CardViewController{
-            let pageIndex = currentVC.pageIndex
-            if pageIndex < quizzes.count - 1{
-                return getViewController(for: pageIndex + 1)
-            }
-        }
-        return nil
-    }
+//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+//        if let currentVC = viewController as? CardViewController{
+//            let pageIndex = currentVC.pageIndex
+//            if pageIndex > 0{
+//                return getViewController(for: pageIndex - 1)
+//            }
+//        }
+//        return nil
+//
+//    }
+//
+//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+//        if let currentVC = viewController as? CardViewController{
+//            let pageIndex = currentVC.pageIndex
+//            if pageIndex < quizzes.count - 1{
+//                return getViewController(for: pageIndex + 1)
+//            }
+//        }
+//        return nil
+//    }
     
     func getViewController(for index: Int) -> UIViewController{
         if let vC = storyboard?.instantiateViewController(withIdentifier: String(describing: CardViewController.self)) as? CardViewController{
             vC.pageIndex = index
             vC.quiz = quizzes[index]
+            vC.delegate = self
             return vC
             
         }
         return UIViewController()
+        
+    }
+// MARK: - PageViewDelegate Method
+    func gotoNextPage(for index: Int) {
+        if index < self.quizzes.count - 1{
+            setViewControllers([getViewController(for: index + 1)], direction: .forward, animated: true)
+        }
         
     }
     

@@ -18,21 +18,24 @@ class CardViewController: UIViewController {
     @IBOutlet weak var commonQuestionView: UIView!
     @IBOutlet weak var crossIconImageView: UIImageView!
     @IBOutlet weak var checkIconImageView: UIImageView!
+    @IBOutlet weak var checkBoxImageView: UIImageView!
+    @IBOutlet weak var quizIndexLabel: UILabel!
+    
     var pageIndex = 0
     var quiz: QuizModel?
+    var isCheckedCheckBox = false
+    var delegate : PageViewDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.questionView.isHidden = false
         self.answerView.isHidden = true
-        let tP1 = UITapGestureRecognizer(target: self, action: #selector(handleTapToSeeAnswerButtonTapped))
-        let tP2 = UITapGestureRecognizer(target: self, action: #selector(handleUncommonQuizButtonTapped))
-        let tP3 = UITapGestureRecognizer(target: self, action: #selector(handleCommonQuizButtonTapped))
-        
         self.questionLabel.text = self.quiz?.question
+        self.quizIndexLabel.text = "\(self.pageIndex + 1)/\(UtilityService.shared.numberOfPracticeQuizzes)"
         
-        self.tapToSeeAnswerView.addGestureRecognizer(tP1)
-        self.uncommonQuestionView.addGestureRecognizer(tP2)
-        self.commonQuestionView.addGestureRecognizer(tP3)
+        self.tapToSeeAnswerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapToSeeAnswerButtonTapped)))
+        self.uncommonQuestionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUncommonQuizButtonTapped)))
+        self.commonQuestionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCommonQuizButtonTapped)))
+        self.checkBoxImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCheckBoxImageViewTapped)))
     }
     
     @objc func handleTapToSeeAnswerButtonTapped(sender: UITapGestureRecognizer){
@@ -48,12 +51,19 @@ class CardViewController: UIViewController {
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer){
         DatabaseManager.shared.updateLearningStatus(with: false, of: self.quiz ?? QuizModel())
         self.flipCard(from: self.answerView, to: self.questionView)
+        self.delegate.gotoNextPage(for: self.pageIndex)
         
     }
     
     @objc func handleCommonQuizButtonTapped(sender: UITapGestureRecognizer){
         DatabaseManager.shared.updateLearningStatus(with: true, of: self.quiz ?? QuizModel())
         self.flipCard(from: self.answerView, to: self.questionView)
+        self.delegate.gotoNextPage(for: self.pageIndex)
+    }
+    
+    @objc func handleCheckBoxImageViewTapped(sender: UITapGestureRecognizer){
+        self.checkBoxImageView.image = self.isCheckedCheckBox ? UIImage(named: "Checkbox Unchecked Icon") : UIImage(named: "Checkbox Checked Icon")
+        self.isCheckedCheckBox = !self.isCheckedCheckBox
     }
     
     func flipCard(from source: UIView, to destination: UIView){

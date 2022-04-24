@@ -10,6 +10,8 @@ import Foundation
 class UtilityService{
     static let shared = UtilityService()
     
+    var numberOfPracticeQuizzes = 0
+    
     func getRandomRangeOfQuizzes(from quizArray: [QuizModel], startIndex: Int, endIndex: Int) -> [QuizModel]{
         return Array(quizArray[startIndex...endIndex])
     }
