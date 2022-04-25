@@ -18,9 +18,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var settingsView: UIView!
     @IBOutlet weak var settingsViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
-    @IBOutlet weak var opaqueViewForSettingsView: UIView!
+    //@IBOutlet weak var opaqueViewForSettingsView: UIView!
     @IBOutlet weak var practiceQuizStepper: UIStepper!
     @IBOutlet weak var saveSettingsButton: UIButton!
+    @IBOutlet weak var PracticeView: UIView!
     
     var originYofSettingsView = 0.0
     var isSettingsViewVisible = false
@@ -45,11 +46,16 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.opaqueViewForSettingsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped)))
+        self.opaqueView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped)))
         self.practiceQuizStepper.layer.cornerRadius = 5.0
         self.saveSettingsButton.layer.cornerRadius = 5.0
         self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
         self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
+        
+        self.PracticeView.isUserInteractionEnabled = true
+        self.PracticeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handlePracticeButtonTapped)))
+        
+        
 
     }
     
@@ -68,7 +74,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    @IBAction func handlePracticeButtonTapped(_ sender: Any) {
+    @objc func handlePracticeButtonTapped(_ sender: Any) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "PracticePageViewController") as? PracticePageViewController{
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -77,12 +83,14 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func fetchQuizzes(){
         if self.quizzes.isEmpty{
             self.emptyQuizLabel.text = "Loading ..."
+            self.navigationController?.navigationBar.isUserInteractionEnabled = false
             self.opaqueView.isHidden = false
             self.quizLoadingActivityIndicatorView.startAnimating()
             JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
                 self.quizLoadingActivityIndicatorView.stopAnimating()
                 self.opaqueView.isHidden = true
                 self.quizLoadingActivityIndicatorView.isHidden = true
+                self.navigationController?.navigationBar.isUserInteractionEnabled = true
                 self.refreshUI()
                 return
             }
@@ -144,9 +152,9 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func showSettingsView(){
         UIView.animate(withDuration: 0.3) {
-            self.opaqueViewForSettingsView.isHidden = false
-            self.opaqueViewForSettingsView.alpha = 60
-            self.opaqueViewForSettingsView.isUserInteractionEnabled = true
+            self.opaqueView.isHidden = false
+            self.opaqueView.alpha = 60
+            self.opaqueView.isUserInteractionEnabled = true
             self.originYofSettingsView = self.settingsView.frame.origin.y
             self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
             self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
@@ -157,10 +165,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func hideSettingsView(){
         UIView.animate(withDuration: 0.25) {
-            self.opaqueViewForSettingsView.alpha = 0
+            self.opaqueView.alpha = 0
             self.settingsView.frame.origin.y = self.originYofSettingsView
             self.settingsViewBottomConstraint.constant = 0
-            self.opaqueViewForSettingsView.isHidden = true
+            self.opaqueView.isHidden = true
         }
         self.isSettingsViewVisible = false
         self.storeNumberOfPracticeQuizzes()

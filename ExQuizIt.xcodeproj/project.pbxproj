@@ -33,6 +33,7 @@
 		FD894AAD280B3BA300C43AF8 /* PracticePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAC280B3BA300C43AF8 /* PracticePageViewController.swift */; };
 		FD894AAF280B3E3500C43AF8 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAE280B3E3500C43AF8 /* CardViewController.swift */; };
 		FDC57F432802C28D008D51CA /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC57F422802C28D008D51CA /* CardView.swift */; };
+		FDCF756D2815477700F3F9C1 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCF756C2815477700F3F9C1 /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		FD894AAC280B3BA300C43AF8 /* PracticePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticePageViewController.swift; sourceTree = "<group>"; };
 		FD894AAE280B3E3500C43AF8 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		FDC57F422802C28D008D51CA /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		FDCF756C2815477700F3F9C1 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				FDC57F422802C28D008D51CA /* CardView.swift */,
+				FDCF756C2815477700F3F9C1 /* GradientView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				FD894AAD280B3BA300C43AF8 /* PracticePageViewController.swift in Sources */,
 				BF3AD2E627FC126300002E53 /* ViewController.swift in Sources */,
 				BF3AD2E227FC126300002E53 /* AppDelegate.swift in Sources */,
+				FDCF756D2815477700F3F9C1 /* GradientView.swift in Sources */,
 				BF3AD31827FC31FD00002E53 /* AddQuizViewController.swift in Sources */,
 				BF3AD2E427FC126300002E53 /* SceneDelegate.swift in Sources */,
 				BF60D23C280527EA00325024 /* AppState.swift in Sources */,

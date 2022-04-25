@@ -12,9 +12,6 @@ protocol PageViewDelegate{
 }
 
 class PracticePageViewController: UIPageViewController, /*UIPageViewControllerDataSource,*/ PageViewDelegate {
-    
-    
-
     var quizzes =  [QuizModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
