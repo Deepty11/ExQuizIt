@@ -39,6 +39,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewDidLoad() {
+        self.quizLoadingActivityIndicatorView.isHidden = true
         self.fetchQuizzes()
         super.viewDidLoad()
         self.opaqueView.isHidden = true
@@ -83,6 +84,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func fetchQuizzes(){
         if self.quizzes.isEmpty{
             self.emptyQuizLabel.text = "Loading ..."
+            self.quizLoadingActivityIndicatorView.isHidden = false
             self.navigationController?.navigationBar.isUserInteractionEnabled = false
             self.opaqueView.isHidden = false
             self.quizLoadingActivityIndicatorView.startAnimating()
