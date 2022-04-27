@@ -38,6 +38,7 @@ class DatabaseManager{
                 // if status is true, set learningStatus to 5 and 0 otherwise
                 quizTobeUpdated.learningStatus = status ? 5 : 0
                 realm.add(quizTobeUpdated)
+                quizTobeUpdated.isKnown ? print("learnt") : print("learning")
             }
         }catch{
             print(error.localizedDescription)
@@ -51,6 +52,7 @@ class DatabaseManager{
             try realm.write{
                 quizTobeUpdated.learningStatus = setlearningScale ? quizTobeUpdated.learningStatus + 1 : 0 // 0 for reset
                 quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= 5 ? true : false
+                quizTobeUpdated.isKnown ? print("learnt") : print("learning")
                 realm.add(quizTobeUpdated)
             }
         }catch{

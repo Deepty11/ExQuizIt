@@ -24,6 +24,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
         super.viewDidLoad()
         self.getValuesForProgressView()
         self.setProgressViews()
+        self.navigationItem.title = "Statistics"
         
     }
     
@@ -32,8 +33,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
         self.masteredProgressView.setProgress(0, animated: false)
         self.reviewProgressView.setProgress(0, animated: false)
         self.learningProgressView.setProgress(0, animated: false)
-        
-        UIView.animate(withDuration: 0.25) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.masteredProgressView.setProgress(Float(self.numberOfMastered)/Float(self.quizzes.count), animated: true)
             self.reviewProgressView.setProgress(Float(self.numberOfReviews)/Float(self.quizzes.count), animated: true)
             self.learningProgressView.setProgress(Float(self.numberOflearnings)/Float(self.quizzes.count), animated: true)
@@ -49,12 +49,8 @@ class PracticeQuizStatisticsViewController: UIViewController {
         for quiz in self.quizzes{
             if quiz.isKnown{
                 self.numberOfMastered += 1
-            }else{
-                if quiz.learningStatus == 0{
-                    self.numberOfReviews += 1
-                } else{
-                    self.numberOflearnings += 1
-                }
+            } else{
+                quiz.learningStatus == 0 ? (self.numberOflearnings += 1) : (self.numberOfReviews += 1)
             }
         }
     }

@@ -63,8 +63,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewWillAppear(_ animated: Bool) {
         self.fetchQuizzes()
         super.viewWillAppear(animated)
-        self.selectedValueForPracticeQuizLabel.text = String(Int(self.practiceQuizStepper.value))
-        
         
     }
     
@@ -85,6 +83,11 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.practiceQuizStepper.layer.cornerRadius = 5.0
         self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
         self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
+        if let currentValue = UserDefaults.standard.object(forKey: "NumberOfPracticeQuizzes") as? String{
+            self.selectedValueForPracticeQuizLabel.text = currentValue
+        } else{
+            self.selectedValueForPracticeQuizLabel.text = "20"
+        }
     }
     
     func fetchQuizzes(){
