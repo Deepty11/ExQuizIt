@@ -35,6 +35,22 @@ class DatabaseManager{
         do{
             try realm.write{
                 quizTobeUpdated.isKnown = status
+                // if status is true, set learningStatus to 5 and 0 otherwise
+                quizTobeUpdated.learningStatus = status ? 5 : 0
+                realm.add(quizTobeUpdated)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    // to increment learningStatus and set isKnown accordingly 
+    func updateLearningScale(with setlearningScale: Bool, of quiz: QuizModel){
+        let quizTobeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
+        do{
+            try realm.write{
+                quizTobeUpdated.learningStatus = setlearningScale ? quizTobeUpdated.learningStatus + 1 : 0 // 0 for reset
+                quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= 5 ? true : false
                 realm.add(quizTobeUpdated)
             }
         }catch{
@@ -61,6 +77,7 @@ class DatabaseManager{
                 quiz.question = question
                 quiz.answer = answer
                 quiz.isKnown = false
+                quiz.learningStatus = 0
                 realm.add(quiz)
             }
            

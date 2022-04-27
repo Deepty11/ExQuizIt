@@ -56,7 +56,14 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleCommonQuizButtonTapped(sender: UITapGestureRecognizer){
-        DatabaseManager.shared.updateLearningStatus(with: true, of: self.quiz ?? QuizModel())
+        if self.isCheckedCheckBox{
+            // update isKnown to true and set learningStatus to 5
+            DatabaseManager.shared.updateLearningStatus(with: true, of: self.quiz ?? QuizModel())
+        } else{
+            // update increment learning status by 1 and check
+            // if learning status >= 5, set isKnown to true
+            DatabaseManager.shared.updateLearningScale(with: true, of: self.quiz ?? QuizModel())
+        }
         self.flipCard(from: self.answerView, to: self.questionView)
         self.delegate.gotoNextPage(for: self.pageIndex)
     }
