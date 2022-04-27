@@ -21,8 +21,8 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     //@IBOutlet weak var opaqueViewForSettingsView: UIView!
     @IBOutlet weak var practiceQuizStepper: UIStepper!
     @IBOutlet weak var saveSettingsButton: UIButton!
-    @IBOutlet weak var PracticeView: UIView!
     
+    @IBOutlet weak var practiceButton: UIButton!
     var originYofSettingsView = 0.0
     var isSettingsViewVisible = false
     
@@ -39,23 +39,23 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.quizLoadingActivityIndicatorView.isHidden = true
         self.fetchQuizzes()
-        super.viewDidLoad()
+        
         self.opaqueView.isHidden = true
         configureNavigationBar()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.configurepracticeQuizStepper()
         
-        self.opaqueView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped)))
-        self.practiceQuizStepper.layer.cornerRadius = 5.0
         self.saveSettingsButton.layer.cornerRadius = 5.0
-        self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
-        self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
         
-        self.PracticeView.isUserInteractionEnabled = true
-        self.PracticeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handlePracticeButtonTapped)))
-        
+        self.practiceButton.isUserInteractionEnabled = true
+        self.opaqueView.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                    action: #selector(handleViewDidTapped)))
+        self.practiceButton.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                      action: #selector(handlePracticeButtonTapped)))
         
 
     }
@@ -75,10 +75,16 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    @objc func handlePracticeButtonTapped(_ sender: Any) {
+    @IBAction func handlePracticeButtonTapped(_ sender: Any) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "PracticePageViewController") as? PracticePageViewController{
             self.navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    func configurepracticeQuizStepper(){
+        self.practiceQuizStepper.layer.cornerRadius = 5.0
+        self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
+        self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
     }
     
     func fetchQuizzes(){

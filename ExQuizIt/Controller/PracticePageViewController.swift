@@ -69,6 +69,12 @@ class PracticePageViewController: UIPageViewController, /*UIPageViewControllerDa
     func gotoNextPage(for index: Int) {
         if index < self.quizzes.count - 1{
             setViewControllers([getViewController(for: index + 1)], direction: .forward, animated: true)
+        } else{
+            if let vC = storyboard?.instantiateViewController(withIdentifier: String(describing: PracticeQuizStatisticsViewController.self)) as? PracticeQuizStatisticsViewController{
+                vC.quizzes = self.quizzes
+                self.navigationController?.pushViewController(vC, animated: true)
+                //present(vC, animated: true)
+            }
         }
         
     }

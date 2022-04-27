@@ -12,4 +12,5 @@ class QuizModel: Object{
     @Persisted var question: String?
     @Persisted var answer: String?
     @Persisted var isKnown: Bool
+    @Persisted var learningStatus: Int
 }
