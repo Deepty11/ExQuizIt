@@ -1,6 +1,6 @@
 //
 //  DatabaseManager.swift
-//  NotesApp
+//  ExQuizIt
 //
 //  Created by Rehnuma Reza on 12/4/22.
 //

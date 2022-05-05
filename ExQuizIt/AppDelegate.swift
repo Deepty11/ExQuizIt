@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  NotesApp
+//  ExQuizIt
 //
 //  Created by Rehnuma Reza on 5/4/22.
 //

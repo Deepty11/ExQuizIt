@@ -1,6 +1,6 @@
 //
-//  NotesListViewController.swift
-//  NotesApp
+//  QuizListViewController.swift
+//  ExQuizit
 //
 //  Created by Rehnuma Reza on 5/4/22.
 //
@@ -13,16 +13,15 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
    
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var opaqueView: UIView!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var settingsView: UIView!
     @IBOutlet weak var settingsViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
-    //@IBOutlet weak var opaqueViewForSettingsView: UIView!
     @IBOutlet weak var practiceQuizStepper: UIStepper!
     @IBOutlet weak var saveSettingsButton: UIButton!
     
     @IBOutlet weak var practiceButton: UIButton!
+    var visualEffectView: UIVisualEffectView!
     var originYofSettingsView = 0.0
     var isSettingsViewVisible = false
     
@@ -40,10 +39,11 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.addVisualEffectSubview()
         self.quizLoadingActivityIndicatorView.isHidden = true
         self.fetchQuizzes()
         
-        self.opaqueView.isHidden = true
+        
         configureNavigationBar()
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -52,10 +52,10 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.saveSettingsButton.layer.cornerRadius = 5.0
         
         self.practiceButton.isUserInteractionEnabled = true
-        self.opaqueView.addGestureRecognizer(UITapGestureRecognizer(target: self,
-                                                                    action: #selector(handleViewDidTapped)))
         self.practiceButton.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                                       action: #selector(handlePracticeButtonTapped)))
+        
+        
         
 
     }
@@ -92,15 +92,16 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func fetchQuizzes(){
         if self.quizzes.isEmpty{
+            self.visualEffectView.isHidden = false
             self.emptyQuizLabel.text = "Loading ..."
+            self.view.bringSubviewToFront(self.quizLoadingActivityIndicatorView)
             self.quizLoadingActivityIndicatorView.isHidden = false
             self.navigationController?.navigationBar.isUserInteractionEnabled = false
-            self.opaqueView.isHidden = false
             self.quizLoadingActivityIndicatorView.startAnimating()
             JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
                 self.quizLoadingActivityIndicatorView.stopAnimating()
-                self.opaqueView.isHidden = true
                 self.quizLoadingActivityIndicatorView.isHidden = true
+                self.visualEffectView.isHidden = true
                 self.navigationController?.navigationBar.isUserInteractionEnabled = true
                 self.refreshUI()
                 return
@@ -162,24 +163,24 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func showSettingsView(){
+        self.settingsView.backgroundColor = .black
+        self.settingsView.alpha = 0.65
         UIView.animate(withDuration: 0.3) {
-            self.opaqueView.isHidden = false
-            self.opaqueView.alpha = 60
-            self.opaqueView.isUserInteractionEnabled = true
+            self.visualEffectView.isHidden = false
             self.originYofSettingsView = self.settingsView.frame.origin.y
             self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
             self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
             self.isSettingsViewVisible = true
+            self.view.bringSubviewToFront(self.settingsView)
         }
         
     }
     
     func hideSettingsView(){
         UIView.animate(withDuration: 0.25) {
-            self.opaqueView.alpha = 0
             self.settingsView.frame.origin.y = self.originYofSettingsView
             self.settingsViewBottomConstraint.constant = 0
-            self.opaqueView.isHidden = true
+            self.visualEffectView.isHidden = true
         }
         self.isSettingsViewVisible = false
         self.storeNumberOfPracticeQuizzes()
@@ -205,6 +206,22 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
+    }
+    
+    func addVisualEffectSubview(){
+        let blurrEffect = UIBlurEffect(style: .dark)
+        self.visualEffectView = UIVisualEffectView(effect: blurrEffect)
+        self.visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.visualEffectView)
+        
+        NSLayoutConstraint.activate([
+            self.visualEffectView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0),
+            self.visualEffectView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0.0),
+            self.visualEffectView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0),
+            self.visualEffectView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0)
+        ])
+        self.visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped(_:))))
+        self.visualEffectView.isHidden = true
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -261,8 +278,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             alert.addAction(okAction)
             alert.addAction(cancelAction)
             self.present(alert, animated: true)
-            
-            //self.displayAlert(title: nil, message: "Deleted Successfully")
             tableView.endUpdates()
             self.quizSources = quizzes
             tableView.reloadData()

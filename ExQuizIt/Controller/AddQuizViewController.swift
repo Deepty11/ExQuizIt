@@ -1,6 +1,6 @@
 //
-//  AddNoteViewController.swift
-//  NotesApp
+//  AddQuizViewController.swift
+//  ExQuizIt
 //
 //  Created by Rehnuma Reza on 5/4/22.
 //

@@ -1,6 +1,6 @@
 //
-//  Quiz.swift
-//  NotesApp
+//  QuizModel.swift
+//  ExQuizIt
 //
 //  Created by Rehnuma Reza on 12/4/22.
 //

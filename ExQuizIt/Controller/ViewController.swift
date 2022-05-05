@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  NotesApp
+//  ExQuizIt
 //
 //  Created by rehnuma.deepty on 5/4/22.
 //

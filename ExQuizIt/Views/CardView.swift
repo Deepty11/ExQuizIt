@@ -1,6 +1,6 @@
 //
 //  CardView.swift
-//  NotesApp
+//  ExQuizIt
 //
 //  Created by Rehnuma Reza on 10/4/22.
 //
