@@ -50,7 +50,12 @@ class DatabaseManager{
         let quizTobeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
         do{
             try realm.write{
-                quizTobeUpdated.learningStatus = setlearningScale ? quizTobeUpdated.learningStatus + 1 : 0 // 0 for reset
+                
+                if setlearningScale == true{
+                    quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < 5 ? 5 : 0 // increase learningStatus by 1 if not already set to 5 
+                } else{
+                    quizTobeUpdated.learningStatus = 0
+                }
                 quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= 5 ? true : false
                 quizTobeUpdated.isKnown ? print("learnt") : print("learning")
                 realm.add(quizTobeUpdated)

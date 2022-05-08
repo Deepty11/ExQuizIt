@@ -25,7 +25,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getValuesForProgressView()
+        self.setValuesForProgressView()
         self.setProgressViews()
         self.navigationItem.title = "Statistics"
         navigationController?.viewControllers.removeAll(where: {
@@ -48,7 +48,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
         self.masteredRatioLabel.text = "\(self.numberOfMastered)/\(self.quizzes.count)"
         self.reviewRatioLabel.text = "\(self.numberOfReviews)/\(self.quizzes.count)"
         self.learningRatioLabel.text = "\(self.numberOflearnings)/\(self.quizzes.count)"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.masteredProgressView.setProgress(Float(self.numberOfMastered)/Float(self.quizzes.count), animated: true)
             self.reviewProgressView.setProgress(Float(self.numberOfReviews)/Float(self.quizzes.count), animated: true)
             self.learningProgressView.setProgress(Float(self.numberOflearnings)/Float(self.quizzes.count), animated: true)
@@ -60,7 +60,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
         
     }
     
-    func getValuesForProgressView(){
+    func setValuesForProgressView(){
         
         for quiz in self.quizzes{
             if quiz.isKnown{

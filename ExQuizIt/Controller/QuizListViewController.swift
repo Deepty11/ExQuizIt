@@ -98,6 +98,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             self.emptyQuizLabel.text = "Loading ..."
             self.view.bringSubviewToFront(self.quizLoadingActivityIndicatorView)
             self.quizLoadingActivityIndicatorView.isHidden = false
+            self.quizLoadingActivityIndicatorView.color = .white
             self.navigationController?.navigationBar.isUserInteractionEnabled = false
             self.quizLoadingActivityIndicatorView.startAnimating()
             JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
