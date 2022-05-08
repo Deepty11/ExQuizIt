@@ -9,9 +9,12 @@ import UIKit
 
 class PracticeQuizStatisticsViewController: UIViewController {
 
+    @IBOutlet weak var masteredRatioLabel: UILabel!
     @IBOutlet weak var masteredProgressView: UIProgressView!
     @IBOutlet weak var reviewProgressView: UIProgressView!
+    @IBOutlet weak var reviewRatioLabel: UILabel!
     @IBOutlet weak var learningProgressView: UIProgressView!
+    @IBOutlet weak var learningRatioLabel: UILabel!
     @IBOutlet weak var statisticsView: CardView!
     
     var numberOflearnings = 0
@@ -25,6 +28,14 @@ class PracticeQuizStatisticsViewController: UIViewController {
         self.getValuesForProgressView()
         self.setProgressViews()
         self.navigationItem.title = "Statistics"
+        navigationController?.viewControllers.removeAll(where: {
+            (vc) -> Bool in
+            if vc.isKind(of: PracticePageViewController.self){
+                return true
+            } else{
+                return false
+            }
+        })
         
     }
     
@@ -33,10 +44,15 @@ class PracticeQuizStatisticsViewController: UIViewController {
         self.masteredProgressView.setProgress(0, animated: false)
         self.reviewProgressView.setProgress(0, animated: false)
         self.learningProgressView.setProgress(0, animated: false)
+        
+        self.masteredRatioLabel.text = "\(self.numberOfMastered)/\(self.quizzes.count)"
+        self.reviewRatioLabel.text = "\(self.numberOfReviews)/\(self.quizzes.count)"
+        self.learningRatioLabel.text = "\(self.numberOflearnings)/\(self.quizzes.count)"
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.masteredProgressView.setProgress(Float(self.numberOfMastered)/Float(self.quizzes.count), animated: true)
             self.reviewProgressView.setProgress(Float(self.numberOfReviews)/Float(self.quizzes.count), animated: true)
             self.learningProgressView.setProgress(Float(self.numberOflearnings)/Float(self.quizzes.count), animated: true)
+            
             print(self.numberOfMastered)
             print(self.numberOfReviews)
             print(self.numberOflearnings)

@@ -676,8 +676,8 @@
                                         <rect key="frame" x="143" y="153.5" width="150" height="4"/>
                                         <color key="progressTintColor" name="crossIcon Color"/>
                                     </progressView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learnt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCn-Af-GRE">
-                                        <rect key="frame" x="45" y="73" width="49" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mastered" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCn-Af-GRE">
+                                        <rect key="frame" x="45" y="73" width="72" height="21"/>
                                         <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -694,13 +694,34 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OV6-iK-McX">
+                                        <rect key="frame" x="260" y="88.5" width="33" height="16"/>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yCo-wT-N27">
+                                        <rect key="frame" x="260" y="160.5" width="33" height="16"/>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fT5-Ge-0x7">
+                                        <rect key="frame" x="260" y="124.5" width="33" height="16"/>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="hfq-iW-Y7c" firstAttribute="leading" secondItem="mlm-ry-jgX" secondAttribute="leading" id="2v0-aa-FTb"/>
+                                    <constraint firstItem="yCo-wT-N27" firstAttribute="top" secondItem="mlm-ry-jgX" secondAttribute="bottom" constant="3" id="37z-DB-p5a"/>
                                     <constraint firstItem="yIW-0X-YWr" firstAttribute="centerY" secondItem="mlm-ry-jgX" secondAttribute="centerY" id="FWF-k3-Bhh"/>
                                     <constraint firstItem="hfq-iW-Y7c" firstAttribute="trailing" secondItem="HRb-bA-P3z" secondAttribute="trailing" id="FgA-f0-l6V"/>
                                     <constraint firstItem="hfq-iW-Y7c" firstAttribute="leading" secondItem="HRb-bA-P3z" secondAttribute="leading" id="Jhv-Yb-9u0"/>
+                                    <constraint firstItem="fT5-Ge-0x7" firstAttribute="top" secondItem="hfq-iW-Y7c" secondAttribute="bottom" constant="3" id="KEo-UV-vhF"/>
+                                    <constraint firstAttribute="trailing" secondItem="OV6-iK-McX" secondAttribute="trailing" constant="31" id="QLx-ra-jd9"/>
                                     <constraint firstItem="hfq-iW-Y7c" firstAttribute="leading" secondItem="zma-lU-S9y" secondAttribute="trailing" constant="43" id="XKR-r4-d5w"/>
                                     <constraint firstItem="5ad-K8-bCd" firstAttribute="top" secondItem="Pgs-tW-N69" secondAttribute="top" constant="22" id="Xih-ZB-CPw"/>
                                     <constraint firstAttribute="trailing" secondItem="5ad-K8-bCd" secondAttribute="trailing" constant="15" id="ZTi-Iq-MjX"/>
@@ -711,8 +732,11 @@
                                     <constraint firstItem="uCn-Af-GRE" firstAttribute="top" secondItem="5ad-K8-bCd" secondAttribute="bottom" constant="30" id="dcI-8i-bQt"/>
                                     <constraint firstItem="zma-lU-S9y" firstAttribute="leading" secondItem="Pgs-tW-N69" secondAttribute="leading" constant="45" id="esH-Hj-lNa"/>
                                     <constraint firstItem="yIW-0X-YWr" firstAttribute="top" secondItem="zma-lU-S9y" secondAttribute="bottom" constant="15" id="ev9-Xg-K1P"/>
+                                    <constraint firstAttribute="trailing" secondItem="yCo-wT-N27" secondAttribute="trailing" constant="31" id="f1W-x7-Xjy"/>
                                     <constraint firstAttribute="bottom" secondItem="yIW-0X-YWr" secondAttribute="bottom" constant="30" id="h1T-Jm-xzt"/>
                                     <constraint firstItem="uCn-Af-GRE" firstAttribute="centerY" secondItem="HRb-bA-P3z" secondAttribute="centerY" id="hhU-aH-uda"/>
+                                    <constraint firstItem="OV6-iK-McX" firstAttribute="top" secondItem="HRb-bA-P3z" secondAttribute="bottom" constant="3" id="jdQ-eJ-JwE"/>
+                                    <constraint firstAttribute="trailing" secondItem="fT5-Ge-0x7" secondAttribute="trailing" constant="31" id="kCo-h9-vwU"/>
                                     <constraint firstItem="zma-lU-S9y" firstAttribute="top" secondItem="uCn-Af-GRE" secondAttribute="bottom" constant="15" id="m40-Er-fZD"/>
                                     <constraint firstItem="uCn-Af-GRE" firstAttribute="leading" secondItem="Pgs-tW-N69" secondAttribute="leading" constant="45" id="nDX-8R-aJc"/>
                                     <constraint firstItem="hfq-iW-Y7c" firstAttribute="trailing" secondItem="mlm-ry-jgX" secondAttribute="trailing" id="u2n-Ur-cxr"/>
@@ -729,8 +753,11 @@
                     </view>
                     <connections>
                         <outlet property="learningProgressView" destination="mlm-ry-jgX" id="j2Y-6R-U8Q"/>
+                        <outlet property="learningRatioLabel" destination="yCo-wT-N27" id="aPW-jD-oxf"/>
                         <outlet property="masteredProgressView" destination="HRb-bA-P3z" id="lvm-3W-cjp"/>
+                        <outlet property="masteredRatioLabel" destination="OV6-iK-McX" id="5Ms-bw-Zwo"/>
                         <outlet property="reviewProgressView" destination="hfq-iW-Y7c" id="dSa-WJ-Ep7"/>
+                        <outlet property="reviewRatioLabel" destination="fT5-Ge-0x7" id="Awf-rl-u2B"/>
                         <outlet property="statisticsView" destination="Pgs-tW-N69" id="xYn-Im-JCl"/>
                     </connections>
                 </viewController>
@@ -770,7 +797,7 @@
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Background Color">
-            <color red="0.19081225609999999" green="0.19773856810000001" blue="0.23047350389999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.42100000381469727" green="0.43700000643730164" blue="0.50900000333786011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="Card Background Color">
             <color red="0.98039215686274506" green="0.97647058823529409" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -779,7 +806,7 @@
             <color red="0.75900000333786011" green="0.88099998235702515" blue="0.74599999189376831" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="NavigationBar BG Color">
-            <color red="0.37299999594688416" green="0.37999999523162842" blue="0.59700000286102295" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.1131139039269158" green="0.11601172397501515" blue="0.18347233112412265" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="Unknown View BG Color">
             <color red="1" green="0.76999998092651367" blue="0.74000000953674316" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

@@ -164,7 +164,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func showSettingsView(){
         self.settingsView.backgroundColor = .black
-        self.settingsView.alpha = 0.65
+        self.settingsView.alpha = 0.80
         UIView.animate(withDuration: 0.3) {
             self.visualEffectView.isHidden = false
             self.originYofSettingsView = self.settingsView.frame.origin.y
