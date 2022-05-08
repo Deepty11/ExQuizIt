@@ -83,7 +83,9 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.practiceQuizStepper.layer.cornerRadius = 5.0
         self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
         self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
+        
         if let currentValue = UserDefaults.standard.object(forKey: "NumberOfPracticeQuizzes") as? String{
+            self.practiceQuizStepper.value = Double(currentValue) ?? 0.0
             self.selectedValueForPracticeQuizLabel.text = currentValue
         } else{
             self.selectedValueForPracticeQuizLabel.text = "20"
