@@ -81,10 +81,11 @@ class DatabaseManager{
     func getAllknownQuizzes()-> [QuizModel]{
         return Array(realm.objects(QuizModel.self).filter("isKnown == true"))
     }
-    func saveQuizToDatabase(question: String, answer: String){
+    func saveQuizToDatabase(quiz: QuizModel,
+                            question: String,
+                            answer: String){
         do{
             try realm.write {
-                let quiz = QuizModel()
                 quiz.question = question
                 quiz.answer = answer
                 quiz.isKnown = false

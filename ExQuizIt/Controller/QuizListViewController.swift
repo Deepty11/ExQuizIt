@@ -55,8 +55,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.practiceButton.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                                       action: #selector(handlePracticeButtonTapped)))
         
-        
-        
 
     }
     
@@ -286,6 +284,48 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             tableView.reloadData()
         }
     }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive,
+                                          title: "Delete") { action, indexPath in
+            tableView.beginUpdates()
+            let alert = UIAlertController(title: "Attention",
+                                          message: "Do you want to delete the quiz?",
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok",
+                                         style: .default) { _ in
+                self.dismiss(animated: true)
+                DatabaseManager.shared.deleteQuizFromDatabase(quiz: self.quizSources[indexPath.row])
+                self.displayAlert(title: nil, message: "Deleted Successfully")
+            }
+            let cancelAction = UIAlertAction(title: "Cancel",
+                                             style: .cancel,
+                                             handler: nil)
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true)
+            tableView.endUpdates()
+            self.quizSources = self.quizzes
+            tableView.reloadData()
+        }
+        deleteAction.backgroundColor = .red
+        
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { action, indexPath in
+            if let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddQuizViewController") as? AddQuizViewController{
+                vc.storeType = .update
+                vc.quiz = self.quizSources[indexPath.row]
+                self.navigationController?.pushViewController(vc,
+                                                              animated: true)
+                
+            }
+        }
+        editAction.backgroundColor = .green
+        
+        return [deleteAction, editAction]
+    }
+    
+    
     
     
     @objc func handleCommonQuizViewTapped(sender: UITapGestureRecognizer){

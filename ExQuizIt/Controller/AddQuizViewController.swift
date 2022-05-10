@@ -36,6 +36,7 @@ class AddQuizViewController: UIViewController,
     var questionText = String()
     var answerText = String()
     var storeType: StoreType!
+    var quiz = QuizModel()
     var tapG : UITapGestureRecognizer{
         return UITapGestureRecognizer(target: self,
                                       action: #selector(handleTableViewTapped))
@@ -46,6 +47,8 @@ class AddQuizViewController: UIViewController,
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.configureNavigationBar()
+        self.questionText = self.quiz.question ?? ""
+        self.answerText = self.quiz.answer ?? ""
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyBoardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -88,7 +91,19 @@ class AddQuizViewController: UIViewController,
             self.displayAlertForEmptyField()
             return
         }
-        DatabaseManager.shared.saveQuizToDatabase(question: self.questionText, answer: self.answerText)
+        switch(storeType){
+        case .update:
+            let previousQuiz = realm.objects(QuizModel.self).filter("question == %@", self.quiz.question ?? "")[0]
+            DatabaseManager.shared.saveQuizToDatabase(quiz: previousQuiz,
+                                                      question: self.questionText,
+                                                      answer: self.answerText)
+        default:
+            let quiz = QuizModel()
+            DatabaseManager.shared.saveQuizToDatabase(quiz: quiz,
+                                                      question: self.questionText,
+                                                      answer: self.answerText)
+        }
+        
         AppState.shared.answerViewDisplayed.append(false)
         self.displayAlertForSuccessInStoringQuiz()
     }
@@ -103,8 +118,9 @@ class AddQuizViewController: UIViewController,
     }
     
     func displayAlertForSuccessInStoringQuiz(){
+        let message = self.storeType == .update ? "Edited" : "Saved"
         let alert = UIAlertController(title: nil,
-                                      message: "Saved!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert,
                      animated: true) {
@@ -128,6 +144,7 @@ class AddQuizViewController: UIViewController,
         if indexPath.row == 0{ //question
             if let cell = tableView.dequeueReusableCell(withIdentifier: "AddQuizTableViewCell", for: indexPath) as? AddQuizTableViewCell{
                 cell.inputType = .question
+                cell.quizTextView.text = self.quiz.question
                 cell.configureCell()
                 cell.delegate = self
                 cell.selectionStyle = .none
@@ -138,6 +155,7 @@ class AddQuizViewController: UIViewController,
         // answer
         if let cell = tableView.dequeueReusableCell(withIdentifier: "AddQuizTableViewCell", for: indexPath) as? AddQuizTableViewCell{
             cell.inputType = .answer
+            cell.quizTextView.text = self.quiz.answer
             cell.configureCell()
             cell.delegate = self
             cell.selectionStyle = .none
