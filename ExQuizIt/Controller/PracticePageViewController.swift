@@ -11,14 +11,15 @@ protocol PageViewDelegate{
     func gotoNextPage(for index: Int)
 }
 
-class PracticePageViewController: UIPageViewController, /*UIPageViewControllerDataSource,*/ PageViewDelegate {
+class PracticePageViewController: UIPageViewController, PageViewDelegate {
     var quizzes =  [QuizModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.dataSource = self
         self.quizzes = getQuizSource()
         UtilityService.shared.numberOfPracticeQuizzes = self.quizzes.count
-        setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
+        setViewControllers([getViewController(for: 0)],
+                           direction: .forward,
+                           animated: true)
         
         self.configureNavigationBar()
     }
@@ -47,12 +48,13 @@ class PracticePageViewController: UIPageViewController, /*UIPageViewControllerDa
 // MARK: - PageViewDelegate Method
     func gotoNextPage(for index: Int) {
         if index < self.quizzes.count - 1{
-            setViewControllers([getViewController(for: index + 1)], direction: .forward, animated: true)
+            setViewControllers([getViewController(for: index + 1)],
+                               direction: .forward,
+                               animated: true)
         } else{
             if let vC = storyboard?.instantiateViewController(withIdentifier: String(describing: PracticeQuizStatisticsViewController.self)) as? PracticeQuizStatisticsViewController{
                 vC.quizzes = self.quizzes
                 self.navigationController?.pushViewController(vC, animated: true)
-                //present(vC, animated: true)
             }
         }
         

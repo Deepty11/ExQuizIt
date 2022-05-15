@@ -47,7 +47,6 @@ class CardViewController: UIViewController {
         self.flipCard(from: self.questionView, to:  self.answerView)
     }
     
-    
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer){
         DatabaseManager.shared.updateLearningStatus(with: false, of: self.quiz ?? QuizModel())
         self.flipCard(from: self.answerView, to: self.questionView)

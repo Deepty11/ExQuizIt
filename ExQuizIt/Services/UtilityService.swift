@@ -7,10 +7,17 @@
 
 import Foundation
 
+enum PracticeQuizStatus{
+    case mastered
+    case reviewing
+    case learning
+}
+
 class UtilityService{
     static let shared = UtilityService()
     
     var numberOfPracticeQuizzes = 0
+    var practiceQuizLearningStatusArray: [PracticeQuizStatus] = []
     
     func getRandomRangeOfQuizzes(from quizArray: [QuizModel], startIndex: Int, endIndex: Int) -> [QuizModel]{
         return Array(quizArray[startIndex...endIndex])
@@ -24,7 +31,7 @@ class UtilityService{
         return 20
     }
     
-    func getStartAndEndIndex(of quizArray: [QuizModel], range: Int)-> (Int, Int){
+    func getStartAndEndIndex(for quizArray: [QuizModel], range: Int)-> (Int, Int){
         let totalAvailableQuiz = quizArray.count
         let startIndex = Int.random(in: 0 ..< (totalAvailableQuiz - range) )
         return (startIndex , startIndex + range - 1 )
@@ -34,16 +41,27 @@ class UtilityService{
         let shuffledQuizzes = quizArray.shuffled()
         let totalAvailableUnknownQuiz = quizArray.count
         let numberOfPracticeQuizzesSelected = getNumberOfPracticeQuizzesSelected()
+        
         if numberOfPracticeQuizzesSelected < totalAvailableUnknownQuiz{
-            let (startIndex, endIndex) = self.getStartAndEndIndex(of: shuffledQuizzes, range: numberOfPracticeQuizzesSelected)
-            return self.getRandomRangeOfQuizzes(from: quizArray, startIndex: startIndex, endIndex: endIndex)
+            let (startIndex, endIndex) = self.getStartAndEndIndex(for: shuffledQuizzes,
+                                                                  range: numberOfPracticeQuizzesSelected)
+            return self.getRandomRangeOfQuizzes(from: quizArray,
+                                                startIndex: startIndex,
+                                                endIndex: endIndex)
+            
         } else if numberOfPracticeQuizzesSelected == totalAvailableUnknownQuiz{
-            return getRandomRangeOfQuizzes(from: quizArray, startIndex: 0, endIndex: numberOfPracticeQuizzesSelected - 1)
+            return getRandomRangeOfQuizzes(from: quizArray,
+                                           startIndex: 0,
+                                           endIndex: numberOfPracticeQuizzesSelected - 1)
+            
         } else{
             let requiredAmount = numberOfPracticeQuizzesSelected - totalAvailableUnknownQuiz
             let shuffledKnownQuizzes = DatabaseManager.shared.getAllknownQuizzes().shuffled()
-            let (startIndex, endIndex) = self.getStartAndEndIndex(of: shuffledKnownQuizzes, range: requiredAmount)
-            return shuffledQuizzes + self.getRandomRangeOfQuizzes(from: shuffledKnownQuizzes, startIndex: startIndex, endIndex: endIndex)
+            let (startIndex, endIndex) = self.getStartAndEndIndex(for: shuffledKnownQuizzes,
+                                                                  range: requiredAmount)
+            return shuffledQuizzes + self.getRandomRangeOfQuizzes(from: shuffledKnownQuizzes,
+                                                                  startIndex: startIndex,
+                                                                  endIndex: endIndex)
             
         }
         

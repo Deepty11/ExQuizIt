@@ -25,7 +25,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3Il-6H-3nn">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="828"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="820"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -200,7 +200,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ife-Uj-Gnw" userLabel="ActionContainer">
-                                <rect key="frame" x="0.0" y="828" width="414" height="68"/>
+                                <rect key="frame" x="0.0" y="820" width="414" height="76"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izf-VG-STx">
                                         <rect key="frame" x="8" y="8" width="398" height="34"/>
@@ -316,7 +316,7 @@
                             <constraint firstItem="b7J-hk-bjm" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="2HA-zT-dBT"/>
                             <constraint firstItem="cw7-OK-qKf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="D6I-f1-lX1"/>
                             <constraint firstAttribute="bottom" secondItem="Ife-Uj-Gnw" secondAttribute="bottom" id="FA7-Kl-Yfn"/>
-                            <constraint firstItem="Izf-VG-STx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="8" id="FEI-4C-MD8"/>
+                            <constraint firstItem="Izf-VG-STx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="FEI-4C-MD8"/>
                             <constraint firstItem="3Il-6H-3nn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Ka2-FK-ZxL"/>
                             <constraint firstAttribute="trailing" secondItem="ZSu-Xo-YOE" secondAttribute="trailing" id="PCa-uV-1I8"/>
                             <constraint firstItem="b7J-hk-bjm" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SX2-UA-Qby"/>
@@ -806,7 +806,7 @@
             <color red="0.75900000333786011" green="0.88099998235702515" blue="0.74599999189376831" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="NavigationBar BG Color">
-            <color red="0.1131139039269158" green="0.11601172397501515" blue="0.18347233112412265" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.11299999803304672" green="0.11599999666213989" blue="0.18299999833106995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="Unknown View BG Color">
             <color red="1" green="0.76999998092651367" blue="0.74000000953674316" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

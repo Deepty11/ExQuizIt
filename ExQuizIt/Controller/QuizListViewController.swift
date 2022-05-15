@@ -19,12 +19,11 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
     @IBOutlet weak var practiceQuizStepper: UIStepper!
     @IBOutlet weak var saveSettingsButton: UIButton!
-    
     @IBOutlet weak var practiceButton: UIButton!
+    
     var visualEffectView: UIVisualEffectView!
     var originYofSettingsView = 0.0
     var isSettingsViewVisible = false
-    
     let realm = try! Realm()
     var quizSources = [QuizModel](){
         didSet{
@@ -55,7 +54,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         self.practiceButton.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                                       action: #selector(handlePracticeButtonTapped)))
         
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,8 +137,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             self.selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
         }
     }
-    
-    
+
     @IBAction func handleSaveButtonTapped(_ sender: Any) {
         self.storeNumberOfPracticeQuizzes()
         self.hideSettingsView()
@@ -192,6 +189,25 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         UserDefaults.standard.set(self.selectedValueForPracticeQuizLabel.text, forKey: "NumberOfPracticeQuizzes")
     }
     
+    func displayDeletionConfirmationAlert(for quiz: QuizModel){
+        let alert = UIAlertController(title: "Attention",
+                                      message: "Do you want to delete the quiz?",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok",
+                                     style: .default) { _ in
+            self.dismiss(animated: true)
+            DatabaseManager.shared.deleteQuizFromDatabase(quiz: quiz)
+            self.displayAlert(title: nil, message: "Deleted Successfully")
+        }
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .cancel,
+                                         handler: nil)
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true)
+    }
+    
     func displayAlert(title: String?, message: String?){
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         self.present(alert, animated: true) {
@@ -236,7 +252,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "QuizTableViewCell", for: indexPath) as? QuizTableViewCell{
-            
             cell.questionLabel.text = quizSources[indexPath.row].question
             cell.answerLabel.text = quizSources[indexPath.row].answer
             let tp = UITapGestureRecognizer(target: self, action: #selector(handleCommonQuizViewTapped))
@@ -252,7 +267,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             
         }
         
-        
         return UITableViewCell()
     }
     
@@ -260,51 +274,11 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete{
-            tableView.beginUpdates()
-            let alert = UIAlertController(title: "Attention",
-                                          message: "Do you want to delete the quiz?",
-                                          preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok",
-                                         style: .default) { _ in
-                self.dismiss(animated: true)
-                DatabaseManager.shared.deleteQuizFromDatabase(quiz: self.quizSources[indexPath.row])
-                self.displayAlert(title: nil, message: "Deleted Successfully")
-            }
-            let cancelAction = UIAlertAction(title: "Cancel",
-                                             style: .cancel,
-                                             handler: nil)
-            
-            alert.addAction(okAction)
-            alert.addAction(cancelAction)
-            self.present(alert, animated: true)
-            tableView.endUpdates()
-            self.quizSources = quizzes
-            tableView.reloadData()
-        }
-    }
-    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive,
                                           title: "Delete") { action, indexPath in
             tableView.beginUpdates()
-            let alert = UIAlertController(title: "Attention",
-                                          message: "Do you want to delete the quiz?",
-                                          preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok",
-                                         style: .default) { _ in
-                self.dismiss(animated: true)
-                DatabaseManager.shared.deleteQuizFromDatabase(quiz: self.quizSources[indexPath.row])
-                self.displayAlert(title: nil, message: "Deleted Successfully")
-            }
-            let cancelAction = UIAlertAction(title: "Cancel",
-                                             style: .cancel,
-                                             handler: nil)
-            
-            alert.addAction(okAction)
-            alert.addAction(cancelAction)
-            self.present(alert, animated: true)
+            self.displayDeletionConfirmationAlert(for: self.quizSources[indexPath.row])
             tableView.endUpdates()
             self.quizSources = self.quizzes
             tableView.reloadData()
@@ -324,9 +298,6 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         
         return [deleteAction, editAction]
     }
-    
-    
-    
     
     @objc func handleCommonQuizViewTapped(sender: UITapGestureRecognizer){
         if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)){

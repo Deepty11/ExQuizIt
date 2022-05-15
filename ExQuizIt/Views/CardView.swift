@@ -21,12 +21,6 @@ class CardView: UIView {
         self.layer.shadowOffset = CGSize(width: 3, height: 3)
         self.layer.shadowOpacity = 0.65
         
-        // cacheing shadow
-//        self.cellView.layer.shouldRasterize = true
-//        self.cellView.layer.rasterizationScale = UIScreen.main.scale
-        
-        
-        
     }
 
 }

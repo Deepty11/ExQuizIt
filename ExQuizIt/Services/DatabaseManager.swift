@@ -37,10 +37,11 @@ class DatabaseManager{
                 quizTobeUpdated.isKnown = status
                 // if status is true, set learningStatus to 5 and 0 otherwise
                 quizTobeUpdated.learningStatus = status ? 5 : 0
+                UtilityService.shared.practiceQuizLearningStatusArray.append(status ? PracticeQuizStatus.mastered : PracticeQuizStatus.learning)
                 realm.add(quizTobeUpdated)
                 quizTobeUpdated.isKnown ? print("learnt") : print("learning")
             }
-        }catch{
+        } catch{
             print(error.localizedDescription)
         }
     }
@@ -50,17 +51,24 @@ class DatabaseManager{
         let quizTobeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
         do{
             try realm.write{
-                
-                if setlearningScale == true{
-                    quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < 5 ? 5 : 0 // increase learningStatus by 1 if not already set to 5 
-                } else{
-                    quizTobeUpdated.learningStatus = 0
-                }
+                quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < 5 ? (quizTobeUpdated.learningStatus + 1) : 5
                 quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= 5 ? true : false
-                quizTobeUpdated.isKnown ? print("learnt") : print("learning")
+                
+                /// for test
+                if quizTobeUpdated.learningStatus >= 5{
+                    print("learnt")
+                    UtilityService.shared.practiceQuizLearningStatusArray.append(.mastered)
+                } else if quizTobeUpdated.learningStatus < 5 && quizTobeUpdated.learningStatus > 0{
+                    print("review")
+                    UtilityService.shared.practiceQuizLearningStatusArray.append(.reviewing)
+                } else{
+                    print("learning")
+                    UtilityService.shared.practiceQuizLearningStatusArray.append(.learning)
+                }
+                ///
                 realm.add(quizTobeUpdated)
             }
-        }catch{
+        } catch{
             print(error.localizedDescription)
         }
     }
@@ -77,10 +85,10 @@ class DatabaseManager{
         return Array(realm.objects(QuizModel.self).filter("isKnown == false"))
     }
     
-    
     func getAllknownQuizzes()-> [QuizModel]{
         return Array(realm.objects(QuizModel.self).filter("isKnown == true"))
     }
+    
     func saveQuizToDatabase(quiz: QuizModel,
                             question: String,
                             answer: String){
@@ -104,7 +112,7 @@ class DatabaseManager{
                 realm.delete(quiz)
                 print("deleted!!")
             }
-        }catch{
+        } catch{
             print(error.localizedDescription)
         }
     }

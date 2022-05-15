@@ -20,11 +20,13 @@ class PracticeQuizStatisticsViewController: UIViewController {
     var numberOflearnings = 0
     var numberOfReviews = 0
     var numberOfMastered = 0
+    var totalNumberOfPracticequizzes = 0
     
     var quizzes = [QuizModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.totalNumberOfPracticequizzes = UtilityService.shared.getNumberOfPracticeQuizzesSelected()
         self.setValuesForProgressView()
         self.setProgressViews()
         self.navigationItem.title = "Statistics"
@@ -39,19 +41,27 @@ class PracticeQuizStatisticsViewController: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UtilityService.shared.practiceQuizLearningStatusArray = []
+    }
+    
     func setProgressViews(){
         
         self.masteredProgressView.setProgress(0, animated: false)
         self.reviewProgressView.setProgress(0, animated: false)
         self.learningProgressView.setProgress(0, animated: false)
         
-        self.masteredRatioLabel.text = "\(self.numberOfMastered)/\(self.quizzes.count)"
-        self.reviewRatioLabel.text = "\(self.numberOfReviews)/\(self.quizzes.count)"
-        self.learningRatioLabel.text = "\(self.numberOflearnings)/\(self.quizzes.count)"
+        self.masteredRatioLabel.text = "\(self.numberOfMastered)/\(self.totalNumberOfPracticequizzes)"
+        self.reviewRatioLabel.text = "\(self.numberOfReviews)/\(self.totalNumberOfPracticequizzes)"
+        self.learningRatioLabel.text = "\(self.numberOflearnings)/\(self.totalNumberOfPracticequizzes)"
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-            self.masteredProgressView.setProgress(Float(self.numberOfMastered)/Float(self.quizzes.count), animated: true)
-            self.reviewProgressView.setProgress(Float(self.numberOfReviews)/Float(self.quizzes.count), animated: true)
-            self.learningProgressView.setProgress(Float(self.numberOflearnings)/Float(self.quizzes.count), animated: true)
+            self.masteredProgressView.setProgress(Float(self.numberOfMastered)/Float(self.totalNumberOfPracticequizzes),
+                                                  animated: true)
+            self.reviewProgressView.setProgress(Float(self.numberOfReviews)/Float(self.totalNumberOfPracticequizzes),
+                                                animated: true)
+            self.learningProgressView.setProgress(Float(self.numberOflearnings)/Float(self.totalNumberOfPracticequizzes),
+                                                  animated: true)
             
             print(self.numberOfMastered)
             print(self.numberOfReviews)
@@ -61,13 +71,25 @@ class PracticeQuizStatisticsViewController: UIViewController {
     }
     
     func setValuesForProgressView(){
-        
-        for quiz in self.quizzes{
-            if quiz.isKnown{
-                self.numberOfMastered += 1
-            } else{
-                quiz.learningStatus == 0 ? (self.numberOflearnings += 1) : (self.numberOfReviews += 1)
+        for status in UtilityService.shared.practiceQuizLearningStatusArray{
+            switch(status){
+            case .mastered:
+                numberOfMastered += 1
+            case .reviewing:
+                numberOfReviews += 1
+            default:
+                numberOflearnings += 1
             }
+//            if quiz.isKnown{
+//                self.numberOfMastered += 1
+//            } else{
+//                if quiz.learningStatus > 0{
+//                    self.numberOfReviews += 1
+//                } else{
+//                    self.numberOflearnings += 1
+//                }
+//                //quiz.learningStatus == 0 ? (self.numberOflearnings += 1) : (self.numberOfReviews += 1)
+//            }
         }
     }
     
