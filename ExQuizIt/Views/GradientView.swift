@@ -8,12 +8,13 @@
 import Foundation
 import UIKit
 
-class GradientView: UIView{
+class GradientView: UIView {
     
-    var fromColor: UIColor = UIColor(named:"Gradient From Color") ?? UIColor.black
-    var toColor: UIColor = UIColor(named:"Gradient To Color") ?? UIColor.white
+    var fromColor: UIColor = UIColor(named:"GradientFromColor") ?? .black
+    var toColor: UIColor = UIColor(named:"GradientToColor") ?? .white
+    
     override func layoutSubviews() {
-        if let subLayer = self.layer.sublayers?[0] as? CAGradientLayer{
+        if let subLayer = layer.sublayers?.first as? CAGradientLayer {
             subLayer.removeFromSuperlayer()
         }
         
@@ -23,7 +24,6 @@ class GradientView: UIView{
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0)
         gradientLayer.frame = self.bounds
         
-        self.layer.addSublayer(gradientLayer)
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
 }

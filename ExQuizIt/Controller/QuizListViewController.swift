@@ -8,9 +8,7 @@
 import UIKit
 import RealmSwift
 
-class QuizListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
-
-   
+class QuizListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
@@ -22,227 +20,178 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var practiceButton: UIButton!
     
     var visualEffectView: UIVisualEffectView!
-    var originYofSettingsView = 0.0
+    var originYOfSettingsView = 0.0
+    var answerViewDisplayed : [Bool] = []
     var isSettingsViewVisible = false
-    let realm = try! Realm()
-    var quizSources = [QuizModel](){
-        didSet{
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+    
+    var quizSources = [QuizModel]() {
+        didSet {
+            DispatchQueue.main.async {[weak self] in
+                guard let self = self else { return }
+                self.tableView?.reloadData()
             }
         }
-    }
-    var quizzes: [QuizModel]{
-        return Array(realm.objects(QuizModel.self))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.addVisualEffectSubview()
-        self.quizLoadingActivityIndicatorView.isHidden = true
-        self.fetchQuizzes()
-        
+        setupLoading()
         
         configureNavigationBar()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.configurepracticeQuizStepper()
+        tableView.delegate = self
+        tableView.dataSource = self
+        configurePracticeQuizStepper()
         
-        self.saveSettingsButton.layer.cornerRadius = 5.0
+        saveSettingsButton.layer.cornerRadius = 5.0
         
-        self.practiceButton.isUserInteractionEnabled = true
-        self.practiceButton.addGestureRecognizer(UITapGestureRecognizer(target: self,
-                                                                      action: #selector(handlePracticeButtonTapped)))
-        
+        practiceButton.isUserInteractionEnabled = true
+        practiceButton.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(handlePracticeButtonTapped)
+        ))
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.fetchQuizzes()
         super.viewWillAppear(animated)
+        fetchQuizzes()
         
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        for (id,_) in AppState.shared.answerViewDisplayed.enumerated(){
-            AppState.shared.answerViewDisplayed[id] = false
-        }
     }
     
     @IBAction func handlePracticeButtonTapped(_ sender: Any) {
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "PracticePageViewController") as? PracticePageViewController{
-            self.navigationController?.pushViewController(vc, animated: true)
+        if let vc = storyboard?.instantiateViewController(
+            withIdentifier: String(describing: PracticePageViewController.self))
+            as? PracticePageViewController {
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    func configurepracticeQuizStepper(){
-        self.practiceQuizStepper.layer.cornerRadius = 5.0
-        self.practiceQuizStepper.setIncrementImage(UIImage(named: "Add Icon"), for: .normal)
-        self.practiceQuizStepper.setDecrementImage(UIImage(named: "Minus Icon"), for: .normal)
+    func configurePracticeQuizStepper(){
+        practiceQuizStepper.layer.cornerRadius = 5.0
+        practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
+        practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
+    
+        let currentValue = UtilityService.shared.getPreferredNumberOfPracticeQuizzes()
+        practiceQuizStepper.value = currentValue > 0
+        ? Double(currentValue)
+        : Double(Constants.DefaultNumberOfPracticeQuestions)
         
-        if let currentValue = UserDefaults.standard.object(forKey: "NumberOfPracticeQuizzes") as? String{
-            self.practiceQuizStepper.value = Double(currentValue) ?? 0.0
-            self.selectedValueForPracticeQuizLabel.text = currentValue
-        } else{
-            self.selectedValueForPracticeQuizLabel.text = "20"
-        }
+        selectedValueForPracticeQuizLabel.text = String(practiceQuizStepper.value)
     }
     
     func fetchQuizzes(){
-        if self.quizzes.isEmpty{
-            self.visualEffectView.isHidden = false
-            self.emptyQuizLabel.text = "Loading ..."
-            self.view.bringSubviewToFront(self.quizLoadingActivityIndicatorView)
-            self.quizLoadingActivityIndicatorView.isHidden = false
-            self.quizLoadingActivityIndicatorView.color = .white
-            self.navigationController?.navigationBar.isUserInteractionEnabled = false
-            self.quizLoadingActivityIndicatorView.startAnimating()
-            JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { quizzes in
-                self.quizLoadingActivityIndicatorView.stopAnimating()
-                self.quizLoadingActivityIndicatorView.isHidden = true
-                self.visualEffectView.isHidden = true
-                self.navigationController?.navigationBar.isUserInteractionEnabled = true
-                self.refreshUI()
-                return
-            }
+        guard DatabaseManager.shared.getAllQuiz().isEmpty else {
+            refreshUI()
+            return
         }
-        self.refreshUI()
         
+        showLoading(true)
+        
+        JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { [weak self]  in
+            guard let self = self else { return }
+            
+            self.showLoading(false)
+            self.refreshUI()
+        }
+    }
+    
+    func setupLoading() {
+        addVisualEffectSubview()
+        emptyQuizLabel.text = "Loading ..."
+        view.bringSubviewToFront(quizLoadingActivityIndicatorView)
+        quizLoadingActivityIndicatorView.color = .white
+        
+        showLoading(false)
+    }
+    
+    func showLoading(_ shouldShow: Bool) {
+        // True
+        visualEffectView.isHidden = !shouldShow
+        quizLoadingActivityIndicatorView.isHidden = !shouldShow
+        navigationController?.navigationBar.isUserInteractionEnabled = !shouldShow
+        
+        if shouldShow {
+            quizLoadingActivityIndicatorView.startAnimating()
+        } else {
+            quizLoadingActivityIndicatorView.stopAnimating()
+        }
+    }
+    
+    func initiateAnswerViewDisplayedArray(){
+        quizSources = DatabaseManager.shared.getAllQuiz()
+        answerViewDisplayed = Array(repeating: false, count: quizSources.count)
     }
     
     func refreshUI(){
-        self.quizSources = self.quizzes
-        for _ in 0 ..< self.quizSources.count{
-            AppState.shared.answerViewDisplayed.append(false)
-        }
-        self.tableView.reloadData()
-        self.tableView.isHidden = self.quizSources.isEmpty ? true : false
-        self.emptyQuizLabel.isHidden = self.quizSources.isEmpty ? false : true
+        initiateAnswerViewDisplayedArray()
+        
+        tableView.reloadData()
+        tableView.isHidden = quizSources.isEmpty
+        emptyQuizLabel.isHidden = !quizSources.isEmpty
     }
     
-    private func configureNavigationBar(){
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationItem.title = "Quizzes"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                                 target: self,
-                                                                 action: #selector(handleAddButtonTapped))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Icon"),
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(handleSettingsButtonTapped))
-    }
-    
-    @IBAction func handleStepperTapped(_ sender: Any) {
-        if let sender = sender as? UIStepper{
-            self.selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
-        }
+    private func configureNavigationBar() {
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = "Quizzes"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(handleAddButtonTapped)
+        )
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "SettingsIcon"),
+            style: .plain,
+            target: self,
+            action: #selector(handleSettingsButtonTapped)
+        )
     }
 
     @IBAction func handleSaveButtonTapped(_ sender: Any) {
-        self.storeNumberOfPracticeQuizzes()
-        self.hideSettingsView()
+        storeNumberOfPracticeQuizzes()
+        hideSettingsView()
     }
                                                             
     @objc func handleViewDidTapped(_ sender: UITapGestureRecognizer){
-        self.hideSettingsView()
+        hideSettingsView()
     }
     
     @objc func handleAddButtonTapped(){
-        if let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddQuizViewController") as? AddQuizViewController{
-            self.isSettingsViewVisible = false
-            self.hideSettingsView()
-            self.navigationController?.pushViewController(vc,
-                                                          animated: true)
+        if let vc = storyboard?.instantiateViewController(
+            withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
+            isSettingsViewVisible = false
+            hideSettingsView()
+            navigationController?.pushViewController(vc,
+                                                    animated: true)
         }
     }
     
     @objc func handleSettingsButtonTapped(){
-        self.isSettingsViewVisible ? self.hideSettingsView() : self.showSettingsView()
-    }
-    
-    func showSettingsView(){
-        self.settingsView.backgroundColor = .black
-        self.settingsView.alpha = 0.80
-        UIView.animate(withDuration: 0.3) {
-            self.visualEffectView.isHidden = false
-            self.originYofSettingsView = self.settingsView.frame.origin.y
-            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
-            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
-            self.isSettingsViewVisible = true
-            self.view.bringSubviewToFront(self.settingsView)
-        }
-        
-    }
-    
-    func hideSettingsView(){
-        UIView.animate(withDuration: 0.25) {
-            self.settingsView.frame.origin.y = self.originYofSettingsView
-            self.settingsViewBottomConstraint.constant = 0
-            self.visualEffectView.isHidden = true
-        }
-        self.isSettingsViewVisible = false
-        self.storeNumberOfPracticeQuizzes()
-        
+        isSettingsViewVisible ? self.hideSettingsView() : self.showSettingsView()
     }
     
     func storeNumberOfPracticeQuizzes(){
-        UserDefaults.standard.set(self.selectedValueForPracticeQuizLabel.text, forKey: "NumberOfPracticeQuizzes")
-    }
-    
-    func displayDeletionConfirmationAlert(for quiz: QuizModel){
-        let alert = UIAlertController(title: "Attention",
-                                      message: "Do you want to delete the quiz?",
-                                      preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok",
-                                     style: .default) { _ in
-            self.dismiss(animated: true)
-            DatabaseManager.shared.deleteQuizFromDatabase(quiz: quiz)
-            self.displayAlert(title: nil, message: "Deleted Successfully")
-        }
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .cancel,
-                                         handler: nil)
-        
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true)
-    }
-    
-    func displayAlert(title: String?, message: String?){
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        self.present(alert, animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                self.dismiss(animated: true) {
-                    self.quizSources  = self.quizzes
-                    if self.quizSources.isEmpty{
-                        self.tableView.isHidden = true
-                        self.emptyQuizLabel.isHidden = false
-                    }
-                    self.tableView.reloadData()
-                }
-            }
-        }
-        
+        UserDefaults.standard.set(selectedValueForPracticeQuizLabel.text,
+                                  forKey: Strings.NumberOfPracticeQuizzes)
     }
     
     func addVisualEffectSubview(){
         let blurrEffect = UIBlurEffect(style: .dark)
-        self.visualEffectView = UIVisualEffectView(effect: blurrEffect)
-        self.visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.visualEffectView)
+        visualEffectView = UIVisualEffectView(effect: blurrEffect)
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(self.visualEffectView)
         
         NSLayoutConstraint.activate([
-            self.visualEffectView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0),
-            self.visualEffectView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0.0),
-            self.visualEffectView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0),
-            self.visualEffectView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0)
+            visualEffectView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0.0),
+            visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0),
+            visualEffectView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0.0),
+            visualEffectView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0.0)
         ])
-        self.visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewDidTapped(_:))))
-        self.visualEffectView.isHidden = true
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        
+        self.visualEffectView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(handleViewDidTapped(_:))))
+        visualEffectView.isHidden = true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -250,19 +199,27 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "QuizTableViewCell", for: indexPath) as? QuizTableViewCell{
-            cell.questionLabel.text = quizSources[indexPath.row].question
-            cell.answerLabel.text = quizSources[indexPath.row].answer
-            let tp = UITapGestureRecognizer(target: self, action: #selector(handleCommonQuizViewTapped))
-            let tp2 = UITapGestureRecognizer(target: self, action: #selector(handleUnCommonQuizViewTapped))
-            cell.commonQuizView.addGestureRecognizer(tp)
-            cell.uncommonQuizView.addGestureRecognizer(tp2)
-            cell.questionView.isHidden = AppState.shared.answerViewDisplayed[indexPath.row] ? true : false
-            cell.answerView.isHidden = AppState.shared.answerViewDisplayed[indexPath.row] ? false : true
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown ? true : false
+        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: QuizTableViewCell.self),
+                                                    for: indexPath) as? QuizTableViewCell {
+            let quiz = quizSources[indexPath.row]
+            cell.questionLabel.text = quiz.question
+            cell.answerLabel.text = quiz.answer
             
-            cell.selectionStyle = .none
+            let isAnswerDisplayed = answerViewDisplayed[indexPath.row]
+            cell.questionView.isHidden = isAnswerDisplayed
+            cell.answerView.isHidden = !isAnswerDisplayed
+            cell.learningView.isHidden = quiz.isKnown
+                        
+            cell.commonQuizView.addGestureRecognizer(UITapGestureRecognizer(
+                target: self,
+                action: #selector(handleCommonQuizViewTapped)
+            ))
+            
+            cell.uncommonQuizView.addGestureRecognizer(UITapGestureRecognizer(
+                target: self,
+                action: #selector(handleUnCommonQuizViewTapped)
+            ))
+            
             return cell
             
         }
@@ -276,49 +233,72 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive,
-                                          title: "Delete") { action, indexPath in
+                                          title: "Delete") { [weak self] action, indexPath in
+            guard let self = self else{
+                return
+            }
+            
             tableView.beginUpdates()
-            self.displayDeletionConfirmationAlert(for: self.quizSources[indexPath.row])
+            
+            self.showAlert(title: "Attention", message: "Do you want to delete the quiz?", cancelTitle: "Cancel") {
+                DatabaseManager.shared.deleteQuiz(quiz: self.quizSources[indexPath.row])
+                
+                self.showToast(title: nil, message: "Deleted Successfully") {
+                    self.quizSources  = DatabaseManager.shared.getAllQuiz()
+                    
+                    if self.quizSources.isEmpty {
+                        self.tableView.isHidden = true
+                        self.emptyQuizLabel.isHidden = false
+                    }
+                    
+                }
+            }
             tableView.endUpdates()
-            self.quizSources = self.quizzes
-            tableView.reloadData()
         }
-        deleteAction.backgroundColor = .red
         
-        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { action, indexPath in
-            if let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddQuizViewController") as? AddQuizViewController{
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { [weak self] action, indexPath in
+            guard let self = self else{
+                return
+            }
+            
+            if let vc = self.storyboard?.instantiateViewController(
+                withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
                 vc.storeType = .update
                 vc.quiz = self.quizSources[indexPath.row]
-                self.navigationController?.pushViewController(vc,
-                                                              animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
                 
             }
         }
+        
+        deleteAction.backgroundColor = .red
         editAction.backgroundColor = .green
         
         return [deleteAction, editAction]
     }
     
-    @objc func handleCommonQuizViewTapped(sender: UITapGestureRecognizer){
-        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)){
+    @objc func handleCommonQuizViewTapped(sender: UITapGestureRecognizer) {
+        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
             tableView.beginUpdates()
-            if let cell = tableView.cellForRow(at: indexPath) as? QuizTableViewCell{
-                AppState.shared.answerViewDisplayed[indexPath.row] = false
-                DatabaseManager.shared.updateLearningStatus(with: true, of: quizSources[indexPath.row])
+            
+            if let cell = tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
+                answerViewDisplayed[indexPath.row] = false
+                DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: true)
                 self.flipCardOnCell(from: cell.answerView, to: cell.questionView)
-                cell.learningView.isHidden = quizSources[indexPath.row].isKnown ? true : false
+                cell.learningView.isHidden = quizSources[indexPath.row].isKnown
             }
+            
             tableView.endUpdates()
         }
-        
     }
     
-    @objc func handleUnCommonQuizViewTapped(sender: UITapGestureRecognizer){
-        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)){
+    @objc func handleUnCommonQuizViewTapped(sender: UITapGestureRecognizer) {
+        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
             tableView.beginUpdates()
-            if let cell = tableView.cellForRow(at: indexPath) as? QuizTableViewCell{
-                AppState.shared.answerViewDisplayed[indexPath.row] = false
-                DatabaseManager.shared.updateLearningStatus(with: false, of: quizSources[indexPath.row])
+            
+            if let cell = tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
+                answerViewDisplayed[indexPath.row] = false
+                DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row],
+                                                            with: false)
                 self.flipCardOnCell(from: cell.answerView, to: cell.questionView)
                 cell.learningView.isHidden = quizSources[indexPath.row].isKnown ? true : false
             }
@@ -328,13 +308,15 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     
     //selecting on cell will flip the view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !AppState.shared.answerViewDisplayed[indexPath.row]{
+        if !answerViewDisplayed[indexPath.row] {
             tableView.beginUpdates()
-            if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell{
-                AppState.shared.answerViewDisplayed[indexPath.row] = true
+            
+            if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
+                answerViewDisplayed[indexPath.row] = true
                 self.flipCardOnCell(from: cell.questionView, to: cell.answerView)
                 cell.learningView.isHidden = quizSources[indexPath.row].isKnown ? true : false
             }
+            
             tableView.endUpdates()
         }
         
@@ -343,19 +325,67 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     func flipCardOnCell(from source: UIView, to destination: UIView){
         UIView.transition(with: source,
                           duration: 0.25,
-                          options: AppState.shared.transitionOption) {
+                          options: .defaultTransitionOption) {
             source.isHidden = true
             
         }
         
         UIView.transition(with: destination,
                           duration: 0.25,
-                          options: AppState.shared.transitionOption) {
+                          options: .defaultTransitionOption) {
             
             destination.isHidden = false
         }
             
     }
-  
+}
 
+extension UIViewController {
+    func displayAlert(title: String?, message: String?, onDismiss: (()->())? = nil) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        present(alert, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                self.dismiss(animated: true) {
+                    onDismiss?()
+                }
+            }
+        }
+        
+    }
+}
+//MARK: - Settings View
+extension QuizListViewController{
+    func showSettingsView(){
+        settingsView.backgroundColor = .black
+        settingsView.alpha = 0.80
+        
+        UIView.animate(withDuration: 0.3) {
+            self.visualEffectView.isHidden = false
+            self.originYOfSettingsView = self.settingsView.frame.origin.y
+            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
+            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
+            self.isSettingsViewVisible = true
+            self.view.bringSubviewToFront(self.settingsView)
+        }
+        
+    }
+    
+    func hideSettingsView(){
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let self = self else { return }
+            self.settingsView.frame.origin.y = self.originYOfSettingsView
+            self.settingsViewBottomConstraint.constant = 0
+            self.visualEffectView.isHidden = true
+        }
+        
+        self.isSettingsViewVisible = false
+        self.storeNumberOfPracticeQuizzes()
+        
+    }
+    
+    @IBAction func handleStepperTapped(_ sender: Any) {
+        if let sender = sender as? UIStepper {
+            selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
+        }
+    }
 }

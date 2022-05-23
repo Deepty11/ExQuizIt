@@ -8,9 +8,15 @@
 import Foundation
 import RealmSwift
 
-class QuizModel: Object{
+class QuizModel: Object {
     @Persisted var question: String?
     @Persisted var answer: String?
-    @Persisted var isKnown: Bool
-    @Persisted var learningStatus: Int
+    @Persisted var isKnown: Bool = false
+    @Persisted var learningStatus: Int = Constants.MinValueForLearningStatus
+}
+
+extension QuizModel {
+    func asQuiz() -> Quiz {
+        Quiz(question: question ?? "", correct_answer: answer ?? "", isKnown: isKnown, learningStatus: learningStatus)
+    }
 }

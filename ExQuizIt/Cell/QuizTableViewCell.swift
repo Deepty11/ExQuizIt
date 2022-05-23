@@ -18,25 +18,15 @@ class QuizTableViewCell: UITableViewCell {
     @IBOutlet weak var uncommonQuizView: UIView!
     @IBOutlet weak var commonQuizView: UIView!
     @IBOutlet weak var learningView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.configureIconColor()
+//        self.configureIconColor()
         self.learningView.layer.borderWidth = 1
         self.learningView.layer.borderColor = UIColor.systemPink.cgColor
         self.learningView.layer.cornerRadius = 2
-    }
-    
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-    }
-    
-    func configureIconColor(){
-        self.checkIconImageView.image = self.checkIconImageView.image?.withRenderingMode(.alwaysTemplate)
-        self.checkIconImageView.tintColor = UIColor(named: "checkIcon Color")
-        self.crossIconImageView.image = self.crossIconImageView.image?.withRenderingMode(.alwaysTemplate)
-        self.crossIconImageView.tintColor = .red
+        
+        selectionStyle = .none
     }
 
 }

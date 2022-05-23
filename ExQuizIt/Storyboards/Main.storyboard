@@ -48,8 +48,9 @@
                                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XKw-wV-Wqu">
                                                                             <rect key="frame" x="81" y="2" width="222.5" height="30"/>
                                                                             <subviews>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Cross Icon" translatesAutoresizingMaskIntoConstraints="NO" id="lmS-RU-7sN">
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CrossIcon" translatesAutoresizingMaskIntoConstraints="NO" id="lmS-RU-7sN">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                                                    <color key="tintColor" name="crossIconColor"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" secondItem="lmS-RU-7sN" secondAttribute="height" multiplier="1:1" id="QX1-pc-jsO"/>
                                                                                         <constraint firstAttribute="width" constant="30" id="stQ-Ap-Utj"/>
@@ -58,7 +59,7 @@
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I didn't know this answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZhI-Z4-eGx">
                                                                                     <rect key="frame" x="35" y="0.0" width="187.5" height="30"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                    <color key="textColor" name="crossIcon Color"/>
+                                                                                    <color key="textColor" name="crossIconColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                             </subviews>
@@ -77,8 +78,9 @@
                                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="52c-id-g85">
                                                                             <rect key="frame" x="87" y="2" width="210.5" height="30"/>
                                                                             <subviews>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Correct Icon" translatesAutoresizingMaskIntoConstraints="NO" id="wIg-DM-Ajc">
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CorrectIcon" translatesAutoresizingMaskIntoConstraints="NO" id="wIg-DM-Ajc">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                                                    <color key="tintColor" name="checkIconColor"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" secondItem="wIg-DM-Ajc" secondAttribute="height" multiplier="1:1" id="DtA-Kc-HCp"/>
                                                                                         <constraint firstAttribute="width" constant="30" id="vqH-LZ-sa8"/>
@@ -87,13 +89,13 @@
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes, I knew this answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LX4-Qb-vec">
                                                                                     <rect key="frame" x="35" y="5" width="175.5" height="20.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                    <color key="textColor" name="checkIcon Color"/>
+                                                                                    <color key="textColor" name="checkIconColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                             </subviews>
                                                                         </stackView>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" name="Known View BG Color"/>
+                                                                    <color key="backgroundColor" name="KnownViewBGColor"/>
                                                                     <constraints>
                                                                         <constraint firstItem="52c-id-g85" firstAttribute="top" secondItem="hzg-Bl-9uK" secondAttribute="top" constant="2" id="E7Y-rv-kUT"/>
                                                                         <constraint firstItem="52c-id-g85" firstAttribute="centerX" secondItem="hzg-Bl-9uK" secondAttribute="centerX" id="Kbx-mP-14o"/>
@@ -118,7 +120,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" name="Card Background Color"/>
+                                                    <color key="backgroundColor" name="CardBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstItem="lRu-j2-wqp" firstAttribute="leading" secondItem="vC0-lv-C1B" secondAttribute="leading" constant="5" id="5p5-Mr-pOS"/>
                                                         <constraint firstAttribute="trailing" secondItem="jwv-Lr-PB4" secondAttribute="trailing" constant="5" id="ERy-IP-BJG"/>
@@ -141,7 +143,7 @@
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learning" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1G-RK-0h2">
                                                                     <rect key="frame" x="2" y="2" width="76" height="26"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                                    <color key="textColor" name="crossIcon Color"/>
+                                                                    <color key="textColor" name="crossIconColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
@@ -220,7 +222,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" name="NavigationBar BG Color"/>
+                                <color key="backgroundColor" name="NavigationBarBGColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Izf-VG-STx" secondAttribute="trailing" constant="8" id="Mtb-Qx-MKo"/>
                                     <constraint firstItem="Izf-VG-STx" firstAttribute="leading" secondItem="Ife-Uj-Gnw" secondAttribute="leading" constant="8" id="eEs-jH-ip2"/>
@@ -306,7 +308,7 @@
                                     <constraint firstAttribute="width" constant="30" id="8Ar-R5-w0g"/>
                                     <constraint firstAttribute="height" constant="30" id="QQR-GF-TD8"/>
                                 </constraints>
-                                <color key="color" name="NavigationBar BG Color"/>
+                                <color key="color" name="NavigationBarBGColor"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -515,7 +517,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="riF-LT-6Hp">
                                                         <rect key="frame" x="15" y="8" width="125" height="25"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Cross Icon" translatesAutoresizingMaskIntoConstraints="NO" id="zIY-66-qwD">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CrossIcon" translatesAutoresizingMaskIntoConstraints="NO" id="zIY-66-qwD">
                                                                 <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="25" id="Bsz-RQ-Ptd"/>
@@ -525,7 +527,7 @@
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unfamilier" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Tw-9D-2LR">
                                                                 <rect key="frame" x="30" y="0.0" width="95" height="25"/>
                                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
-                                                                <color key="textColor" name="crossIcon Color"/>
+                                                                <color key="textColor" name="crossIconColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
@@ -545,7 +547,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Eku-Hk-R2N">
                                                         <rect key="frame" x="15" y="10" width="129" height="25"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Correct Icon" translatesAutoresizingMaskIntoConstraints="NO" id="7S8-F7-EOB">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CorrectIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7S8-F7-EOB">
                                                                 <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="25" id="LtY-Hl-bpb"/>
@@ -555,7 +557,7 @@
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Familier" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNN-U3-HRb">
                                                                 <rect key="frame" x="30" y="0.0" width="99" height="25"/>
                                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
-                                                                <color key="textColor" name="checkIcon Color"/>
+                                                                <color key="textColor" name="checkIconColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
@@ -577,7 +579,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XKH-Sp-pLd">
                                         <rect key="frame" x="79" y="78" width="156" height="25"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkbox Unchecked Icon" translatesAutoresizingMaskIntoConstraints="NO" id="Hnw-gq-8lr">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckboxUncheckedIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Hnw-gq-8lr">
                                                 <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="Uj7-E7-XdZ"/>
@@ -666,7 +668,7 @@
                                     </label>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HRb-bA-P3z">
                                         <rect key="frame" x="165.5" y="81.5" width="127.5" height="4"/>
-                                        <color key="progressTintColor" name="checkIcon Color"/>
+                                        <color key="progressTintColor" name="checkIconColor"/>
                                     </progressView>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hfq-iW-Y7c">
                                         <rect key="frame" x="165.5" y="117.5" width="127.5" height="4"/>
@@ -674,7 +676,7 @@
                                     </progressView>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mlm-ry-jgX">
                                         <rect key="frame" x="165.5" y="153.5" width="127.5" height="4"/>
-                                        <color key="progressTintColor" name="crossIcon Color"/>
+                                        <color key="progressTintColor" name="crossIconColor"/>
                                     </progressView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mastered" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCn-Af-GRE">
                                         <rect key="frame" x="45" y="73" width="72" height="21"/>
@@ -789,9 +791,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Checkbox Unchecked Icon" width="24" height="24"/>
-        <image name="Correct Icon" width="48" height="48"/>
-        <image name="Cross Icon" width="48" height="48"/>
+        <image name="CheckboxUncheckedIcon" width="24" height="24"/>
+        <image name="CorrectIcon" width="48" height="48"/>
+        <image name="CrossIcon" width="48" height="48"/>
         <image name="Forward Icon" width="48" height="48"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -802,19 +804,25 @@
         <namedColor name="Card Background Color">
             <color red="0.98039215686274506" green="0.97647058823529409" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <namedColor name="CardBackgroundColor">
+            <color red="0.98039215686274506" green="0.97647058823529409" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="Known View BG Color">
             <color red="0.75900000333786011" green="0.88099998235702515" blue="0.74599999189376831" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="NavigationBar BG Color">
+        <namedColor name="KnownViewBGColor">
+            <color red="0.75900000333786011" green="0.88099998235702515" blue="0.74599999189376831" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="NavigationBarBGColor">
             <color red="0.11299999803304672" green="0.11599999666213989" blue="0.18299999833106995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="Unknown View BG Color">
             <color red="1" green="0.76999998092651367" blue="0.74000000953674316" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="checkIcon Color">
+        <namedColor name="checkIconColor">
             <color red="0.23899999260902405" green="0.46299999952316284" blue="0.24500000476837158" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="crossIcon Color">
+        <namedColor name="crossIconColor">
             <color red="1" green="0.29800000786781311" blue="0.30700001120567322" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="labelColor">

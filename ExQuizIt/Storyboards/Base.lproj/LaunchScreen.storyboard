@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launchscreen Icon" translatesAutoresizingMaskIntoConstraints="NO" id="zuY-vx-jJ5">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchscreenIcon" translatesAutoresizingMaskIntoConstraints="NO" id="zuY-vx-jJ5">
                                 <rect key="frame" x="153" y="399" width="108" height="108"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zuY-vx-jJ5" secondAttribute="height" multiplier="1:1" id="AAj-WO-44n"/>
@@ -25,7 +25,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="Background Color"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
                             <constraint firstItem="zuY-vx-jJ5" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="378-qI-3ry"/>
                             <constraint firstItem="zuY-vx-jJ5" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="JB2-Yx-ypo"/>
@@ -39,9 +39,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Launchscreen Icon" width="134" height="61"/>
-        <namedColor name="Background Color">
-            <color red="0.93900001049041748" green="0.97899997234344482" blue="0.96300005912780762" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="LaunchscreenIcon" width="134" height="61"/>
+        <namedColor name="BackgroundColor">
+            <color red="0.42100000381469727" green="0.43700000643730164" blue="0.50900000333786011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

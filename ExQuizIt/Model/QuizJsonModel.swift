@@ -7,14 +7,17 @@
 
 import Foundation
 
-struct Quizzes: Decodable{
+struct Quizzes: Decodable {
     var results: [Quiz]
     
 }
 
-struct Quiz: Decodable{
-    var category: String
-    var difficulty: String
+struct Quiz: Decodable {
+    var category: String?
+    var difficulty: String?
     var question: String
     var correct_answer: String
+    var isKnown: Bool = false
+    var learningStatus: Int = Constants.MinValueForLearningStatus
+    
 }

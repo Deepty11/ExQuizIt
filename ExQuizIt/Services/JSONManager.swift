@@ -7,50 +7,53 @@
 
 import Foundation
 
-class JSONManager{
+class JSONManager {
     static let shared = JSONManager()
-    let vehicleQuizURL = "https://opentdb.com/api.php?amount=50&category=28"
-    let sportsQuizURL = "https://opentdb.com/api.php?amount=50&category=21"
-    let computerQuizURL = "https://opentdb.com/api.php?amount=30&category=18"
     
-    func getDataFrom(urlString: String, completion: @escaping ([Quiz])-> Void){
-        if let url = URL(string: urlString){
+    static let baseURL = "https://opentdb.com/api.php"
+    
+    static let vehicleQuizURL = "?amount=50&category=28"
+    static let sportsQuizURL = "?amount=50&category=21"
+    static let computerQuizURL = "?amount=30&category=18"
+    
+    func getDataFrom(urlString: String, baseURLString: String = baseURL, completion: @escaping ([Quiz])-> Void) {
+        if let url = URL(string: baseURLString + urlString) {
             let session = URLSession.shared
             let urlRequest = URLRequest(url: url)
             var quizzes = [Quiz]()
+            
             session.dataTask(with: urlRequest) { data, response, error in
-                guard error == nil else{
+                guard error == nil else {
                     return
                 }
-                if let data = data{
+                
+                if let data = data {
                     quizzes = self.parseJsonFrom(data: data)
                     completion(quizzes)
-                    
                 }
             }.resume()
         }
     }
     
-    func parseJsonFrom(data: Data) -> [Quiz]{
-        var quizJsonObjects: [Quiz]
-        do{
+    func parseJsonFrom(data: Data) -> [Quiz] {
+        var quizJsonObjects: [Quiz] = []
+        
+        do {
             let jsonObject = try JSONDecoder().decode(Quizzes.self, from: data)
             quizJsonObjects = jsonObject.results
-            return quizJsonObjects
-            
-        } catch{
+        } catch {
             print(error.localizedDescription)
         }
-       return []
+        
+        return quizJsonObjects
     }
     
-    func getAllQuizzesFromAPIsAndCachingToRealm(completion: @escaping ([Quiz])->() ){
-        let quizzes = [Quiz]()
+    func getAllQuizzesFromAPIsAndCachingToRealm(completion: @escaping ()->() ){
         let dispatchGroup = DispatchGroup()
         
         // fetching and storing vehicles Quizzes
         dispatchGroup.enter()
-        self.getDataFrom(urlString: self.vehicleQuizURL) { vehicleQuizArray in
+        self.getDataFrom(urlString: Self.vehicleQuizURL) { vehicleQuizArray in
             DispatchQueue.main.async {
                 DatabaseManager.shared.storeJSONParsedQuiz(with: vehicleQuizArray)
             }
@@ -59,7 +62,7 @@ class JSONManager{
         
         // fetching and storing sports Quizzes
         dispatchGroup.enter()
-        self.getDataFrom(urlString: self.sportsQuizURL) { sportsQuizArray in
+        self.getDataFrom(urlString: Self.sportsQuizURL) { sportsQuizArray in
             DispatchQueue.main.async {
                 DatabaseManager.shared.storeJSONParsedQuiz(with: sportsQuizArray)
             }
@@ -68,7 +71,7 @@ class JSONManager{
         
         // fetching and storing computer Quizzes
         dispatchGroup.enter()
-        self.getDataFrom(urlString: self.computerQuizURL) { computerQuizArray in
+        self.getDataFrom(urlString: Self.computerQuizURL) { computerQuizArray in
             DispatchQueue.main.async {
                 DatabaseManager.shared.storeJSONParsedQuiz(with: computerQuizArray)
             }
@@ -76,7 +79,7 @@ class JSONManager{
         }
         
         dispatchGroup.notify(queue: .main) {
-            completion(quizzes)
+            completion()
         }
         
     }

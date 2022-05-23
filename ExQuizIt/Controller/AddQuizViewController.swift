@@ -8,47 +8,45 @@
 import UIKit
 import RealmSwift
 
-enum InputType{
-    case question
-    case answer
+enum InputType: String, CaseIterable {
+    case question = "Question"
+    case answer = "Answer"
 }
 
-enum StoreType{
-    case update
-    case create
+enum StoreType: String {
+    case update = "Edited"
+    case create = "Saved"
 }
-protocol CellInteractionDelegte{
+
+protocol CellInteractionDelegte {
     func textViewDidBeginEditing(cell: UITableViewCell)
     func textViewDidChanged(cell: UITableViewCell)
 }
+
 class AddQuizViewController: UIViewController,
                                 UITableViewDataSource,
                                 UITableViewDelegate,
                                 UIScrollViewDelegate,
-                             CellInteractionDelegte{
-    
-    
-    
-
+                             CellInteractionDelegte {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
-    let realm = try! Realm()
-    var questionText = String()
-    var answerText = String()
-    var storeType: StoreType!
+    
+    var questionText = ""
+    var answerText = ""
+    var storeType = StoreType.create
     var quiz = QuizModel()
-    var tapG : UITapGestureRecognizer{
-        return UITapGestureRecognizer(target: self,
-                                      action: #selector(handleTableViewTapped))
-    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.isUserInteractionEnabled = true
+        self.configureNavigationBar()
+        
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.configureNavigationBar()
+        
         self.questionText = self.quiz.question ?? ""
         self.answerText = self.quiz.answer ?? ""
+        
+        self.view.isUserInteractionEnabled = true
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyBoardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -57,10 +55,13 @@ class AddQuizViewController: UIViewController,
                                                selector: #selector(keyBoardWillHide),
                                                name: UIResponder.keyboardDidHideNotification,
                                                object: nil)
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                         action: #selector(handleTableViewTapped)))
     
     }
     
-    private func configureNavigationBar(){
+    private func configureNavigationBar() {
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationItem.title = "Add Quiz"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save,
@@ -68,124 +69,147 @@ class AddQuizViewController: UIViewController,
                                                                  action: #selector(handleSaveButtonTapped))
     }
     
-    @objc func handleTableViewTapped(sender: UITapGestureRecognizer){
+    @objc func handleTableViewTapped(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
-    @objc func keyBoardWillShow(notification: Notification){
-        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
+    @objc func keyBoardWillShow(notification: Notification) {
+        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
             self.tableViewBottomConstraint.constant = keyboardHeight
         }
     }
     
-    @objc func keyBoardWillHide(notification: Notification){
-        if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
+    @objc func keyBoardWillHide(notification: Notification) {
+        if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             self.tableViewBottomConstraint.constant = 0
         }
     }
     
-    
-    @objc func handleSaveButtonTapped(){
-        if self.questionText == "" || self.answerText == ""{
-            self.displayAlertForEmptyField()
+    @objc func handleSaveButtonTapped() {
+        if self.questionText.isVisuallyEmpty || self.answerText.isVisuallyEmpty {
+            //displayAlertForEmptyField()
+            showAlert(title: "Attention", message: "Unable to save if any field is empty")
             return
         }
-        switch(storeType){
+        
+        switch(storeType) {
         case .update:
-            let previousQuiz = realm.objects(QuizModel.self).filter("question == %@", self.quiz.question ?? "")[0]
-            DatabaseManager.shared.saveQuizToDatabase(quiz: previousQuiz,
-                                                      question: self.questionText,
-                                                      answer: self.answerText)
-        default:
+            let previousQuiz = DatabaseManager.shared.getQuizByQuestion(question: quiz.question ?? "")
+            DatabaseManager.shared.saveQuiz(quiz: previousQuiz,
+                                            question: self.questionText,
+                                            answer: self.answerText)
+        case .create:
             let quiz = QuizModel()
-            DatabaseManager.shared.saveQuizToDatabase(quiz: quiz,
-                                                      question: self.questionText,
-                                                      answer: self.answerText)
+            DatabaseManager.shared.saveQuiz(quiz: quiz,
+                                            question: questionText,
+                                            answer: answerText)
+            
         }
         
-        AppState.shared.answerViewDisplayed.append(false)
-        self.displayAlertForSuccessInStoringQuiz()
-    }
-    
-    func displayAlertForEmptyField(){
-        let alert  =  UIAlertController(title: "Attention",
-                                        message: "Unable to save if any field is empty",
-                                        preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        alert.addAction(okAction)
-        self.present(alert, animated: true)
-    }
-    
-    func displayAlertForSuccessInStoringQuiz(){
-        let message = self.storeType == .update ? "Edited" : "Saved"
-        let alert = UIAlertController(title: nil,
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert,
-                     animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.dismiss(animated: true) {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
+        showToast(title: nil, message: storeType.rawValue) { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
         }
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
+        
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0{ //question
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "AddQuizTableViewCell", for: indexPath) as? AddQuizTableViewCell{
+        if indexPath.row == 0 { //question
+            if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self),
+                                                        for: indexPath) as? AddQuizTableViewCell {
                 cell.inputType = .question
                 cell.quizTextView.text = self.quiz.question
                 cell.configureCell()
                 cell.delegate = self
-                cell.selectionStyle = .none
-                cell.addGestureRecognizer(tapG)
                 return cell
             }
         }
         // answer
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "AddQuizTableViewCell", for: indexPath) as? AddQuizTableViewCell{
+        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self),
+                                                    for: indexPath) as? AddQuizTableViewCell {
             cell.inputType = .answer
-            cell.quizTextView.text = self.quiz.answer
+            cell.quizTextView.text = quiz.answer
             cell.configureCell()
             cell.delegate = self
-            cell.selectionStyle = .none
-            cell.addGestureRecognizer(tapG)
             return cell
         }
+        
         return UITableViewCell()
     }
 
  //MARK: - CellInteractionDelegte methods
     func textViewDidBeginEditing(cell: UITableViewCell) {
-        if let row = tableView.indexPath(for: cell){
-            self.tableView.scrollToRow(at: row,
-                                       at: .top,
-                                       animated: true)
+        if let row = tableView.indexPath(for: cell) {
+            tableView.scrollToRow(at: row,
+                                  at: .top,
+                                  animated: true)
         }
-       
     }
     
     func textViewDidChanged(cell: UITableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell){
-            if let cell = tableView.cellForRow(at: indexPath) as? AddQuizTableViewCell{
-                let text = cell.quizTextView.text
-                if indexPath.row == 0{
-                    self.questionText = text ?? ""
-                } else{
-                    self.answerText = text ??  ""
-                }
+        if let indexPath = tableView.indexPath(for: cell),
+           let cell = cell as? AddQuizTableViewCell {
+            let text = cell.quizTextView.text
+            
+            if indexPath.row == 0 {
+                questionText = text ?? ""
+            } else {
+                answerText = text ??  ""
             }
         }
     }
     
+}
+// String+Utils
+extension String {
+    func trim() -> String {
+        trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    var isVisuallyEmpty: Bool {
+        trim().isEmpty
+    }
+}
+// UIViewController+Alert
+extension UIViewController {
+    func showAlert(title: String?,
+                   message: String?,
+                   okTitle: String = "Ok",
+                   cancelTitle: String? = nil,
+                   onConfirm: (() -> ())? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+       
+        let okAction = UIAlertAction(title: okTitle, style: .default) { _ in
+            onConfirm?()
+        }
+        
+        if let cancelTitle = cancelTitle {
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
+            
+            alert.addAction(cancelAction)
+        }
+        
+        alert.addAction(okAction)
+        
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func showToast(title: String?,
+                   message: String?,
+                   dismissDelay: TimeInterval = 0.25,
+                   onDismiss: (() -> ())? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        present(alert, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + dismissDelay) {
+                alert.dismiss(animated: true) {
+                    onDismiss?()
+                }
+            }
+        }
+    }
 }

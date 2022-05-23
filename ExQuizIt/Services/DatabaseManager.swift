@@ -8,77 +8,91 @@
 import Foundation
 import RealmSwift
 
-class DatabaseManager{
+class DatabaseManager {
     static let shared = DatabaseManager()
     var realm = try! Realm()
     
-    func storeJSONParsedQuiz(with quizzes: [Quiz]){
+    func storeJSONParsedQuiz(with quizzes: [Quiz]) {
         var quizEntries = [QuizModel]()
-        for quiz in quizzes{
+        
+        for quiz in quizzes {
             let quizModel = QuizModel()
-            quizModel.question = quiz.question.replacingOccurrences(of: "&#039;", with: "'").replacingOccurrences(of: "&quot;", with: "\"")
-            quizModel.answer = quiz.correct_answer.replacingOccurrences(of: "&#039;", with: "'").replacingOccurrences(of: "&quot;", with: "\"")
-            quizModel.isKnown = false
+            
+            quizModel.question = processText(for: quiz.question)
+            quizModel.answer = processText(for: quiz.correct_answer)
+            
             quizEntries.append(quizModel)
         }
+        
         do{
-            try realm.write{
+            try realm.write {
                 realm.add(quizEntries)
             }
-        } catch{
+        } catch {
             print(error.localizedDescription)
         }
     }
     
-    func updateLearningStatus(with status: Bool, of quiz: QuizModel){
-        let quizTobeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
+    func processText(for text: String) -> String {
+        return text
+            .replacingOccurrences(of: "&#039;", with: "'")
+            .replacingOccurrences(of: "&quot;", with: "\"")
+    }
+    
+    func updateLearningStatus(of quiz: QuizModel, with status: Bool) {
+        let quizToBeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
+        
         do{
             try realm.write{
-                quizTobeUpdated.isKnown = status
+                quizToBeUpdated.isKnown = status
                 // if status is true, set learningStatus to 5 and 0 otherwise
-                quizTobeUpdated.learningStatus = status ? 5 : 0
+                quizToBeUpdated.learningStatus = status ? Constants.MaxValueForLearningStatus : Constants.MinValueForLearningStatus
                 UtilityService.shared.practiceQuizLearningStatusArray.append(status ? PracticeQuizStatus.mastered : PracticeQuizStatus.learning)
-                realm.add(quizTobeUpdated)
-                quizTobeUpdated.isKnown ? print("learnt") : print("learning")
+                realm.add(quizToBeUpdated)
+                quizToBeUpdated.isKnown ? print("learnt") : print("learning")
             }
-        } catch{
+        } catch {
             print(error.localizedDescription)
         }
     }
     
-    // to increment learningStatus and set isKnown accordingly 
-    func updateLearningScale(with setlearningScale: Bool, of quiz: QuizModel){
-        let quizTobeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
+    // to increment learningStatus and set isKnown accordingly
+    func updateLearningScale(of quiz: QuizModel, with setlearningScale: Bool){
+        let quizTobeUpdated = DatabaseManager.shared.getQuizByQuestion(question: quiz.question ?? "")//realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "").first
         do{
             try realm.write{
-                quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < 5 ? (quizTobeUpdated.learningStatus + 1) : 5
-                quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= 5 ? true : false
+                quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < Constants.MaxValueForLearningStatus
+                ? (quizTobeUpdated.learningStatus + 1)
+                : Constants.MaxValueForLearningStatus
+                quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= Constants.MaxValueForLearningStatus
+                ? true
+                : false
                 
-                /// for test
-                if quizTobeUpdated.learningStatus >= 5{
+                if quizTobeUpdated.learningStatus >= Constants.MaxValueForLearningStatus {
                     print("learnt")
                     UtilityService.shared.practiceQuizLearningStatusArray.append(.mastered)
-                } else if quizTobeUpdated.learningStatus < 5 && quizTobeUpdated.learningStatus > 0{
+                } else if quizTobeUpdated.learningStatus < Constants.MaxValueForLearningStatus
+                            && quizTobeUpdated.learningStatus > Constants.MinValueForLearningStatus {
                     print("review")
                     UtilityService.shared.practiceQuizLearningStatusArray.append(.reviewing)
-                } else{
+                } else {
                     print("learning")
                     UtilityService.shared.practiceQuizLearningStatusArray.append(.learning)
                 }
-                ///
+                
                 realm.add(quizTobeUpdated)
             }
-        } catch{
+        } catch {
             print(error.localizedDescription)
         }
     }
     
-    func getAllQuiz()-> [QuizModel]{
+    func getAllQuiz() -> [QuizModel]{
         return Array(realm.objects(QuizModel.self))
     }
     
     func getQuizByQuestion(question: String) -> QuizModel{
-        return realm.objects(QuizModel.self).filter("question == %@", question)[0]
+        return realm.objects(QuizModel.self).filter("question == %@", question).first ?? QuizModel()
     }
     
     func getAllUnknownQuizzes()-> [QuizModel]{
@@ -89,30 +103,26 @@ class DatabaseManager{
         return Array(realm.objects(QuizModel.self).filter("isKnown == true"))
     }
     
-    func saveQuizToDatabase(quiz: QuizModel,
-                            question: String,
-                            answer: String){
+    func saveQuiz(quiz: QuizModel, question: String, answer: String) {
         do{
             try realm.write {
                 quiz.question = question
                 quiz.answer = answer
-                quiz.isKnown = false
-                quiz.learningStatus = 0
                 realm.add(quiz)
             }
-           
-        } catch{
+            
+        } catch {
             print(error.localizedDescription)
         }
     }
     
-    func deleteQuizFromDatabase(quiz: QuizModel){
+    func deleteQuiz(quiz: QuizModel) {
         do{
             try realm.write {
                 realm.delete(quiz)
                 print("deleted!!")
             }
-        } catch{
+        } catch {
             print(error.localizedDescription)
         }
     }
