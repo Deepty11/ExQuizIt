@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     
-        UserDefaults.standard.set(Constants.DefaultNumberOfPracticeQuestions, forKey: Strings.NumberOfPracticeQuizzes)
+        //UserDefaults.standard.set(Constants.DefaultNumberOfPracticeQuestions, forKey: Strings.NumberOfPracticeQuizzes)
         return true
     }
 

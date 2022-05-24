@@ -13,10 +13,8 @@ class CardViewController: UIViewController {
     @IBOutlet weak var tapToSeeAnswerView: UIView!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerLabel: UILabel!
-    @IBOutlet weak var uncommonQuestionView: UIView!
-    @IBOutlet weak var commonQuestionView: UIView!
-    @IBOutlet weak var crossIconImageView: UIImageView!
-    @IBOutlet weak var checkIconImageView: UIImageView!
+    @IBOutlet weak var unFamiliarQuestionButton: UIButton!
+    @IBOutlet weak var familiarQuestionButton: UIButton!
     @IBOutlet weak var checkBoxButton: UIButton!
     @IBOutlet weak var quizIndexLabel: UILabel!
     
@@ -50,19 +48,16 @@ class CardViewController: UIViewController {
         self.tapToSeeAnswerView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleTapToSeeAnswerButtonTapped)))
-        self.uncommonQuestionView.addGestureRecognizer(
+        self.unFamiliarQuestionButton.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleUncommonQuizButtonTapped)))
-        self.commonQuestionView.addGestureRecognizer(
+        self.familiarQuestionButton.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleCommonQuizButtonTapped)))
     }
     
     @objc func handleTapToSeeAnswerButtonTapped(sender: UITapGestureRecognizer) {
         answerLabel.text = self.quiz.answer
-        
-        crossIconImageView.tintColor = .red
-        checkIconImageView.tintColor = UIColor(named: "checkIconColor")
         
         flipCard(from: questionView, to: answerView)
     }

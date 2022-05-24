@@ -12,12 +12,12 @@ class QuizTableViewCell: UITableViewCell {
     @IBOutlet weak var questionView: CardView!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerView: CardView!
-    @IBOutlet weak var crossIconImageView: UIImageView!
     @IBOutlet weak var answerLabel: UILabel!
-    @IBOutlet weak var checkIconImageView: UIImageView!
-    @IBOutlet weak var uncommonQuizView: UIView!
-    @IBOutlet weak var commonQuizView: UIView!
+    @IBOutlet weak var unFamiliarQuizButton: UIButton!
+    @IBOutlet weak var familiarQuizButton: UIButton!
     @IBOutlet weak var learningView: UIView!
+    
+    var delegate: CellButtonInteractionDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,5 +28,12 @@ class QuizTableViewCell: UITableViewCell {
         
         selectionStyle = .none
     }
-
+    
+    @IBAction func handleUnFamiliarQuizButtonTapped(_ sender: Any) {
+        delegate?.handleUnCommonQuizButtonEvent(cell: self)
+    }
+    
+    @IBAction func handleCommonQuizButtonTapped(_ sender: Any) {
+        delegate?.handleCommonQuizButtonEvent(cell: self)
+    }
 }

@@ -20,7 +20,13 @@ class UtilityService {
     var practiceQuizLearningStatusArray: [PracticeQuizStatus] = []
     
     func getPreferredNumberOfPracticeQuizzes() -> Int {
-        return UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
+        let selectedValue = UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
+        
+        if selectedValue == 0 {
+            return Constants.DefaultNumberOfPracticeQuestions
+        }
+        
+        return selectedValue
     }
     
     func getRandomSlice(from quizArray: [QuizModel], length: Int)-> [QuizModel] {

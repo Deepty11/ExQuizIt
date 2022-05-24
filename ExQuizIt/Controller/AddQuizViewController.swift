@@ -160,56 +160,6 @@ class AddQuizViewController: UIViewController,
                 answerText = text ??  ""
             }
         }
-    }
-    
+    } 
 }
-// String+Utils
-extension String {
-    func trim() -> String {
-        trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
-    var isVisuallyEmpty: Bool {
-        trim().isEmpty
-    }
-}
-// UIViewController+Alert
-extension UIViewController {
-    func showAlert(title: String?,
-                   message: String?,
-                   okTitle: String = "Ok",
-                   cancelTitle: String? = nil,
-                   onConfirm: (() -> ())? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-       
-        let okAction = UIAlertAction(title: okTitle, style: .default) { _ in
-            onConfirm?()
-        }
-        
-        if let cancelTitle = cancelTitle {
-            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
-            
-            alert.addAction(cancelAction)
-        }
-        
-        alert.addAction(okAction)
-        
-        present(alert, animated: true, completion: nil)
-        
-    }
-    
-    func showToast(title: String?,
-                   message: String?,
-                   dismissDelay: TimeInterval = 0.25,
-                   onDismiss: (() -> ())? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        present(alert, animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + dismissDelay) {
-                alert.dismiss(animated: true) {
-                    onDismiss?()
-                }
-            }
-        }
-    }
-}
+

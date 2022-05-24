@@ -8,6 +8,11 @@
 import UIKit
 import RealmSwift
 
+protocol CellButtonInteractionDelegate {
+    func handleUnCommonQuizButtonEvent(cell: UITableViewCell)
+    func handleCommonQuizButtonEvent(cell: UITableViewCell)
+}
+
 class QuizListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -211,16 +216,8 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             cell.questionView.isHidden = isAnswerDisplayed
             cell.answerView.isHidden = !isAnswerDisplayed
             cell.learningView.isHidden = quiz.isKnown
-                        
-            cell.commonQuizView.addGestureRecognizer(UITapGestureRecognizer(
-                target: self,
-                action: #selector(handleCommonQuizViewTapped)
-            ))
             
-            cell.uncommonQuizView.addGestureRecognizer(UITapGestureRecognizer(
-                target: self,
-                action: #selector(handleUnCommonQuizViewTapped)
-            ))
+            cell.delegate = self
             
             return cell
             
@@ -278,35 +275,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         return [deleteAction, editAction]
     }
     
-    @objc func handleCommonQuizViewTapped(sender: UITapGestureRecognizer) {
-        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
-            tableView.beginUpdates()
-            
-            if let cell = tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
-                answerViewDisplayed[indexPath.row] = false
-                DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: true)
-                self.flipCardOnCell(from: cell.answerView, to: cell.questionView)
-                cell.learningView.isHidden = quizSources[indexPath.row].isKnown
-            }
-            
-            tableView.endUpdates()
-        }
-    }
-    
-    @objc func handleUnCommonQuizViewTapped(sender: UITapGestureRecognizer) {
-        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
-            tableView.beginUpdates()
-            
-            if let cell = tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
-                answerViewDisplayed[indexPath.row] = false
-                DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row],
-                                                            with: false)
-                self.flipCardOnCell(from: cell.answerView, to: cell.questionView)
-                cell.learningView.isHidden = quizSources[indexPath.row].isKnown ? true : false
-            }
-            tableView.endUpdates()
-        }
-    }
+
     
     //selecting on cell will flip the view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -356,7 +325,7 @@ extension UIViewController {
     }
 }
 //MARK: - Settings View
-extension QuizListViewController{
+extension QuizListViewController {
     func showSettingsView(){
         settingsView.backgroundColor = .black
         settingsView.alpha = 0.80
@@ -372,7 +341,7 @@ extension QuizListViewController{
         
     }
     
-    func hideSettingsView(){
+    func hideSettingsView() {
         UIView.animate(withDuration: 0.25) { [weak self] in
             guard let self = self else { return }
             self.settingsView.frame.origin.y = self.originYOfSettingsView
@@ -391,4 +360,34 @@ extension QuizListViewController{
             selectedValueForPracticeQuizzes = Int(sender.value)
         }
     }
+}
+
+//MARK: - CellButtonInteractionDelegate
+extension QuizListViewController: CellButtonInteractionDelegate {
+    func handleUnCommonQuizButtonEvent(cell: UITableViewCell) {
+        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
+            tableView.beginUpdates()
+            
+            answerViewDisplayed[indexPath.row] = false
+            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: false)
+            flipCardOnCell(from: cell.answerView, to: cell.questionView)
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            
+            tableView.endUpdates()
+        }
+    }
+    
+    func handleCommonQuizButtonEvent(cell: UITableViewCell) {
+        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
+            tableView.beginUpdates()
+            
+            answerViewDisplayed[indexPath.row] = false
+            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: true)
+            flipCardOnCell(from: cell.answerView, to: cell.questionView)
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            
+            tableView.endUpdates()
+        }
+    }
+    
 }

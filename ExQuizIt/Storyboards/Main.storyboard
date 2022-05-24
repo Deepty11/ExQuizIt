@@ -40,69 +40,38 @@
                                                     <rect key="frame" x="15" y="7" width="384" height="200"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-tv-fib">
-                                                            <rect key="frame" x="0.0" y="132" width="384" height="68"/>
+                                                            <rect key="frame" x="0.0" y="150" width="384" height="50"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ucR-z8-TSD">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="384" height="34"/>
-                                                                    <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XKw-wV-Wqu">
-                                                                            <rect key="frame" x="81" y="2" width="222.5" height="30"/>
-                                                                            <subviews>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CrossIcon" translatesAutoresizingMaskIntoConstraints="NO" id="lmS-RU-7sN">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                                                    <color key="tintColor" name="crossIconColor"/>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" secondItem="lmS-RU-7sN" secondAttribute="height" multiplier="1:1" id="QX1-pc-jsO"/>
-                                                                                        <constraint firstAttribute="width" constant="30" id="stQ-Ap-Utj"/>
-                                                                                    </constraints>
-                                                                                </imageView>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I didn't know this answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZhI-Z4-eGx">
-                                                                                    <rect key="frame" x="35" y="0.0" width="187.5" height="30"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                    <color key="textColor" name="crossIconColor"/>
-                                                                                    <nil key="highlightedColor"/>
-                                                                                </label>
-                                                                            </subviews>
-                                                                        </stackView>
-                                                                    </subviews>
-                                                                    <color key="backgroundColor" name="Unknown View BG Color"/>
-                                                                    <constraints>
-                                                                        <constraint firstItem="XKw-wV-Wqu" firstAttribute="centerX" secondItem="ucR-z8-TSD" secondAttribute="centerX" id="6S7-aq-EJm"/>
-                                                                        <constraint firstItem="XKw-wV-Wqu" firstAttribute="top" secondItem="ucR-z8-TSD" secondAttribute="top" constant="2" id="WXL-Om-hUo"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="XKw-wV-Wqu" secondAttribute="bottom" constant="2" id="aYS-oG-Pee"/>
-                                                                    </constraints>
-                                                                </view>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hzg-Bl-9uK">
-                                                                    <rect key="frame" x="0.0" y="34" width="384" height="34"/>
-                                                                    <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="52c-id-g85">
-                                                                            <rect key="frame" x="87" y="2" width="210.5" height="30"/>
-                                                                            <subviews>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CorrectIcon" translatesAutoresizingMaskIntoConstraints="NO" id="wIg-DM-Ajc">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                                                    <color key="tintColor" name="checkIconColor"/>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" secondItem="wIg-DM-Ajc" secondAttribute="height" multiplier="1:1" id="DtA-Kc-HCp"/>
-                                                                                        <constraint firstAttribute="width" constant="30" id="vqH-LZ-sa8"/>
-                                                                                    </constraints>
-                                                                                </imageView>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes, I knew this answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LX4-Qb-vec">
-                                                                                    <rect key="frame" x="35" y="5" width="175.5" height="20.5"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                    <color key="textColor" name="checkIconColor"/>
-                                                                                    <nil key="highlightedColor"/>
-                                                                                </label>
-                                                                            </subviews>
-                                                                        </stackView>
-                                                                    </subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hiz-td-Y29">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="384" height="25"/>
+                                                                    <color key="backgroundColor" name="UnknownViewBGColor"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                    <color key="tintColor" name="crossIconColor"/>
+                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
+                                                                    <state key="normal" title="I don't know this answer" image="CrossIcon">
+                                                                        <color key="titleColor" name="crossIconColor"/>
+                                                                    </state>
+                                                                    <connections>
+                                                                        <action selector="handleUnFamiliarQuizButtonTapped:" destination="3Jp-7e-qPs" eventType="touchUpInside" id="tUZ-bh-rY2"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1QV-8U-M3o">
+                                                                    <rect key="frame" x="0.0" y="25" width="384" height="25"/>
                                                                     <color key="backgroundColor" name="KnownViewBGColor"/>
-                                                                    <constraints>
-                                                                        <constraint firstItem="52c-id-g85" firstAttribute="top" secondItem="hzg-Bl-9uK" secondAttribute="top" constant="2" id="E7Y-rv-kUT"/>
-                                                                        <constraint firstItem="52c-id-g85" firstAttribute="centerX" secondItem="hzg-Bl-9uK" secondAttribute="centerX" id="Kbx-mP-14o"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="52c-id-g85" secondAttribute="bottom" constant="2" id="Ua9-F1-jYd"/>
-                                                                    </constraints>
-                                                                </view>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                    <color key="tintColor" name="checkIconColor"/>
+                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
+                                                                    <state key="normal" title="I know this answer" image="CorrectIcon">
+                                                                        <color key="titleColor" name="checkIconColor"/>
+                                                                    </state>
+                                                                    <connections>
+                                                                        <action selector="handleCommonQuizButtonTapped:" destination="3Jp-7e-qPs" eventType="touchUpInside" id="TTU-VG-SLs"/>
+                                                                    </connections>
+                                                                </button>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="dVd-bQ-Hdf"/>
+                                                            </constraints>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Answer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwv-Lr-PB4">
                                                             <rect key="frame" x="5" y="8" width="374" height="40"/>
@@ -114,7 +83,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRu-j2-wqp">
-                                                            <rect key="frame" x="5" y="56" width="374" height="56"/>
+                                                            <rect key="frame" x="5" y="56" width="374" height="74"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -190,13 +159,11 @@
                                         <connections>
                                             <outlet property="answerLabel" destination="lRu-j2-wqp" id="d1X-bO-Fp4"/>
                                             <outlet property="answerView" destination="vC0-lv-C1B" id="Kzw-6w-F8K"/>
-                                            <outlet property="checkIconImageView" destination="wIg-DM-Ajc" id="H3m-Lg-iLR"/>
-                                            <outlet property="commonQuizView" destination="hzg-Bl-9uK" id="Pm9-2A-rXL"/>
-                                            <outlet property="crossIconImageView" destination="lmS-RU-7sN" id="ddf-ML-0wS"/>
+                                            <outlet property="familiarQuizButton" destination="1QV-8U-M3o" id="UVj-dI-ezj"/>
                                             <outlet property="learningView" destination="FXP-kn-CkB" id="Zic-OS-67M"/>
                                             <outlet property="questionLabel" destination="VbZ-m9-NyP" id="VhC-Jj-0g3"/>
                                             <outlet property="questionView" destination="TMD-ec-aK9" id="MDc-EI-rv7"/>
-                                            <outlet property="uncommonQuizView" destination="ucR-z8-TSD" id="ucN-EF-TXj"/>
+                                            <outlet property="unFamiliarQuizButton" destination="Hiz-td-Y29" id="ssD-9l-v0h"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -259,7 +226,7 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" maximumValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="VC4-HP-cWE">
+                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minimumValue="1" maximumValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="VC4-HP-cWE">
                                                 <rect key="frame" x="37.5" y="0.0" width="94" height="32"/>
                                                 <color key="backgroundColor" name="AccentColor"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -508,72 +475,27 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1q-mx-uc8">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="B1q-mx-uc8">
                                         <rect key="frame" x="0.0" y="111" width="314" height="45"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wMx-cz-3bH">
-                                                <rect key="frame" x="0.0" y="0.0" width="155" height="45"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="riF-LT-6Hp">
-                                                        <rect key="frame" x="15" y="8" width="125" height="25"/>
-                                                        <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CrossIcon" translatesAutoresizingMaskIntoConstraints="NO" id="zIY-66-qwD">
-                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="25" id="Bsz-RQ-Ptd"/>
-                                                                    <constraint firstAttribute="height" constant="25" id="nl5-GG-e5d"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unfamilier" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Tw-9D-2LR">
-                                                                <rect key="frame" x="30" y="0.0" width="95" height="25"/>
-                                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
-                                                                <color key="textColor" name="crossIconColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                                <color key="backgroundColor" name="Unknown View BG Color"/>
-                                                <constraints>
-                                                    <constraint firstItem="riF-LT-6Hp" firstAttribute="top" secondItem="wMx-cz-3bH" secondAttribute="topMargin" id="3a4-Md-wXL"/>
-                                                    <constraint firstItem="riF-LT-6Hp" firstAttribute="leading" secondItem="wMx-cz-3bH" secondAttribute="leading" constant="15" id="8Tb-oS-TFt"/>
-                                                    <constraint firstAttribute="trailing" secondItem="riF-LT-6Hp" secondAttribute="trailing" constant="15" id="99P-Fn-fjm"/>
-                                                    <constraint firstItem="riF-LT-6Hp" firstAttribute="centerX" secondItem="wMx-cz-3bH" secondAttribute="centerX" id="api-zE-WVo"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nuR-7q-G0w">
-                                                <rect key="frame" x="155" y="0.0" width="159" height="45"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Eku-Hk-R2N">
-                                                        <rect key="frame" x="15" y="10" width="129" height="25"/>
-                                                        <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CorrectIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7S8-F7-EOB">
-                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="25" id="LtY-Hl-bpb"/>
-                                                                    <constraint firstAttribute="height" constant="25" id="aTQ-G1-Piw"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Familier" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNN-U3-HRb">
-                                                                <rect key="frame" x="30" y="0.0" width="99" height="25"/>
-                                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
-                                                                <color key="textColor" name="checkIconColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                                <color key="backgroundColor" name="Known View BG Color"/>
-                                                <constraints>
-                                                    <constraint firstItem="Eku-Hk-R2N" firstAttribute="leading" secondItem="nuR-7q-G0w" secondAttribute="leading" constant="15" id="49v-X1-NbR"/>
-                                                    <constraint firstItem="Eku-Hk-R2N" firstAttribute="centerY" secondItem="nuR-7q-G0w" secondAttribute="centerY" id="4EP-7d-esP"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Eku-Hk-R2N" secondAttribute="trailing" constant="15" id="gfT-wE-dZf"/>
-                                                </constraints>
-                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fjx-61-sJo">
+                                                <rect key="frame" x="0.0" y="0.0" width="157" height="45"/>
+                                                <color key="backgroundColor" name="UnknownViewBGColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <color key="tintColor" name="crossIconColor"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                                <state key="normal" title="Unfamilar " image="CrossIcon"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJR-uB-WCQ">
+                                                <rect key="frame" x="157" y="0.0" width="157" height="45"/>
+                                                <color key="backgroundColor" name="KnownViewBGColor"/>
+                                                <color key="tintColor" name="checkIconColor"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                                <state key="normal" title="Familiar" image="CorrectIcon"/>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="H4g-1g-xie"/>
-                                            <constraint firstItem="nuR-7q-G0w" firstAttribute="leading" secondItem="B1q-mx-uc8" secondAttribute="leading" constant="155" id="ofg-bx-TXo"/>
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XKH-Sp-pLd">
@@ -642,14 +564,12 @@
                         <outlet property="answerLabel" destination="LWb-f1-HYd" id="UKH-XU-e76"/>
                         <outlet property="answerView" destination="V6k-it-HaE" id="FyC-sZ-8Ao"/>
                         <outlet property="checkBoxButton" destination="dbx-qo-Tzq" id="TcZ-SH-T7S"/>
-                        <outlet property="checkIconImageView" destination="7S8-F7-EOB" id="vyl-fj-iR4"/>
-                        <outlet property="commonQuestionView" destination="nuR-7q-G0w" id="3Gd-xr-xLb"/>
-                        <outlet property="crossIconImageView" destination="zIY-66-qwD" id="y8t-q3-mHk"/>
+                        <outlet property="familiarQuestionButton" destination="AJR-uB-WCQ" id="kBr-LQ-eS3"/>
                         <outlet property="questionLabel" destination="z4G-g3-Kcd" id="Ls9-w4-vwY"/>
                         <outlet property="questionView" destination="Jj2-IT-FXc" id="G9N-fU-bSz"/>
                         <outlet property="quizIndexLabel" destination="HMG-cn-e4n" id="RTr-uX-eM8"/>
                         <outlet property="tapToSeeAnswerView" destination="E7t-hw-zHH" id="Wuz-UI-diY"/>
-                        <outlet property="uncommonQuestionView" destination="wMx-cz-3bH" id="BNr-Mk-Par"/>
+                        <outlet property="unFamiliarQuestionButton" destination="Fjx-61-sJo" id="7Va-tB-ykm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32E-OZ-RdD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -798,8 +718,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="CorrectIcon" width="48" height="48"/>
-        <image name="CrossIcon" width="48" height="48"/>
+        <image name="CorrectIcon" width="24" height="24"/>
+        <image name="CrossIcon" width="24" height="24"/>
         <image name="Forward Icon" width="48" height="48"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -813,16 +733,13 @@
         <namedColor name="CardBackgroundColor">
             <color red="0.98039215686274506" green="0.97647058823529409" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="Known View BG Color">
-            <color red="0.75900000333786011" green="0.88099998235702515" blue="0.74599999189376831" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
         <namedColor name="KnownViewBGColor">
             <color red="0.75900000333786011" green="0.88099998235702515" blue="0.74599999189376831" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="NavigationBarBGColor">
             <color red="0.11299999803304672" green="0.11599999666213989" blue="0.18299999833106995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="Unknown View BG Color">
+        <namedColor name="UnknownViewBGColor">
             <color red="1" green="0.76999998092651367" blue="0.74000000953674316" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="checkIconColor">
