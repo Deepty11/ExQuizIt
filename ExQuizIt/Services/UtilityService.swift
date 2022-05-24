@@ -17,7 +17,6 @@ class UtilityService {
     static let shared = UtilityService()
     
     var numberOfPracticeQuizzes = 0
-    final let defaultNumberOfPracticeQuestions = 20.0
     var practiceQuizLearningStatusArray: [PracticeQuizStatus] = []
     
     func getPreferredNumberOfPracticeQuizzes() -> Int {
@@ -35,7 +34,7 @@ class UtilityService {
         let shuffledQuizzes = quizArray.shuffled()
         let totalAvailableUnknownQuiz = quizArray.count
         let numberOfPracticeQuizzesSelected = getPreferredNumberOfPracticeQuizzes()
-        
+        print(numberOfPracticeQuizzesSelected)
         if numberOfPracticeQuizzesSelected <= totalAvailableUnknownQuiz {
             return self.getRandomSlice(from: shuffledQuizzes,
                                        length: numberOfPracticeQuizzesSelected)

@@ -46,8 +46,12 @@ class DatabaseManager {
             try realm.write{
                 quizToBeUpdated.isKnown = status
                 // if status is true, set learningStatus to 5 and 0 otherwise
-                quizToBeUpdated.learningStatus = status ? Constants.MaxValueForLearningStatus : Constants.MinValueForLearningStatus
-                UtilityService.shared.practiceQuizLearningStatusArray.append(status ? PracticeQuizStatus.mastered : PracticeQuizStatus.learning)
+                quizToBeUpdated.learningStatus = status
+                ? Constants.MaxValueForLearningStatus
+                : Constants.MinValueForLearningStatus
+                UtilityService.shared.practiceQuizLearningStatusArray.append(status
+                                                                             ? PracticeQuizStatus.mastered
+                                                                             : PracticeQuizStatus.learning)
                 realm.add(quizToBeUpdated)
                 quizToBeUpdated.isKnown ? print("learnt") : print("learning")
             }

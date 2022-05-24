@@ -579,13 +579,20 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XKH-Sp-pLd">
                                         <rect key="frame" x="79" y="78" width="156" height="25"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckboxUncheckedIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Hnw-gq-8lr">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbx-qo-Tzq">
                                                 <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="Uj7-E7-XdZ"/>
-                                                    <constraint firstAttribute="width" constant="25" id="e7D-jf-sNr"/>
+                                                    <constraint firstAttribute="width" constant="25" id="CDf-kz-l6R"/>
+                                                    <constraint firstAttribute="height" constant="25" id="OA9-1T-bDN"/>
                                                 </constraints>
-                                            </imageView>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="handleCheckBoxButtonTapped:" destination="PfK-h4-8tE" eventType="touchUpInside" id="5He-mx-VFa"/>
+                                                </connections>
+                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I know this answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hek-Mw-2qz">
                                                 <rect key="frame" x="30" y="0.0" width="126" height="25"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
@@ -634,7 +641,7 @@
                     <connections>
                         <outlet property="answerLabel" destination="LWb-f1-HYd" id="UKH-XU-e76"/>
                         <outlet property="answerView" destination="V6k-it-HaE" id="FyC-sZ-8Ao"/>
-                        <outlet property="checkBoxImageView" destination="Hnw-gq-8lr" id="Sam-DZ-O03"/>
+                        <outlet property="checkBoxButton" destination="dbx-qo-Tzq" id="TcZ-SH-T7S"/>
                         <outlet property="checkIconImageView" destination="7S8-F7-EOB" id="vyl-fj-iR4"/>
                         <outlet property="commonQuestionView" destination="nuR-7q-G0w" id="3Gd-xr-xLb"/>
                         <outlet property="crossIconImageView" destination="zIY-66-qwD" id="y8t-q3-mHk"/>
@@ -791,7 +798,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="CheckboxUncheckedIcon" width="24" height="24"/>
         <image name="CorrectIcon" width="48" height="48"/>
         <image name="CrossIcon" width="48" height="48"/>
         <image name="Forward Icon" width="48" height="48"/>

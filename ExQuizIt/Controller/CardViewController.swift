@@ -17,11 +17,20 @@ class CardViewController: UIViewController {
     @IBOutlet weak var commonQuestionView: UIView!
     @IBOutlet weak var crossIconImageView: UIImageView!
     @IBOutlet weak var checkIconImageView: UIImageView!
-    @IBOutlet weak var checkBoxImageView: UIImageView!
+    @IBOutlet weak var checkBoxButton: UIButton!
     @IBOutlet weak var quizIndexLabel: UILabel!
     
     var pageIndex = 0
-    var isCheckedCheckBox = false
+    
+    var isCheckedCheckBox: Bool = false {
+        didSet {
+            if isCheckedCheckBox {
+                checkBoxButton.setImage(UIImage(named: "CheckboxCheckedIcon"), for: .normal)
+            } else {
+                checkBoxButton.setImage(UIImage(named: "CheckboxUncheckedIcon"), for: .normal)
+            }
+        }
+    }
     
     var quiz = QuizModel()
     var delegate : PageViewDelegate!
@@ -35,6 +44,9 @@ class CardViewController: UIViewController {
         self.questionView.isHidden = false
         self.answerView.isHidden = true
         
+        self.checkBoxButton.tintColor = .black
+        self.checkBoxButton.setImage(UIImage(named: "CheckboxUncheckedIcon"), for: .normal)
+        
         self.tapToSeeAnswerView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleTapToSeeAnswerButtonTapped)))
@@ -44,9 +56,6 @@ class CardViewController: UIViewController {
         self.commonQuestionView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleCommonQuizButtonTapped)))
-        self.checkBoxImageView.addGestureRecognizer(
-            UITapGestureRecognizer(target: self,
-                                   action: #selector(handleCheckBoxImageViewTapped)))
     }
     
     @objc func handleTapToSeeAnswerButtonTapped(sender: UITapGestureRecognizer) {
@@ -79,11 +88,7 @@ class CardViewController: UIViewController {
         delegate.gotoNextPage(for: pageIndex)
     }
     
-    @objc func handleCheckBoxImageViewTapped(sender: UITapGestureRecognizer) {
-        self.checkBoxImageView.image = isCheckedCheckBox
-        ? UIImage(named: "CheckboxUncheckedIcon")
-        : UIImage(named: "CheckboxCheckedIcon")
-        
+    @IBAction func handleCheckBoxButtonTapped(_ sender: Any) {
         self.isCheckedCheckBox = !self.isCheckedCheckBox
     }
     

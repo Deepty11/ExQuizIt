@@ -23,6 +23,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     var originYOfSettingsView = 0.0
     var answerViewDisplayed : [Bool] = []
     var isSettingsViewVisible = false
+    var selectedValueForPracticeQuizzes = 0
     
     var quizSources = [QuizModel]() {
         didSet {
@@ -75,7 +76,9 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         ? Double(currentValue)
         : Double(Constants.DefaultNumberOfPracticeQuestions)
         
-        selectedValueForPracticeQuizLabel.text = String(practiceQuizStepper.value)
+        selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
+        selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)
+        
     }
     
     func fetchQuizzes(){
@@ -171,8 +174,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func storeNumberOfPracticeQuizzes(){
-        UserDefaults.standard.set(selectedValueForPracticeQuizLabel.text,
-                                  forKey: Strings.NumberOfPracticeQuizzes)
+        UserDefaults.standard.set(selectedValueForPracticeQuizzes, forKey: Strings.NumberOfPracticeQuizzes)
     }
     
     func addVisualEffectSubview(){
@@ -386,6 +388,7 @@ extension QuizListViewController{
     @IBAction func handleStepperTapped(_ sender: Any) {
         if let sender = sender as? UIStepper {
             selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
+            selectedValueForPracticeQuizzes = Int(sender.value)
         }
     }
 }
