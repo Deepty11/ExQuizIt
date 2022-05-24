@@ -87,15 +87,18 @@ class CardViewController: UIViewController {
         self.isCheckedCheckBox = !self.isCheckedCheckBox
     }
     
-    func flipCard(from source: UIView, to destination: UIView) {
-        UIView.transition(with: source, duration: 0.25, options: .defaultTransitionOption) {
-            source.isHidden = true
-        }
-        
-        UIView.transition(with: destination, duration: 0.25, options: .defaultTransitionOption) {
-            destination.isHidden = false
-        }
-            
-    }
+//    private func flipCard(from source: UIView, to destination: UIView) {
+//        animateTransition(for: source, hideView: true)
+//        animateTransition(for: destination, hideView: false)
+//    }
+//    
+//    private func animateTransition(for view: UIView, hideView: Bool) {
+//        UIView.transition(with: view,
+//                          duration: 0.25,
+//                          options: .defaultTransitionOption) {
+//            view.isHidden = hideView
+//            
+//        }
+//    }
 
 }

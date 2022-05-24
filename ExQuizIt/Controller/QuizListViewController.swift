@@ -13,7 +13,7 @@ protocol CellButtonInteractionDelegate {
     func handleCommonQuizButtonEvent(cell: UITableViewCell)
 }
 
-class QuizListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class QuizListViewController: UIViewController {
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
@@ -71,7 +71,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func configurePracticeQuizStepper(){
+    private func configurePracticeQuizStepper() {
         practiceQuizStepper.layer.cornerRadius = 5.0
         practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
         practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
@@ -86,7 +86,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    func fetchQuizzes(){
+    private func fetchQuizzes() {
         guard DatabaseManager.shared.getAllQuiz().isEmpty else {
             refreshUI()
             return
@@ -102,7 +102,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func setupLoading() {
+    private func setupLoading() {
         addVisualEffectSubview()
         emptyQuizLabel.text = "Loading ..."
         view.bringSubviewToFront(quizLoadingActivityIndicatorView)
@@ -111,7 +111,7 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         showLoading(false)
     }
     
-    func showLoading(_ shouldShow: Bool) {
+    private func showLoading(_ shouldShow: Bool) {
         // True
         visualEffectView.isHidden = !shouldShow
         quizLoadingActivityIndicatorView.isHidden = !shouldShow
@@ -124,12 +124,12 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func initiateAnswerViewDisplayedArray(){
+    private func initiateAnswerViewDisplayedArray() {
         quizSources = DatabaseManager.shared.getAllQuiz()
         answerViewDisplayed = Array(repeating: false, count: quizSources.count)
     }
     
-    func refreshUI(){
+    private func refreshUI() {
         initiateAnswerViewDisplayedArray()
         
         tableView.reloadData()
@@ -155,34 +155,33 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         )
     }
 
-    @IBAction func handleSaveButtonTapped(_ sender: Any) {
+    @IBAction private func handleSaveButtonTapped(_ sender: Any) {
         storeNumberOfPracticeQuizzes()
         hideSettingsView()
     }
                                                             
-    @objc func handleViewDidTapped(_ sender: UITapGestureRecognizer){
+    @objc private func handleViewDidTapped(_ sender: UITapGestureRecognizer) {
         hideSettingsView()
     }
     
-    @objc func handleAddButtonTapped(){
+    @objc private func handleAddButtonTapped() {
         if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
             isSettingsViewVisible = false
             hideSettingsView()
-            navigationController?.pushViewController(vc,
-                                                    animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    @objc func handleSettingsButtonTapped(){
+    @objc private func handleSettingsButtonTapped() {
         isSettingsViewVisible ? self.hideSettingsView() : self.showSettingsView()
     }
     
-    func storeNumberOfPracticeQuizzes(){
+    private func storeNumberOfPracticeQuizzes() {
         UserDefaults.standard.set(selectedValueForPracticeQuizzes, forKey: Strings.NumberOfPracticeQuizzes)
     }
     
-    func addVisualEffectSubview(){
+    private func addVisualEffectSubview() {
         let blurrEffect = UIBlurEffect(style: .dark)
         visualEffectView = UIVisualEffectView(effect: blurrEffect)
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
@@ -201,11 +200,96 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         visualEffectView.isHidden = true
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//    private func flipCardOnCell(from source: UIView, to destination: UIView) {
+//        animateTransition(for: source, hideView: true)
+//        animateTransition(for: destination, hideView: false)
+//    }
+//
+//    private func animateTransition(for view: UIView, hideView: Bool) {
+//        UIView.transition(with: view,
+//                          duration: 0.25,
+//                          options: .defaultTransitionOption) {
+//            view.isHidden = hideView
+//
+//        }
+//    }
+}
+
+//MARK: - Settings View
+extension QuizListViewController {
+    func showSettingsView(){
+        settingsView.backgroundColor = .black
+        settingsView.alpha = 0.80
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.visualEffectView.isHidden = false
+            self.originYOfSettingsView = self.settingsView.frame.origin.y
+            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
+            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
+            self.isSettingsViewVisible = true
+            self.view.bringSubviewToFront(self.settingsView)
+        }
+        
+    }
+    
+    func hideSettingsView() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let self = self else { return }
+            self.settingsView.frame.origin.y = self.originYOfSettingsView
+            self.settingsViewBottomConstraint.constant = 0
+            self.visualEffectView.isHidden = true
+        }
+        
+        self.isSettingsViewVisible = false
+        self.storeNumberOfPracticeQuizzes()
+        
+    }
+    
+    @IBAction func handleStepperTapped(_ sender: Any) {
+        if let sender = sender as? UIStepper {
+            selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
+            selectedValueForPracticeQuizzes = Int(sender.value)
+        }
+    }
+}
+
+//MARK: - CellButtonInteractionDelegate
+extension QuizListViewController: CellButtonInteractionDelegate {
+    func handleUnCommonQuizButtonEvent(cell: UITableViewCell) {
+        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
+            tableView.beginUpdates()
+            
+            answerViewDisplayed[indexPath.row] = false
+            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: false)
+            flipCard(from: cell.answerView, to: cell.questionView)
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            
+            tableView.endUpdates()
+        }
+    }
+    
+    func handleCommonQuizButtonEvent(cell: UITableViewCell) {
+        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
+            tableView.beginUpdates()
+            
+            answerViewDisplayed[indexPath.row] = false
+            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: true)
+            flipCard(from: cell.answerView, to: cell.questionView)
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            
+            tableView.endUpdates()
+        }
+    }
+}
+
+//MARK: -TableView Delegate and DataSource
+extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
+    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return quizSources.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: QuizTableViewCell.self),
                                                     for: indexPath) as? QuizTableViewCell {
             let quiz = quizSources[indexPath.row]
@@ -220,17 +304,16 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
             cell.delegate = self
             
             return cell
-            
         }
         
         return UITableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    internal func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    internal func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive,
                                           title: "Delete") { [weak self] action, indexPath in
             guard let self = self else{
@@ -275,119 +358,19 @@ class QuizListViewController: UIViewController, UITableViewDelegate, UITableView
         return [deleteAction, editAction]
     }
     
-
-    
     //selecting on cell will flip the view
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !answerViewDisplayed[indexPath.row] {
             tableView.beginUpdates()
             
             if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
                 answerViewDisplayed[indexPath.row] = true
-                self.flipCardOnCell(from: cell.questionView, to: cell.answerView)
-                cell.learningView.isHidden = quizSources[indexPath.row].isKnown ? true : false
+                flipCard(from: cell.questionView, to: cell.answerView)
+                cell.learningView.isHidden = quizSources[indexPath.row].isKnown
             }
             
             tableView.endUpdates()
         }
         
     }
-    
-    func flipCardOnCell(from source: UIView, to destination: UIView){
-        UIView.transition(with: source,
-                          duration: 0.25,
-                          options: .defaultTransitionOption) {
-            source.isHidden = true
-            
-        }
-        
-        UIView.transition(with: destination,
-                          duration: 0.25,
-                          options: .defaultTransitionOption) {
-            
-            destination.isHidden = false
-        }
-            
-    }
-}
-
-extension UIViewController {
-    func displayAlert(title: String?, message: String?, onDismiss: (()->())? = nil) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        present(alert, animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                self.dismiss(animated: true) {
-                    onDismiss?()
-                }
-            }
-        }
-        
-    }
-}
-//MARK: - Settings View
-extension QuizListViewController {
-    func showSettingsView(){
-        settingsView.backgroundColor = .black
-        settingsView.alpha = 0.80
-        
-        UIView.animate(withDuration: 0.3) {
-            self.visualEffectView.isHidden = false
-            self.originYOfSettingsView = self.settingsView.frame.origin.y
-            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
-            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
-            self.isSettingsViewVisible = true
-            self.view.bringSubviewToFront(self.settingsView)
-        }
-        
-    }
-    
-    func hideSettingsView() {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            guard let self = self else { return }
-            self.settingsView.frame.origin.y = self.originYOfSettingsView
-            self.settingsViewBottomConstraint.constant = 0
-            self.visualEffectView.isHidden = true
-        }
-        
-        self.isSettingsViewVisible = false
-        self.storeNumberOfPracticeQuizzes()
-        
-    }
-    
-    @IBAction func handleStepperTapped(_ sender: Any) {
-        if let sender = sender as? UIStepper {
-            selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
-            selectedValueForPracticeQuizzes = Int(sender.value)
-        }
-    }
-}
-
-//MARK: - CellButtonInteractionDelegate
-extension QuizListViewController: CellButtonInteractionDelegate {
-    func handleUnCommonQuizButtonEvent(cell: UITableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
-            tableView.beginUpdates()
-            
-            answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: false)
-            flipCardOnCell(from: cell.answerView, to: cell.questionView)
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
-            
-            tableView.endUpdates()
-        }
-    }
-    
-    func handleCommonQuizButtonEvent(cell: UITableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
-            tableView.beginUpdates()
-            
-            answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: true)
-            flipCardOnCell(from: cell.answerView, to: cell.questionView)
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
-            
-            tableView.endUpdates()
-        }
-    }
-    
 }

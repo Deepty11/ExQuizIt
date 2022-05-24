@@ -24,10 +24,7 @@ protocol CellInteractionDelegte {
 }
 
 class AddQuizViewController: UIViewController,
-                                UITableViewDataSource,
-                                UITableViewDelegate,
-                                UIScrollViewDelegate,
-                             CellInteractionDelegte {
+                             UIScrollViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     
@@ -69,26 +66,25 @@ class AddQuizViewController: UIViewController,
                                                                  action: #selector(handleSaveButtonTapped))
     }
     
-    @objc func handleTableViewTapped(sender: UITapGestureRecognizer) {
+    @objc private func handleTableViewTapped(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
-    @objc func keyBoardWillShow(notification: Notification) {
+    @objc private func keyBoardWillShow(notification: Notification) {
         if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
             self.tableViewBottomConstraint.constant = keyboardHeight
         }
     }
     
-    @objc func keyBoardWillHide(notification: Notification) {
+    @objc private func keyBoardWillHide(notification: Notification) {
         if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             self.tableViewBottomConstraint.constant = 0
         }
     }
     
-    @objc func handleSaveButtonTapped() {
-        if self.questionText.isVisuallyEmpty || self.answerText.isVisuallyEmpty {
-            //displayAlertForEmptyField()
+    @objc private func handleSaveButtonTapped() {
+        if questionText.isVisuallyEmpty || answerText.isVisuallyEmpty {
             showAlert(title: "Attention", message: "Unable to save if any field is empty")
             return
         }
@@ -96,14 +92,10 @@ class AddQuizViewController: UIViewController,
         switch(storeType) {
         case .update:
             let previousQuiz = DatabaseManager.shared.getQuizByQuestion(question: quiz.question ?? "")
-            DatabaseManager.shared.saveQuiz(quiz: previousQuiz,
-                                            question: self.questionText,
-                                            answer: self.answerText)
+            DatabaseManager.shared.saveQuiz(quiz: previousQuiz, question: questionText, answer: answerText)
         case .create:
             let quiz = QuizModel()
-            DatabaseManager.shared.saveQuiz(quiz: quiz,
-                                            question: questionText,
-                                            answer: answerText)
+            DatabaseManager.shared.saveQuiz(quiz: quiz, question: questionText, answer: answerText)
             
         }
         
@@ -111,27 +103,28 @@ class AddQuizViewController: UIViewController,
             self?.navigationController?.popViewController(animated: true)
         }
     }
-        
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+}
+
+//MARK: -TableView Delegate and DataSource
+extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
+    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 { //question
-            if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self),
-                                                        for: indexPath) as? AddQuizTableViewCell {
-                cell.inputType = .question
-                cell.quizTextView.text = self.quiz.question
-                cell.configureCell()
-                cell.delegate = self
-                return cell
-            }
+    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            return getCell(for: indexPath, inputType: .question)
         }
-        // answer
+        
+        return getCell(for: indexPath, inputType: .answer)
+    }
+    
+    private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self),
                                                     for: indexPath) as? AddQuizTableViewCell {
-            cell.inputType = .answer
-            cell.quizTextView.text = quiz.answer
+            cell.inputType = inputType
+            cell.quizTextView.text = inputType == .question ? quiz.question : quiz.answer
             cell.configureCell()
             cell.delegate = self
             return cell
@@ -139,9 +132,10 @@ class AddQuizViewController: UIViewController,
         
         return UITableViewCell()
     }
-
- //MARK: - CellInteractionDelegte methods
-    func textViewDidBeginEditing(cell: UITableViewCell) {
+}
+//MARK: - CellInteractionDelegte
+extension AddQuizViewController: CellInteractionDelegte {
+    internal func textViewDidBeginEditing(cell: UITableViewCell) {
         if let row = tableView.indexPath(for: cell) {
             tableView.scrollToRow(at: row,
                                   at: .top,
@@ -149,7 +143,7 @@ class AddQuizViewController: UIViewController,
         }
     }
     
-    func textViewDidChanged(cell: UITableViewCell) {
+    internal func textViewDidChanged(cell: UITableViewCell) {
         if let indexPath = tableView.indexPath(for: cell),
            let cell = cell as? AddQuizTableViewCell {
             let text = cell.quizTextView.text
@@ -160,6 +154,6 @@ class AddQuizViewController: UIViewController,
                 answerText = text ??  ""
             }
         }
-    } 
+    }
 }
 

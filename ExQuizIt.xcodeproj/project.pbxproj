@@ -27,6 +27,7 @@
 		BF7C71CA27FD9EC100723BEE /* AddQuizTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7C71C927FD9EC100723BEE /* AddQuizTableViewCell.swift */; };
 		BF806C02283CD660008C5D27 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C01283CD660008C5D27 /* UIViewController+Alert.swift */; };
 		BF806C04283CD6EA008C5D27 /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C03283CD6EA008C5D27 /* String+Utils.swift */; };
+		BF806C06283CE8CB008C5D27 /* UIViewController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */; };
 		BF8D0D8D2810FE66002E8D2C /* UtilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */; };
 		BFBFC4962817CE8400FE213D /* PracticeQuizStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */; };
 		FD6435F428048FC300137173 /* JSONManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6435F328048FC300137173 /* JSONManager.swift */; };
@@ -86,6 +87,7 @@
 		BF7C71C927FD9EC100723BEE /* AddQuizTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuizTableViewCell.swift; sourceTree = "<group>"; };
 		BF806C01283CD660008C5D27 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		BF806C03283CD6EA008C5D27 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
+		BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Animation.swift"; sourceTree = "<group>"; };
 		BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityService.swift; sourceTree = "<group>"; };
 		BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuizStatisticsViewController.swift; sourceTree = "<group>"; };
 		CCD77A8AFC14F32764A90806 /* Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig"; path = "Target Support Files/Pods-ExQuizIt-ExQuizItUITests/Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 			children = (
 				BF806C01283CD660008C5D27 /* UIViewController+Alert.swift */,
 				BF806C03283CD6EA008C5D27 /* String+Utils.swift */,
+				BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				FD894AAF280B3E3500C43AF8 /* CardViewController.swift in Sources */,
 				BF7C71C827FD67EA00723BEE /* QuizTableViewCell.swift in Sources */,
 				BF7C71CA27FD9EC100723BEE /* AddQuizTableViewCell.swift in Sources */,
+				BF806C06283CE8CB008C5D27 /* UIViewController+Animation.swift in Sources */,
 				BF8D0D8D2810FE66002E8D2C /* UtilityService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

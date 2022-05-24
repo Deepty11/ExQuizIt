@@ -427,7 +427,7 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Forward Icon" translatesAutoresizingMaskIntoConstraints="NO" id="DjM-T1-9Zd">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ForwardIcon" translatesAutoresizingMaskIntoConstraints="NO" id="DjM-T1-9Zd">
                                                         <rect key="frame" x="142.5" y="0.0" width="20" height="20"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
@@ -720,7 +720,7 @@
     <resources>
         <image name="CorrectIcon" width="24" height="24"/>
         <image name="CrossIcon" width="24" height="24"/>
-        <image name="Forward Icon" width="48" height="48"/>
+        <image name="ForwardIcon" width="24" height="24"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
