@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 class QuizModel: Object {
+    @Persisted var id: Int = 0
     @Persisted var question: String?
     @Persisted var answer: String?
     @Persisted var isKnown: Bool = false

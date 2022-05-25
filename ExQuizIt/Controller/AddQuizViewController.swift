@@ -91,7 +91,7 @@ class AddQuizViewController: UIViewController,
         
         switch(storeType) {
         case .update:
-            let previousQuiz = DatabaseManager.shared.getQuizByQuestion(question: quiz.question ?? "")
+            let previousQuiz = DatabaseManager.shared.getQuizBy(id: quiz.id)
             DatabaseManager.shared.saveQuiz(quiz: previousQuiz, question: questionText, answer: answerText)
         case .create:
             let quiz = QuizModel()
@@ -121,8 +121,7 @@ extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self),
-                                                    for: indexPath) as? AddQuizTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self), for: indexPath) as? AddQuizTableViewCell {
             cell.inputType = inputType
             cell.quizTextView.text = inputType == .question ? quiz.question : quiz.answer
             cell.configureCell()
@@ -137,9 +136,7 @@ extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
 extension AddQuizViewController: CellInteractionDelegte {
     internal func textViewDidBeginEditing(cell: UITableViewCell) {
         if let row = tableView.indexPath(for: cell) {
-            tableView.scrollToRow(at: row,
-                                  at: .top,
-                                  animated: true)
+            tableView.scrollToRow(at: row, at: .top, animated: true)
         }
     }
     

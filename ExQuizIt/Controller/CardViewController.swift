@@ -86,19 +86,5 @@ class CardViewController: UIViewController {
     @IBAction func handleCheckBoxButtonTapped(_ sender: Any) {
         self.isCheckedCheckBox = !self.isCheckedCheckBox
     }
-    
-//    private func flipCard(from source: UIView, to destination: UIView) {
-//        animateTransition(for: source, hideView: true)
-//        animateTransition(for: destination, hideView: false)
-//    }
-//    
-//    private func animateTransition(for view: UIView, hideView: Bool) {
-//        UIView.transition(with: view,
-//                          duration: 0.25,
-//                          options: .defaultTransitionOption) {
-//            view.isHidden = hideView
-//            
-//        }
-//    }
 
 }

@@ -40,7 +40,7 @@ class DatabaseManager {
     }
     
     func updateLearningStatus(of quiz: QuizModel, with status: Bool) {
-        let quizToBeUpdated = realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "")[0]
+        let quizToBeUpdated = realm.objects(QuizModel.self).filter("id == %d", quiz.id)[0]
         
         do{
             try realm.write{
@@ -61,8 +61,9 @@ class DatabaseManager {
     }
     
     // to increment learningStatus and set isKnown accordingly
-    func updateLearningScale(of quiz: QuizModel, with setlearningScale: Bool){
-        let quizTobeUpdated = DatabaseManager.shared.getQuizByQuestion(question: quiz.question ?? "")//realm.objects(QuizModel.self).filter("question == %@", quiz.question ?? "").first
+    func updateLearningScale(of quiz: QuizModel, with setlearningScale: Bool) {
+        let quizTobeUpdated = DatabaseManager.shared.getQuizBy(id: quiz.id)
+        
         do{
             try realm.write{
                 quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < Constants.MaxValueForLearningStatus
@@ -91,25 +92,26 @@ class DatabaseManager {
         }
     }
     
-    func getAllQuiz() -> [QuizModel]{
+    func getAllQuiz() -> [QuizModel] {
         return Array(realm.objects(QuizModel.self))
     }
     
-    func getQuizByQuestion(question: String) -> QuizModel{
-        return realm.objects(QuizModel.self).filter("question == %@", question).first ?? QuizModel()
+    func getQuizBy(id: Int) -> QuizModel {
+        return realm.objects(QuizModel.self).filter("id == %d", id).first ?? QuizModel()
     }
     
-    func getAllUnknownQuizzes()-> [QuizModel]{
+    func getAllUnknownQuizzes()-> [QuizModel] {
         return Array(realm.objects(QuizModel.self).filter("isKnown == false"))
     }
     
-    func getAllknownQuizzes()-> [QuizModel]{
+    func getAllknownQuizzes()-> [QuizModel] {
         return Array(realm.objects(QuizModel.self).filter("isKnown == true"))
     }
     
     func saveQuiz(quiz: QuizModel, question: String, answer: String) {
         do{
             try realm.write {
+                quiz.id = getAllQuiz().count
                 quiz.question = question
                 quiz.answer = answer
                 realm.add(quiz)

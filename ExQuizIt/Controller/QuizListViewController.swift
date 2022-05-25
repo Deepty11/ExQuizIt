@@ -199,20 +199,6 @@ class QuizListViewController: UIViewController {
                                    action: #selector(handleViewDidTapped(_:))))
         visualEffectView.isHidden = true
     }
-    
-//    private func flipCardOnCell(from source: UIView, to destination: UIView) {
-//        animateTransition(for: source, hideView: true)
-//        animateTransition(for: destination, hideView: false)
-//    }
-//
-//    private func animateTransition(for view: UIView, hideView: Bool) {
-//        UIView.transition(with: view,
-//                          duration: 0.25,
-//                          options: .defaultTransitionOption) {
-//            view.isHidden = hideView
-//
-//        }
-//    }
 }
 
 //MARK: - Settings View
@@ -316,9 +302,7 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
     internal func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive,
                                           title: "Delete") { [weak self] action, indexPath in
-            guard let self = self else{
-                return
-            }
+            guard let self = self else { return }
             
             tableView.beginUpdates()
             
@@ -335,6 +319,7 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
                     
                 }
             }
+            
             tableView.endUpdates()
         }
         
