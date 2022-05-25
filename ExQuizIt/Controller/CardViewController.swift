@@ -19,6 +19,8 @@ class CardViewController: UIViewController {
     @IBOutlet weak var quizIndexLabel: UILabel!
     
     var pageIndex = 0
+    var quiz = QuizModel()
+    var delegate: PageViewDelegate?
     
     var isCheckedCheckBox: Bool = false {
         didSet {
@@ -29,9 +31,6 @@ class CardViewController: UIViewController {
             }
         }
     }
-    
-    var quiz = QuizModel()
-    var delegate : PageViewDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +64,7 @@ class CardViewController: UIViewController {
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer) {
         DatabaseManager.shared.updateLearningStatus(of: quiz, with: false)
         flipCard(from: answerView, to: questionView)
-        delegate.gotoNextPage(for: pageIndex)
+        delegate?.gotoNextPage(for: pageIndex)
         
     }
     
@@ -80,7 +79,7 @@ class CardViewController: UIViewController {
         }
         
         flipCard(from: answerView, to: questionView)
-        delegate.gotoNextPage(for: pageIndex)
+        delegate?.gotoNextPage(for: pageIndex)
     }
     
     @IBAction func handleCheckBoxButtonTapped(_ sender: Any) {
