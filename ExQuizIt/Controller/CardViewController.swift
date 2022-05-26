@@ -24,11 +24,7 @@ class CardViewController: UIViewController {
     
     var isCheckedCheckBox: Bool = false {
         didSet {
-            if isCheckedCheckBox {
-                checkBoxButton.setImage(UIImage(named: "CheckboxCheckedIcon"), for: .normal)
-            } else {
-                checkBoxButton.setImage(UIImage(named: "CheckboxUncheckedIcon"), for: .normal)
-            }
+            checkBoxButton.isSelected = isCheckedCheckBox
         }
     }
     
@@ -42,7 +38,7 @@ class CardViewController: UIViewController {
         self.answerView.isHidden = true
         
         self.checkBoxButton.tintColor = .black
-        self.checkBoxButton.setImage(UIImage(named: "CheckboxUncheckedIcon"), for: .normal)
+        self.checkBoxButton.setImage(UIImage(named: "CheckboxCheckedIcon"), for: .selected)
         
         self.tapToSeeAnswerView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
@@ -62,7 +58,7 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer) {
-        DatabaseManager.shared.updateLearningStatus(of: quiz, with: false)
+        DatabaseManager.shared.setLearningScale(of: quiz, with: Constants.MinLearningStatus)
         flipCard(from: answerView, to: questionView)
         delegate?.gotoNextPage(for: pageIndex)
         
@@ -71,11 +67,11 @@ class CardViewController: UIViewController {
     @objc func handleCommonQuizButtonTapped(sender: UITapGestureRecognizer) {
         if self.isCheckedCheckBox {
             // update isKnown to true and set learningStatus to 5
-            DatabaseManager.shared.updateLearningStatus(of: quiz, with: true)
+            DatabaseManager.shared.setLearningScale(of: quiz, with: Constants.MaxLearningStatus)
         } else {
             // update increment learning status by 1 and check
             // if learning status >= 5, set isKnown to true
-            DatabaseManager.shared.updateLearningScale(of: quiz, with: true)
+            DatabaseManager.shared.increaseLearningScale(of: quiz)
         }
         
         flipCard(from: answerView, to: questionView)

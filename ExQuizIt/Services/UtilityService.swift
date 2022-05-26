@@ -17,7 +17,8 @@ class UtilityService {
     static let shared = UtilityService()
     
     var numberOfPracticeQuizzes = 0
-    var practiceQuizLearningStatusArray: [PracticeQuizStatus] = []
+    // [QuizModel.id: status]
+    var practiceQuizLearningStatusMap: [String: PracticeQuizStatus] = [:]
     
     func getPreferredNumberOfPracticeQuizzes() -> Int {
         let selectedValue = UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
@@ -40,7 +41,7 @@ class UtilityService {
         let shuffledQuizzes = quizArray.shuffled()
         let totalAvailableUnknownQuiz = quizArray.count
         let numberOfPracticeQuizzesSelected = getPreferredNumberOfPracticeQuizzes()
-        print(numberOfPracticeQuizzesSelected)
+        
         if numberOfPracticeQuizzesSelected <= totalAvailableUnknownQuiz {
             return self.getRandomSlice(from: shuffledQuizzes,
                                        length: numberOfPracticeQuizzesSelected)

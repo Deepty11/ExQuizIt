@@ -48,7 +48,7 @@ class JSONManager {
         return quizJsonObjects
     }
     
-    func getAllQuizzesFromAPIsAndCachingToRealm(completion: @escaping ()->() ){
+    func getAllQuizzesFromAPIsAndCachingToRealm(completion: @escaping ()->() ) {
         let dispatchGroup = DispatchGroup()
         
         // fetching and storing vehicles Quizzes
@@ -57,6 +57,7 @@ class JSONManager {
             DispatchQueue.main.async {
                 DatabaseManager.shared.storeJSONParsedQuiz(with: vehicleQuizArray)
             }
+            
             dispatchGroup.leave()
         }
         
@@ -66,6 +67,7 @@ class JSONManager {
             DispatchQueue.main.async {
                 DatabaseManager.shared.storeJSONParsedQuiz(with: sportsQuizArray)
             }
+            
             dispatchGroup.leave()
         }
         
@@ -75,6 +77,7 @@ class JSONManager {
             DispatchQueue.main.async {
                 DatabaseManager.shared.storeJSONParsedQuiz(with: computerQuizArray)
             }
+            
             dispatchGroup.leave()
         }
         

@@ -7,11 +7,11 @@
 
 import UIKit
 
-class AddQuizTableViewCell: UITableViewCell, UITextViewDelegate {
+class AddQuizTableViewCell: UITableViewCell {
     @IBOutlet weak var cellView: UIView!
     @IBOutlet weak var quizTextView: UITextView!
     
-    var inputType: InputType!
+    var inputType = InputType.question
     var delegate: CellInteractionDelegte?
     
     override func awakeFromNib() {
@@ -23,9 +23,9 @@ class AddQuizTableViewCell: UITableViewCell, UITextViewDelegate {
         super.setSelected(selected, animated: animated)
     }
     
-    func configureCell(){
+    func configureCell() {
         self.quizTextView.delegate = self
-        if self.quizTextView.text == "" || self.quizTextView.text == nil {
+        if self.quizTextView.text?.isEmpty ?? true {
             self.quizTextView.text = inputType.rawValue
             self.quizTextView.textColor = UIColor.gray
         } else {
@@ -35,8 +35,12 @@ class AddQuizTableViewCell: UITableViewCell, UITextViewDelegate {
         self.cellView.layer.cornerRadius = 5.0
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        if self.quizTextView.text == "" || self.quizTextView.text == nil {
+}
+
+//MARK: -UITextViewDelegate
+extension AddQuizTableViewCell: UITextViewDelegate {
+    internal func textViewDidChange(_ textView: UITextView) {
+        if self.quizTextView.text?.isEmpty ?? true {
             self.quizTextView.text = inputType.rawValue
             self.quizTextView.resignFirstResponder()
             self.quizTextView.textColor = .gray
@@ -47,7 +51,7 @@ class AddQuizTableViewCell: UITableViewCell, UITextViewDelegate {
         delegate?.textViewDidChanged(cell: self)
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    internal func textViewDidBeginEditing(_ textView: UITextView) {
         if InputType.allCases.map(\.rawValue).contains(self.quizTextView.text) {
             self.quizTextView.text = ""
         }
@@ -63,7 +67,7 @@ class AddQuizTableViewCell: UITableViewCell, UITextViewDelegate {
      * true    |  √
      * false   |  x
      */
-    func textViewDidEndEditing(_ textView: UITextView) {
+    internal func textViewDidEndEditing(_ textView: UITextView) {
         if self.quizTextView.text?.isEmpty ?? true {
             self.quizTextView.text = inputType.rawValue
             self.quizTextView.resignFirstResponder()
@@ -72,5 +76,4 @@ class AddQuizTableViewCell: UITableViewCell, UITextViewDelegate {
             self.quizTextView.textColor = .black
         }
     }
-    
 }

@@ -209,6 +209,7 @@ extension QuizListViewController {
         
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
+            
             self.visualEffectView.isHidden = false
             self.originYOfSettingsView = self.settingsView.frame.origin.y
             self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
@@ -222,6 +223,7 @@ extension QuizListViewController {
     func hideSettingsView() {
         UIView.animate(withDuration: 0.25) { [weak self] in
             guard let self = self else { return }
+            
             self.settingsView.frame.origin.y = self.originYOfSettingsView
             self.settingsViewBottomConstraint.constant = 0
             self.visualEffectView.isHidden = true
@@ -247,7 +249,8 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             tableView.beginUpdates()
             
             answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: false)
+            DatabaseManager.shared.setLearningScale(of: quizSources[indexPath.row],
+                                                    with: Constants.MinLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
             cell.learningView.isHidden = quizSources[indexPath.row].isKnown
             
@@ -260,7 +263,8 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             tableView.beginUpdates()
             
             answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.updateLearningStatus(of: quizSources[indexPath.row], with: true)
+            DatabaseManager.shared.setLearningScale(of: quizSources[indexPath.row],
+                                                    with: Constants.MaxLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
             cell.learningView.isHidden = quizSources[indexPath.row].isKnown
             
@@ -324,9 +328,7 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         let editAction = UITableViewRowAction(style: .normal, title: "Edit") { [weak self] action, indexPath in
-            guard let self = self else{
-                return
-            }
+            guard let self = self else{ return }
             
             if let vc = self.storyboard?.instantiateViewController(
                 withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {

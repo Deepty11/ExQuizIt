@@ -501,14 +501,14 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XKH-Sp-pLd">
                                         <rect key="frame" x="79" y="78" width="156" height="25"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbx-qo-Tzq">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbx-qo-Tzq">
                                                 <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="25" id="CDf-kz-l6R"/>
                                                     <constraint firstAttribute="height" constant="25" id="OA9-1T-bDN"/>
                                                 </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal">
+                                                <state key="normal" image="CheckboxUncheckedIcon">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
@@ -718,6 +718,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="CheckboxUncheckedIcon" width="24" height="24"/>
         <image name="CorrectIcon" width="24" height="24"/>
         <image name="CrossIcon" width="24" height="24"/>
         <image name="ForwardIcon" width="24" height="24"/>

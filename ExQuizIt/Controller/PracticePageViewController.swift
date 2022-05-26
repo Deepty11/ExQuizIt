@@ -27,7 +27,7 @@ class PracticePageViewController: UIPageViewController, PageViewDelegate {
     
     func getQuizSource() -> [QuizModel] {
         let unknownQuizArray =  DatabaseManager.shared.getAllUnknownQuizzes()
-        return  UtilityService.shared.getRandomQuizzes(from: unknownQuizArray)
+        return UtilityService.shared.getRandomQuizzes(from: unknownQuizArray)
     }
     
     func configureNavigationBar() {

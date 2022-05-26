@@ -10,8 +10,8 @@ import UIKit
 
 
 struct Constants {
-    static let MaxValueForLearningStatus = 5
-    static let MinValueForLearningStatus = 0
+    static let MaxLearningStatus = 5
+    static let MinLearningStatus = 0
     static let DefaultNumberOfPracticeQuestions = 20
 }
 
@@ -19,7 +19,4 @@ struct Strings {
     static let NumberOfPracticeQuizzes = "NumberOfPracticeQuizzes"
 }
 
-extension UIView.AnimationOptions {
-    static let defaultTransitionOption : UIView.AnimationOptions = [.showHideTransitionViews,
-                                                                    .transitionFlipFromRight]
-}
+

@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  ExQuizIt
 //
-//  Created by rehnuma.deepty on 5/4/22.
+//  Created by Rehnuma Reza on 5/4/22.
 //
 
 import UIKit

@@ -79,7 +79,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
         numberOfReviews = 0
         numberOfMastered = 0
         
-        for status in UtilityService.shared.practiceQuizLearningStatusArray {
+        for (_, status) in UtilityService.shared.practiceQuizLearningStatusMap {
             switch(status) {
             case .mastered:
                 numberOfMastered += 1
@@ -89,8 +89,8 @@ class PracticeQuizStatisticsViewController: UIViewController {
                 numberOfLearnings += 1
             }
         }
-        
-        UtilityService.shared.practiceQuizLearningStatusArray = []
+
+//        UtilityService.shared.practiceQuizLearningStatusMap = [:]
     }
 
 }

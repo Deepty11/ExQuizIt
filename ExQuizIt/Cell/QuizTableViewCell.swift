@@ -21,7 +21,6 @@ class QuizTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        self.configureIconColor()
         self.learningView.layer.borderWidth = 1
         self.learningView.layer.borderColor = UIColor.systemPink.cgColor
         self.learningView.layer.cornerRadius = 2

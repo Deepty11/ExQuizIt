@@ -15,12 +15,13 @@ extension UIViewController {
     }
 
     func animateTransition(for view: UIView, hideView: Bool) {
-        UIView.transition(with: view,
-                          duration: 0.25,
-                          options: .defaultTransitionOption) {
+        UIView.transition(with: view, duration: 0.25, options: .defaultTransitionOption) {
             view.isHidden = hideView
-            
         }
     }
 }
 
+extension UIView.AnimationOptions {
+    static let defaultTransitionOption : UIView.AnimationOptions = [.showHideTransitionViews,
+                                                                    .transitionFlipFromRight]
+}

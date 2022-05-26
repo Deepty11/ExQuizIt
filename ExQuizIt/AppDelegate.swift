@@ -23,8 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().tintColor = .white
         }
         
-    
-        //UserDefaults.standard.set(Constants.DefaultNumberOfPracticeQuestions, forKey: Strings.NumberOfPracticeQuizzes)
         return true
     }
 

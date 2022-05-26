@@ -17,7 +17,6 @@ class DatabaseManager {
         
         for quiz in quizzes {
             let quizModel = QuizModel()
-            
             quizModel.question = processText(for: quiz.question)
             quizModel.answer = processText(for: quiz.correct_answer)
             
@@ -39,21 +38,17 @@ class DatabaseManager {
             .replacingOccurrences(of: "&quot;", with: "\"")
     }
     
-    func updateLearningStatus(of quiz: QuizModel, with status: Bool) {
-        let quizToBeUpdated = realm.objects(QuizModel.self).filter("id == %d", quiz.id)[0]
+    func setLearningScale(of quiz: QuizModel, with learningStatus: Int) {
+        let quizToBeUpdated = getQuizBy(id: quiz.id)
         
-        do{
-            try realm.write{
-                quizToBeUpdated.isKnown = status
-                // if status is true, set learningStatus to 5 and 0 otherwise
-                quizToBeUpdated.learningStatus = status
-                ? Constants.MaxValueForLearningStatus
-                : Constants.MinValueForLearningStatus
-                UtilityService.shared.practiceQuizLearningStatusArray.append(status
-                                                                             ? PracticeQuizStatus.mastered
-                                                                             : PracticeQuizStatus.learning)
+        do {
+            try realm.write {
+                quizToBeUpdated.learningStatus = learningStatus
+                quizToBeUpdated.isKnown = learningStatus >= Constants.MaxLearningStatus ? true : false
+            
                 realm.add(quizToBeUpdated)
-                quizToBeUpdated.isKnown ? print("learnt") : print("learning")
+                
+                setPracticeQuizLearningStatusArray(quiz: quiz, with: learningStatus)
             }
         } catch {
             print(error.localizedDescription)
@@ -61,43 +56,25 @@ class DatabaseManager {
     }
     
     // to increment learningStatus and set isKnown accordingly
-    func updateLearningScale(of quiz: QuizModel, with setlearningScale: Bool) {
-        let quizTobeUpdated = DatabaseManager.shared.getQuizBy(id: quiz.id)
-        
-        do{
-            try realm.write{
-                quizTobeUpdated.learningStatus = quizTobeUpdated.learningStatus < Constants.MaxValueForLearningStatus
-                ? (quizTobeUpdated.learningStatus + 1)
-                : Constants.MaxValueForLearningStatus
-                quizTobeUpdated.isKnown = quizTobeUpdated.learningStatus >= Constants.MaxValueForLearningStatus
-                ? true
-                : false
-                
-                if quizTobeUpdated.learningStatus >= Constants.MaxValueForLearningStatus {
-                    print("learnt")
-                    UtilityService.shared.practiceQuizLearningStatusArray.append(.mastered)
-                } else if quizTobeUpdated.learningStatus < Constants.MaxValueForLearningStatus
-                            && quizTobeUpdated.learningStatus > Constants.MinValueForLearningStatus {
-                    print("review")
-                    UtilityService.shared.practiceQuizLearningStatusArray.append(.reviewing)
-                } else {
-                    print("learning")
-                    UtilityService.shared.practiceQuizLearningStatusArray.append(.learning)
-                }
-                
-                realm.add(quizTobeUpdated)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
+    func increaseLearningScale(of quiz: QuizModel) {
+        let learningStatus = min(quiz.learningStatus + 1, Constants.MaxLearningStatus)
+        setLearningScale(of: quiz, with: learningStatus)
     }
     
     func getAllQuiz() -> [QuizModel] {
         return Array(realm.objects(QuizModel.self))
     }
     
-    func getQuizBy(id: Int) -> QuizModel {
-        return realm.objects(QuizModel.self).filter("id == %d", id).first ?? QuizModel()
+    func getRefreshedQuizzes(oldQuizzes: [QuizModel]) -> [QuizModel] {
+        realm.refresh()
+        return oldQuizzes.map(\.id)
+            .map {
+                getQuizBy(id: $0)
+            }
+    }
+    
+    func getQuizBy(id: String) -> QuizModel {
+        return realm.objects(QuizModel.self).filter("id == %s", id).first ?? QuizModel()
     }
     
     func getAllUnknownQuizzes()-> [QuizModel] {
@@ -109,9 +86,8 @@ class DatabaseManager {
     }
     
     func saveQuiz(quiz: QuizModel, question: String, answer: String) {
-        do{
+        do  {
             try realm.write {
-                quiz.id = getAllQuiz().count
                 quiz.question = question
                 quiz.answer = answer
                 realm.add(quiz)
@@ -123,13 +99,27 @@ class DatabaseManager {
     }
     
     func deleteQuiz(quiz: QuizModel) {
-        do{
+        do {
             try realm.write {
                 realm.delete(quiz)
                 print("deleted!!")
             }
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    func setPracticeQuizLearningStatusArray(quiz: QuizModel, with value: Int) {
+        switch value {
+        case Constants.MaxLearningStatus:
+            print("\(quiz.id) mastered")
+            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id] = .mastered
+        case Constants.MinLearningStatus:
+            print("\(quiz.id) learning")
+            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id] = .learning
+        default:
+            print("\(quiz.id) review")
+            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id] = .reviewing
         }
     }
 }
