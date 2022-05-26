@@ -48,7 +48,7 @@ class DatabaseManager {
             
                 realm.add(quizToBeUpdated)
                 
-                setPracticeQuizLearningStatusArray(quiz: quiz, with: learningStatus)
+                setPracticeQuizLearningStatusMap(quiz: quiz, with: learningStatus)
             }
         } catch {
             print(error.localizedDescription)
@@ -109,7 +109,7 @@ class DatabaseManager {
         }
     }
     
-    func setPracticeQuizLearningStatusArray(quiz: QuizModel, with value: Int) {
+    func setPracticeQuizLearningStatusMap(quiz: QuizModel, with value: Int) {
         switch value {
         case Constants.MaxLearningStatus:
             print("\(quiz.id) mastered")
