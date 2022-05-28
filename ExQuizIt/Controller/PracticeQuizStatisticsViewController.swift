@@ -21,7 +21,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
     var numberOfMastered = 0
     var totalNumberOfPracticeQuizzes = 0
     
-    var quizzes = [QuizModel]()
+    var quizzes = [Quiz]()
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -12,20 +12,20 @@ protocol PageViewDelegate {
 }
 
 class PracticePageViewController: UIPageViewController, PageViewDelegate {
-    var quizzes =  [QuizModel]()
+    var quizzes =  [Quiz]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         
-        self.quizzes = getQuizSource()
+        quizzes = getQuizSource()
         UtilityService.shared.numberOfPracticeQuizzes = self.quizzes.count
         
         setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
         
     }
     
-    func getQuizSource() -> [QuizModel] {
+    func getQuizSource() -> [Quiz] {
         let unknownQuizArray =  DatabaseManager.shared.getAllUnknownQuizzes()
         return UtilityService.shared.getRandomQuizzes(from: unknownQuizArray)
     }

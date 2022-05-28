@@ -38,8 +38,8 @@ class DatabaseManager {
             .replacingOccurrences(of: "&quot;", with: "\"")
     }
     
-    func setLearningScale(of quiz: QuizModel, with learningStatus: Int) {
-        let quizToBeUpdated = getQuizBy(id: quiz.id)
+    func setLearningScale(of quiz: Quiz, with learningStatus: Int) {
+        let quizToBeUpdated = getQuizBy(id: quiz.id ?? "")
         
         do {
             try realm.write {
@@ -56,13 +56,15 @@ class DatabaseManager {
     }
     
     // to increment learningStatus and set isKnown accordingly
-    func increaseLearningScale(of quiz: QuizModel) {
-        let learningStatus = min(quiz.learningStatus + 1, Constants.MaxLearningStatus)
+    func increaseLearningScale(of quiz: Quiz) {
+        let learningStatus = min((quiz.learningStatus ?? Constants.MinLearningStatus) + 1, Constants.MaxLearningStatus)
         setLearningScale(of: quiz, with: learningStatus)
     }
     
-    func getAllQuiz() -> [QuizModel] {
-        return Array(realm.objects(QuizModel.self))
+    func getAllQuiz() -> [Quiz] {
+        return Array(realm.objects(QuizModel.self)).map { quizModel in
+            quizModel.asQuiz()
+        }
     }
     
     func getRefreshedQuizzes(oldQuizzes: [QuizModel]) -> [QuizModel] {
@@ -98,10 +100,11 @@ class DatabaseManager {
         }
     }
     
-    func deleteQuiz(quiz: QuizModel) {
+    func deleteQuiz(quiz: Quiz) {
+        let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
         do {
             try realm.write {
-                realm.delete(quiz)
+                realm.delete(quizToBeDeleted)
                 print("deleted!!")
             }
         } catch {
@@ -109,17 +112,17 @@ class DatabaseManager {
         }
     }
     
-    func setPracticeQuizLearningStatusMap(quiz: QuizModel, with value: Int) {
+    func setPracticeQuizLearningStatusMap(quiz: Quiz, with value: Int) {
         switch value {
         case Constants.MaxLearningStatus:
-            print("\(quiz.id) mastered")
-            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id] = .mastered
+            print("\(quiz.id ?? "") mastered")
+            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id ?? ""] = .mastered
         case Constants.MinLearningStatus:
-            print("\(quiz.id) learning")
-            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id] = .learning
+            print("\(quiz.id ?? "") learning")
+            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id ?? ""] = .learning
         default:
-            print("\(quiz.id) review")
-            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id] = .reviewing
+            print("\(quiz.id ?? "") review")
+            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id ?? ""] = .reviewing
         }
     }
 }

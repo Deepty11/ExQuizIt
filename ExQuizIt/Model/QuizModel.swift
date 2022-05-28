@@ -18,6 +18,6 @@ class QuizModel: Object {
 
 extension QuizModel {
     func asQuiz() -> Quiz {
-        Quiz(question: question ?? "", correct_answer: answer ?? "", isKnown: isKnown, learningStatus: learningStatus)
+        Quiz(id: id, question: question ?? "", correct_answer: answer ?? "", isKnown: isKnown , learningStatus: learningStatus)
     }
 }

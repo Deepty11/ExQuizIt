@@ -19,7 +19,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var quizIndexLabel: UILabel!
     
     var pageIndex = 0
-    var quiz = QuizModel()
+    var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
     var delegate: PageViewDelegate?
     
     var isCheckedCheckBox: Bool = false {
@@ -52,7 +52,7 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleTapToSeeAnswerButtonTapped(sender: UITapGestureRecognizer) {
-        answerLabel.text = self.quiz.answer
+        answerLabel.text = self.quiz.correct_answer
         
         flipCard(from: questionView, to: answerView)
     }

@@ -13,6 +13,7 @@ struct Quizzes: Decodable {
 }
 
 struct Quiz: Decodable {
+    var id: String?
     var category: String?
     var difficulty: String?
     var question: String

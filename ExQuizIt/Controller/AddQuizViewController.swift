@@ -31,19 +31,19 @@ class AddQuizViewController: UIViewController,
     var questionText = ""
     var answerText = ""
     var storeType = StoreType.create
-    var quiz = QuizModel()
+    var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureNavigationBar()
+        configureNavigationBar()
         
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
         
-        self.questionText = self.quiz.question ?? ""
-        self.answerText = self.quiz.answer ?? ""
+        questionText = quiz.question
+        answerText = quiz.correct_answer
         
-        self.view.isUserInteractionEnabled = true
+        view.isUserInteractionEnabled = true
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyBoardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -91,7 +91,7 @@ class AddQuizViewController: UIViewController,
         
         switch(storeType) {
         case .update:
-            let previousQuiz = DatabaseManager.shared.getQuizBy(id: quiz.id)
+            let previousQuiz = DatabaseManager.shared.getQuizBy(id: quiz.id ?? "")
             DatabaseManager.shared.saveQuiz(quiz: previousQuiz, question: questionText, answer: answerText)
         case .create:
             let quiz = QuizModel()
@@ -123,7 +123,7 @@ extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
     private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self), for: indexPath) as? AddQuizTableViewCell {
             cell.inputType = inputType
-            cell.quizTextView.text = inputType == .question ? quiz.question : quiz.answer
+            cell.quizTextView.text = inputType == .question ? quiz.question : quiz.correct_answer
             cell.configureCell()
             cell.delegate = self
             return cell

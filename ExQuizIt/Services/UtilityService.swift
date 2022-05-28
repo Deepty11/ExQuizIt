@@ -37,14 +37,14 @@ class UtilityService {
         return Array(quizArray[startIndex...endIndex])
     }
     
-    func getRandomQuizzes(from quizArray: [QuizModel]) -> [QuizModel] {
+    func getRandomQuizzes(from quizArray: [QuizModel]) -> [Quiz] {
         let shuffledQuizzes = quizArray.shuffled()
         let totalAvailableUnknownQuiz = quizArray.count
         let numberOfPracticeQuizzesSelected = getPreferredNumberOfPracticeQuizzes()
         
         if numberOfPracticeQuizzesSelected <= totalAvailableUnknownQuiz {
-            return self.getRandomSlice(from: shuffledQuizzes,
-                                       length: numberOfPracticeQuizzesSelected)
+            return getRandomSlice(from: shuffledQuizzes,
+                                  length: numberOfPracticeQuizzesSelected).map{ $0.asQuiz()}
         }
         
         var selectedQuizzes = shuffledQuizzes
@@ -53,7 +53,7 @@ class UtilityService {
         selectedQuizzes += getRandomSlice(from: shuffledKnownQuizzes,
                                           length: requiredAmount)
         
-        return selectedQuizzes
+        return selectedQuizzes.map{ $0.asQuiz()}
     }
     
 }

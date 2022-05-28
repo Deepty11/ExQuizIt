@@ -30,7 +30,7 @@ class QuizListViewController: UIViewController {
     var isSettingsViewVisible = false
     var selectedValueForPracticeQuizzes = 0
     
-    var quizSources = [QuizModel]() {
+    var quizSources = [Quiz]() {
         didSet {
             DispatchQueue.main.async {[weak self] in
                 guard let self = self else { return }
@@ -252,7 +252,7 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             DatabaseManager.shared.setLearningScale(of: quizSources[indexPath.row],
                                                     with: Constants.MinLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
             
             tableView.endUpdates()
         }
@@ -266,7 +266,7 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             DatabaseManager.shared.setLearningScale(of: quizSources[indexPath.row],
                                                     with: Constants.MaxLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
             
             tableView.endUpdates()
         }
@@ -284,12 +284,12 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
                                                     for: indexPath) as? QuizTableViewCell {
             let quiz = quizSources[indexPath.row]
             cell.questionLabel.text = quiz.question
-            cell.answerLabel.text = quiz.answer
+            cell.answerLabel.text = quiz.correct_answer
             
             let isAnswerDisplayed = answerViewDisplayed[indexPath.row]
             cell.questionView.isHidden = isAnswerDisplayed
             cell.answerView.isHidden = !isAnswerDisplayed
-            cell.learningView.isHidden = quiz.isKnown
+            cell.learningView.isHidden = quiz.isKnown ?? false
             
             cell.delegate = self
             
@@ -353,7 +353,7 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
             if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
                 answerViewDisplayed[indexPath.row] = true
                 flipCard(from: cell.questionView, to: cell.answerView)
-                cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+                cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
             }
             
             tableView.endUpdates()
