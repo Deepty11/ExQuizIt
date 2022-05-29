@@ -20,6 +20,7 @@ class PracticePageViewController: UIPageViewController, PageViewDelegate {
         
         quizzes = getQuizSource()
         UtilityService.shared.numberOfPracticeQuizzes = self.quizzes.count
+        UtilityService.shared.practiceQuizLearningStatusMap = [ : ]
         
         setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
         

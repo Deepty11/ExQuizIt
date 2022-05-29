@@ -61,30 +61,28 @@ class DatabaseManager {
         setLearningScale(of: quiz, with: learningStatus)
     }
     
-    func getAllQuiz() -> [Quiz] {
-        return Array(realm.objects(QuizModel.self)).map { quizModel in
-            quizModel.asQuiz()
-        }
-    }
-    
-    func getRefreshedQuizzes(oldQuizzes: [QuizModel]) -> [QuizModel] {
-        realm.refresh()
-        return oldQuizzes.map(\.id)
-            .map {
-                getQuizBy(id: $0)
-            }
-    }
-    
     func getQuizBy(id: String) -> QuizModel {
-        return realm.objects(QuizModel.self).filter("id == %s", id).first ?? QuizModel()
+        realm.objects(QuizModel.self).filter("id == %s", id).first ?? QuizModel()
     }
     
-    func getAllUnknownQuizzes()-> [QuizModel] {
-        return Array(realm.objects(QuizModel.self).filter("isKnown == false"))
+    func getAllQuiz() -> [Quiz] {
+        Array(realm.objects(QuizModel.self)).map { $0.asQuiz() }
     }
     
-    func getAllknownQuizzes()-> [QuizModel] {
-        return Array(realm.objects(QuizModel.self).filter("isKnown == true"))
+//    func getRefreshedQuizzes(oldQuizzes: [QuizModel]) -> [QuizModel] {
+//        realm.refresh()
+//        return oldQuizzes.map(\.id)
+//            .map {
+//                getQuizBy(id: $0)
+//            }
+//    }
+    
+    func getAllUnknownQuizzes()-> [Quiz] {
+        Array(realm.objects(QuizModel.self).filter("isKnown == false")).map { $0.asQuiz() }
+    }
+    
+    func getAllknownQuizzes()-> [Quiz] {
+        Array(realm.objects(QuizModel.self).filter("isKnown == true")).map { $0.asQuiz() }
     }
     
     func saveQuiz(quiz: QuizModel, question: String, answer: String) {

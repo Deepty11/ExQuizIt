@@ -89,8 +89,6 @@ class PracticeQuizStatisticsViewController: UIViewController {
                 numberOfLearnings += 1
             }
         }
-
-//        UtilityService.shared.practiceQuizLearningStatusMap = [:]
     }
 
 }
