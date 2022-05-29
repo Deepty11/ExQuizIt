@@ -21,6 +21,7 @@ class CardViewController: UIViewController {
     var pageIndex = 0
     var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
     var delegate: PageViewDelegate?
+    var practiceQuizRecord: PracticeRecord?
     
     var isCheckedCheckBox: Bool = false {
         didSet {

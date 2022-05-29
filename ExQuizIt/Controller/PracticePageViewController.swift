@@ -13,6 +13,7 @@ protocol PageViewDelegate {
 
 class PracticePageViewController: UIPageViewController, PageViewDelegate {
     var quizzes =  [Quiz]()
+    var practiceSession = PracticeSession()
     
     override func viewDidLoad() {
         super.viewDidLoad()

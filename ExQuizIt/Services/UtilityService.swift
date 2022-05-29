@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum PracticeQuizStatus {
-    case learning
-    case reviewing
-    case mastered
+enum PracticeQuizStatus: String {
+    case learning = "Learning"
+    case reviewing = "Reviewing"
+    case mastered = "Mastered"
 }
 
 class UtilityService {

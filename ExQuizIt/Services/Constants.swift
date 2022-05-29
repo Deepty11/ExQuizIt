@@ -17,6 +17,7 @@ struct Constants {
 
 struct Strings {
     static let NumberOfPracticeQuizzes = "NumberOfPracticeQuizzes"
+    static let DateFormat = "DD-MM-YYYY, hh:mm:ss"
 }
 
 
