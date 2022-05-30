@@ -21,7 +21,8 @@ class CardViewController: UIViewController {
     var pageIndex = 0
     var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
     var delegate: PageViewDelegate?
-    var practiceQuizRecord: PracticeRecord?
+    var quizRecord = QuizRecord(id: "")
+    let practiceSessionUtilityService = PracticeSessionUtilityService()
     
     var isCheckedCheckBox: Bool = false {
         didSet {
@@ -33,7 +34,7 @@ class CardViewController: UIViewController {
         super.viewDidLoad()
         
         self.questionLabel.text = self.quiz.question
-        self.quizIndexLabel.text = "\(self.pageIndex + 1)/\(UtilityService.shared.numberOfPracticeQuizzes)"
+        self.quizIndexLabel.text = "\(self.pageIndex + 1)/\(practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes())"
         
         self.questionView.isHidden = false
         self.answerView.isHidden = true
@@ -59,28 +60,54 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer) {
-        DatabaseManager.shared.setLearningScale(of: quiz, with: Constants.MinLearningStatus)
-        flipCard(from: answerView, to: questionView)
-        delegate?.gotoNextPage(for: pageIndex)
+        DatabaseManager.shared.updateQuiz(quiz: quiz, with: Constants.MinLearningStatus)
+        setQuizRecordStatus(with: Constants.MinLearningStatus)
         
+        flipCard(from: answerView, to: questionView)
+        
+        delegate?.sendQuizRecordBackToSession(record: quizRecord, for: pageIndex)
     }
     
     @objc func handleCommonQuizButtonTapped(sender: UITapGestureRecognizer) {
+        var learningStatus = 0
         if self.isCheckedCheckBox {
             // update isKnown to true and set learningStatus to 5
-            DatabaseManager.shared.setLearningScale(of: quiz, with: Constants.MaxLearningStatus)
+            learningStatus = Constants.MaxLearningStatus
+            DatabaseManager.shared.updateQuiz(quiz: quiz, with: learningStatus)
         } else {
             // update increment learning status by 1 and check
             // if learning status >= 5, set isKnown to true
-            DatabaseManager.shared.increaseLearningScale(of: quiz)
+            learningStatus = increaseLearningStatus(of: quiz)
+            DatabaseManager.shared.updateQuiz(quiz: quiz, with: learningStatus)
         }
         
+        setQuizRecordStatus(with: learningStatus)
+        
         flipCard(from: answerView, to: questionView)
-        delegate?.gotoNextPage(for: pageIndex)
+        
+        delegate?.sendQuizRecordBackToSession(record: quizRecord, for: pageIndex)
     }
     
     @IBAction func handleCheckBoxButtonTapped(_ sender: Any) {
         self.isCheckedCheckBox = !self.isCheckedCheckBox
     }
-
+    
+    func increaseLearningStatus(of quiz: Quiz) -> Int {
+        min((quiz.learningStatus ?? Constants.MinLearningStatus) + 1, Constants.MaxLearningStatus)
+    }
+    
+    func setQuizRecordStatus(with value: Int) {
+        switch value {
+        case Constants.MaxLearningStatus:
+            print("\(quiz.id ?? "") mastered")
+            quizRecord.status = PracticeQuizStatus.mastered.rawValue
+        case Constants.MinLearningStatus:
+            print("\(quiz.id ?? "") learning")
+            quizRecord.status = PracticeQuizStatus.learning.rawValue
+        default:
+            print("\(quiz.id ?? "") review")
+            quizRecord.status = PracticeQuizStatus.reviewing.rawValue
+        }
+    }
+    
 }

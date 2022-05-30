@@ -30,6 +30,8 @@ class QuizListViewController: UIViewController {
     var isSettingsViewVisible = false
     var selectedValueForPracticeQuizzes = 0
     
+    let practiceSessionUtilityService = PracticeSessionUtilityService()
+    
     var quizSources = [Quiz]() {
         didSet {
             DispatchQueue.main.async {[weak self] in
@@ -76,10 +78,10 @@ class QuizListViewController: UIViewController {
         practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
         practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
     
-        let currentValue = UtilityService.shared.getPreferredNumberOfPracticeQuizzes()
+        let currentValue = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
         practiceQuizStepper.value = currentValue > 0
-        ? Double(currentValue)
-        : Double(Constants.DefaultNumberOfPracticeQuestions)
+            ? Double(currentValue)
+            : Double(Constants.DefaultNumberOfPracticeQuestions)
         
         selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
         selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)
@@ -203,7 +205,7 @@ class QuizListViewController: UIViewController {
 
 //MARK: - Settings View
 extension QuizListViewController {
-    func showSettingsView(){
+    func showSettingsView() {
         settingsView.backgroundColor = .black
         settingsView.alpha = 0.80
         
@@ -217,7 +219,6 @@ extension QuizListViewController {
             self.isSettingsViewVisible = true
             self.view.bringSubviewToFront(self.settingsView)
         }
-        
     }
     
     func hideSettingsView() {
@@ -231,7 +232,6 @@ extension QuizListViewController {
         
         self.isSettingsViewVisible = false
         self.storeNumberOfPracticeQuizzes()
-        
     }
     
     @IBAction func handleStepperTapped(_ sender: Any) {
@@ -249,8 +249,8 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             tableView.beginUpdates()
             
             answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.setLearningScale(of: quizSources[indexPath.row],
-                                                    with: Constants.MinLearningStatus)
+            DatabaseManager.shared.updateQuiz(quiz: quizSources[indexPath.row],
+                                              with: Constants.MinLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
             cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
             
@@ -263,8 +263,8 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             tableView.beginUpdates()
             
             answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.setLearningScale(of: quizSources[indexPath.row],
-                                                    with: Constants.MaxLearningStatus)
+            DatabaseManager.shared.updateQuiz(quiz: quizSources[indexPath.row],
+                                              with: Constants.MaxLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
             cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
             

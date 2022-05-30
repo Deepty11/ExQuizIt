@@ -13,13 +13,7 @@ enum PracticeQuizStatus: String {
     case mastered = "Mastered"
 }
 
-class UtilityService {
-    static let shared = UtilityService()
-    
-    var numberOfPracticeQuizzes = 0
-    // [QuizModel.id: status]
-    var practiceQuizLearningStatusMap: [String: PracticeQuizStatus] = [:]
-    
+struct PracticeSessionUtilityService {
     func getPreferredNumberOfPracticeQuizzes() -> Int {
         let selectedValue = UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
         

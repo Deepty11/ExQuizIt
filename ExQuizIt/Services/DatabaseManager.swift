@@ -27,6 +27,7 @@ class DatabaseManager {
             try realm.write {
                 realm.add(quizEntries)
             }
+            
         } catch {
             print(error.localizedDescription)
         }
@@ -38,29 +39,6 @@ class DatabaseManager {
             .replacingOccurrences(of: "&quot;", with: "\"")
     }
     
-    func setLearningScale(of quiz: Quiz, with learningStatus: Int) {
-        let quizToBeUpdated = getQuizBy(id: quiz.id ?? "")
-        
-        do {
-            try realm.write {
-                quizToBeUpdated.learningStatus = learningStatus
-                quizToBeUpdated.isKnown = learningStatus >= Constants.MaxLearningStatus ? true : false
-            
-                realm.add(quizToBeUpdated)
-                
-                setPracticeQuizLearningStatusMap(quiz: quiz, with: learningStatus)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    // to increment learningStatus and set isKnown accordingly
-    func increaseLearningScale(of quiz: Quiz) {
-        let learningStatus = min((quiz.learningStatus ?? Constants.MinLearningStatus) + 1, Constants.MaxLearningStatus)
-        setLearningScale(of: quiz, with: learningStatus)
-    }
-    
     func getQuizBy(id: String) -> QuizModel {
         realm.objects(QuizModel.self).filter("id == %s", id).first ?? QuizModel()
     }
@@ -68,14 +46,6 @@ class DatabaseManager {
     func getAllQuiz() -> [Quiz] {
         Array(realm.objects(QuizModel.self)).map { $0.asQuiz() }
     }
-    
-//    func getRefreshedQuizzes(oldQuizzes: [QuizModel]) -> [QuizModel] {
-//        realm.refresh()
-//        return oldQuizzes.map(\.id)
-//            .map {
-//                getQuizBy(id: $0)
-//            }
-//    }
     
     func getAllUnknownQuizzes()-> [Quiz] {
         Array(realm.objects(QuizModel.self).filter("isKnown == false")).map { $0.asQuiz() }
@@ -98,29 +68,51 @@ class DatabaseManager {
         }
     }
     
-    func deleteQuiz(quiz: Quiz) {
-        let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
-        do {
+    func savePracticeSession(practiceSession: PracticeSession) {
+        let quizRecordModels = practiceSession.quizRecords.map { QuizRecordModel(id: $0.id,
+                                                                                 status: $0.status) }
+        let practiceSessionModel = PracticeSessionModel(id: practiceSession.id,
+                                                        startTime: practiceSession.startTime,
+                                                        endTime: practiceSession.endTime)
+        practiceSessionModel.quizList.append(objectsIn: quizRecordModels)
+        
+        do  {
             try realm.write {
-                realm.delete(quizToBeDeleted)
-                print("deleted!!")
+                realm.add(practiceSessionModel)
             }
+            
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    func setPracticeQuizLearningStatusMap(quiz: Quiz, with value: Int) {
-        switch value {
-        case Constants.MaxLearningStatus:
-            print("\(quiz.id ?? "") mastered")
-            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id ?? ""] = .mastered
-        case Constants.MinLearningStatus:
-            print("\(quiz.id ?? "") learning")
-            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id ?? ""] = .learning
-        default:
-            print("\(quiz.id ?? "") review")
-            UtilityService.shared.practiceQuizLearningStatusMap[quiz.id ?? ""] = .reviewing
+    func updateQuiz(quiz: Quiz, with learningStatus: Int) {
+        let quizToBeUpdated = getQuizBy(id: quiz.id ?? "")
+        
+        do {
+            try realm.write {
+                quizToBeUpdated.learningStatus = learningStatus
+                quizToBeUpdated.isKnown = learningStatus >= Constants.MaxLearningStatus ? true : false
+            
+                realm.add(quizToBeUpdated)
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteQuiz(quiz: Quiz) {
+        let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
+        
+        do {
+            try realm.write {
+                realm.delete(quizToBeDeleted)
+                print("deleted!!")
+            }
+            
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

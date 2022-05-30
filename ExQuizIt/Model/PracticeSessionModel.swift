@@ -9,19 +9,36 @@ import Foundation
 import RealmSwift
 
 class PracticeSessionModel: Object {
-    @Persisted var id: String = UUID().uuidString
+    @Persisted var id: String 
     @Persisted var startTime: String?
     @Persisted var endTime: String?
-    @Persisted var practiceRecords: List<PracticeQuizRecordModel>
+    @Persisted var quizList: List<QuizRecordModel>
     
-    init(startTime: String, endTime: String, practiceRecords: List<PracticeQuizRecordModel>) {
+    override init() {
+        self.id = ""
+        self.startTime = ""
+        self.endTime = ""
+        self.quizList = List<QuizRecordModel>()
+    }
+    
+    init(id: String, startTime: String, endTime: String) {
+        self.id = id
         self.startTime = startTime
         self.endTime = endTime
-        self.practiceRecords = practiceRecords
     }
 }
 
-class PracticeQuizRecordModel: Object {
+class QuizRecordModel: Object {
     @Persisted var id: String
     @Persisted var status: PracticeQuizStatus.RawValue?
+    
+    override init() {
+        self.id = ""
+        self.status = PracticeQuizStatus.learning.rawValue
+    }
+    
+    init(id: String, status: String) {
+        self.id = id
+        self.status = status
+    }
 }

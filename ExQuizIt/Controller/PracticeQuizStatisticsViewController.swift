@@ -21,13 +21,14 @@ class PracticeQuizStatisticsViewController: UIViewController {
     var numberOfMastered = 0
     var totalNumberOfPracticeQuizzes = 0
     
-    var quizzes = [Quiz]()
+    var practiceSession = PracticeSession()
+    let practiceSessionUtilityService = PracticeSessionUtilityService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         
-        totalNumberOfPracticeQuizzes = UtilityService.shared.getPreferredNumberOfPracticeQuizzes()
+        totalNumberOfPracticeQuizzes = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
         calculateProgress()
         setProgressViews()
         
@@ -79,14 +80,16 @@ class PracticeQuizStatisticsViewController: UIViewController {
         numberOfReviews = 0
         numberOfMastered = 0
         
-        for (_, status) in UtilityService.shared.practiceQuizLearningStatusMap {
-            switch(status) {
-            case .mastered:
+        for quizRecord in practiceSession.quizRecords {
+            switch(quizRecord.status) {
+            case PracticeQuizStatus.mastered.rawValue:
                 numberOfMastered += 1
-            case .reviewing:
+            case PracticeQuizStatus.reviewing.rawValue:
                 numberOfReviews += 1
-            case .learning:
+            case PracticeQuizStatus.learning.rawValue:
                 numberOfLearnings += 1
+            default:
+                return
             }
         }
     }

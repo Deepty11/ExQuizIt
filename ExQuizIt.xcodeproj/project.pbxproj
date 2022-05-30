@@ -28,7 +28,7 @@
 		BF806C02283CD660008C5D27 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C01283CD660008C5D27 /* UIViewController+Alert.swift */; };
 		BF806C04283CD6EA008C5D27 /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C03283CD6EA008C5D27 /* String+Utils.swift */; };
 		BF806C06283CE8CB008C5D27 /* UIViewController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */; };
-		BF8D0D8D2810FE66002E8D2C /* UtilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */; };
+		BF8D0D8D2810FE66002E8D2C /* PracticeSessionUtilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8D0D8C2810FE66002E8D2C /* PracticeSessionUtilityService.swift */; };
 		BFBFC4962817CE8400FE213D /* PracticeQuizStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */; };
 		BFE8790828436B4D00C3D985 /* PracticeSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790728436B4D00C3D985 /* PracticeSessionModel.swift */; };
 		BFE8790A284371A500C3D985 /* PracticeSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */; };
@@ -91,7 +91,7 @@
 		BF806C01283CD660008C5D27 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		BF806C03283CD6EA008C5D27 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
 		BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Animation.swift"; sourceTree = "<group>"; };
-		BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityService.swift; sourceTree = "<group>"; };
+		BF8D0D8C2810FE66002E8D2C /* PracticeSessionUtilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionUtilityService.swift; sourceTree = "<group>"; };
 		BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuizStatisticsViewController.swift; sourceTree = "<group>"; };
 		BFE8790728436B4D00C3D985 /* PracticeSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionModel.swift; sourceTree = "<group>"; };
 		BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionRecord.swift; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 				FD6435F328048FC300137173 /* JSONManager.swift */,
 				BF60D2392805223F00325024 /* DatabaseManager.swift */,
 				BF60D23B280527EA00325024 /* Constants.swift */,
-				BF8D0D8C2810FE66002E8D2C /* UtilityService.swift */,
+				BF8D0D8C2810FE66002E8D2C /* PracticeSessionUtilityService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -556,7 +556,7 @@
 				BF7C71C827FD67EA00723BEE /* QuizTableViewCell.swift in Sources */,
 				BF7C71CA27FD9EC100723BEE /* AddQuizTableViewCell.swift in Sources */,
 				BF806C06283CE8CB008C5D27 /* UIViewController+Animation.swift in Sources */,
-				BF8D0D8D2810FE66002E8D2C /* UtilityService.swift in Sources */,
+				BF8D0D8D2810FE66002E8D2C /* PracticeSessionUtilityService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

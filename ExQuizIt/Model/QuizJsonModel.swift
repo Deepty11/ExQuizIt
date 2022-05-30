@@ -9,7 +9,6 @@ import Foundation
 
 struct Quizzes: Decodable {
     var results: [Quiz]
-    
 }
 
 struct Quiz: Decodable {

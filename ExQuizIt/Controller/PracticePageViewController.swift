@@ -8,20 +8,19 @@
 import UIKit
 
 protocol PageViewDelegate {
-    func gotoNextPage(for index: Int)
+    func sendQuizRecordBackToSession(record: QuizRecord, for pageIndex: Int)
 }
 
-class PracticePageViewController: UIPageViewController, PageViewDelegate {
+class PracticePageViewController: UIPageViewController {
     var quizzes =  [Quiz]()
     var practiceSession = PracticeSession()
+    let practiceSessionUtilityService = PracticeSessionUtilityService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         
         quizzes = getQuizSource()
-        UtilityService.shared.numberOfPracticeQuizzes = self.quizzes.count
-        UtilityService.shared.practiceQuizLearningStatusMap = [ : ]
         
         setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
         
@@ -29,7 +28,7 @@ class PracticePageViewController: UIPageViewController, PageViewDelegate {
     
     func getQuizSource() -> [Quiz] {
         let unknownQuizArray =  DatabaseManager.shared.getAllUnknownQuizzes()
-        return UtilityService.shared.getRandomQuizzes(from: unknownQuizArray)
+        return practiceSessionUtilityService.getRandomQuizzes(from: unknownQuizArray)
     }
     
     func configureNavigationBar() {
@@ -38,33 +37,45 @@ class PracticePageViewController: UIPageViewController, PageViewDelegate {
     }
     
     func getViewController(for index: Int) -> UIViewController {
-        if let vC = storyboard?.instantiateViewController(
+        if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: CardViewController.self)) as? CardViewController {
-            vC.pageIndex = index
-            vC.quiz = quizzes[index]
-            vC.delegate = self
-            return vC
-            
+            vc.pageIndex = index
+            vc.quiz = quizzes[index]
+            vc.quizRecord = QuizRecord(id: quizzes[index].id ?? "")
+            vc.delegate = self
+            return vc
         }
         
         return UIViewController()
-        
     }
+    
+}
+
 // MARK: - PageViewDelegate Method
+extension PracticePageViewController: PageViewDelegate {
+    func sendQuizRecordBackToSession(record: QuizRecord, for pageIndex: Int) {
+        //update quizRecords in the practiceSession
+        practiceSession.quizRecords.append(record)
+        gotoNextPage(for: pageIndex)
+    }
+    
     func gotoNextPage(for index: Int) {
         if index < self.quizzes.count - 1 {
             setViewControllers([getViewController(for: index + 1)],
                                direction: .forward,
                                animated: true)
         } else {
-            if let vC = storyboard?.instantiateViewController(
+            // set end time and then save the practiceSession in realm
+            practiceSession.endTime = Date().getFormattedDate(format: Strings.DateFormat)
+            DatabaseManager.shared.savePracticeSession(practiceSession: practiceSession)
+            
+            if let vc = storyboard?.instantiateViewController(
                 withIdentifier: String(describing: PracticeQuizStatisticsViewController.self))
                 as? PracticeQuizStatisticsViewController {
-                vC.quizzes = self.quizzes
-                self.navigationController?.pushViewController(vC, animated: true)
+                vc.practiceSession = practiceSession
+                navigationController?.pushViewController(vc, animated: true)
             }
         }
-        
     }
-
+    
 }
