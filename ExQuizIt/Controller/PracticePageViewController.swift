@@ -15,6 +15,7 @@ class PracticePageViewController: UIPageViewController {
     var quizzes =  [Quiz]()
     var practiceSession = PracticeSession()
     let practiceSessionUtilityService = PracticeSessionUtilityService()
+    let databaseManager = DatabaseManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +28,7 @@ class PracticePageViewController: UIPageViewController {
     }
     
     func getQuizSource() -> [Quiz] {
-        let unknownQuizArray =  DatabaseManager.shared.getAllUnknownQuizzes()
+        let unknownQuizArray =  databaseManager.getAllUnknownQuizzes()
         return practiceSessionUtilityService.getRandomQuizzes(from: unknownQuizArray)
     }
     
@@ -67,7 +68,7 @@ extension PracticePageViewController: PageViewDelegate {
         } else {
             // set end time and then save the practiceSession in realm
             practiceSession.endTime = Date().getFormattedDate(format: Strings.DateFormat)
-            DatabaseManager.shared.savePracticeSession(practiceSession: practiceSession)
+            databaseManager.savePracticeSession(practiceSession: practiceSession)
             
             if let vc = storyboard?.instantiateViewController(
                 withIdentifier: String(describing: PracticeQuizStatisticsViewController.self))

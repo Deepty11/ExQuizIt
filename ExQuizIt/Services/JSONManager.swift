@@ -8,13 +8,14 @@
 import Foundation
 
 class JSONManager {
-    static let shared = JSONManager()
     
     static let baseURL = "https://opentdb.com/api.php"
     
     static let vehicleQuizURL = "?amount=50&category=28"
     static let sportsQuizURL = "?amount=50&category=21"
     static let computerQuizURL = "?amount=30&category=18"
+    
+    let databaseManager = DatabaseManager()
     
     func getDataFrom(urlString: String, baseURLString: String = baseURL, completion: @escaping ([Quiz])-> Void) {
         if let url = URL(string: baseURLString + urlString) {
@@ -54,8 +55,8 @@ class JSONManager {
         // fetching and storing vehicles Quizzes
         dispatchGroup.enter()
         self.getDataFrom(urlString: Self.vehicleQuizURL) { vehicleQuizArray in
-            DispatchQueue.main.async {
-                DatabaseManager.shared.storeJSONParsedQuiz(with: vehicleQuizArray)
+            DispatchQueue.main.async { [weak self] in
+                self?.databaseManager.storeJSONParsedQuiz(with: vehicleQuizArray)
             }
             
             dispatchGroup.leave()
@@ -64,8 +65,8 @@ class JSONManager {
         // fetching and storing sports Quizzes
         dispatchGroup.enter()
         self.getDataFrom(urlString: Self.sportsQuizURL) { sportsQuizArray in
-            DispatchQueue.main.async {
-                DatabaseManager.shared.storeJSONParsedQuiz(with: sportsQuizArray)
+            DispatchQueue.main.async { [weak self] in
+                self?.databaseManager.storeJSONParsedQuiz(with: sportsQuizArray)
             }
             
             dispatchGroup.leave()
@@ -74,8 +75,8 @@ class JSONManager {
         // fetching and storing computer Quizzes
         dispatchGroup.enter()
         self.getDataFrom(urlString: Self.computerQuizURL) { computerQuizArray in
-            DispatchQueue.main.async {
-                DatabaseManager.shared.storeJSONParsedQuiz(with: computerQuizArray)
+            DispatchQueue.main.async { [weak self] in
+                self?.databaseManager.storeJSONParsedQuiz(with: computerQuizArray)
             }
             
             dispatchGroup.leave()

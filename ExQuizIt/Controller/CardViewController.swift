@@ -23,6 +23,7 @@ class CardViewController: UIViewController {
     var delegate: PageViewDelegate?
     var quizRecord = QuizRecord(id: "")
     let practiceSessionUtilityService = PracticeSessionUtilityService()
+    let databaseManager = DatabaseManager()
     
     var isCheckedCheckBox: Bool = false {
         didSet {
@@ -60,7 +61,7 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer) {
-        DatabaseManager.shared.updateQuiz(quiz: quiz, with: Constants.MinLearningStatus)
+        databaseManager.updateQuiz(quiz: quiz, with: Constants.MinLearningStatus)
         setQuizRecordStatus(with: Constants.MinLearningStatus)
         
         flipCard(from: answerView, to: questionView)
@@ -73,12 +74,12 @@ class CardViewController: UIViewController {
         if self.isCheckedCheckBox {
             // update isKnown to true and set learningStatus to 5
             learningStatus = Constants.MaxLearningStatus
-            DatabaseManager.shared.updateQuiz(quiz: quiz, with: learningStatus)
+            databaseManager.updateQuiz(quiz: quiz, with: learningStatus)
         } else {
             // update increment learning status by 1 and check
             // if learning status >= 5, set isKnown to true
             learningStatus = increaseLearningStatus(of: quiz)
-            DatabaseManager.shared.updateQuiz(quiz: quiz, with: learningStatus)
+            databaseManager.updateQuiz(quiz: quiz, with: learningStatus)
         }
         
         setQuizRecordStatus(with: learningStatus)

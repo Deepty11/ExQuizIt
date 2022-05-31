@@ -13,7 +13,9 @@ enum PracticeQuizStatus: String {
     case mastered = "Mastered"
 }
 
-struct PracticeSessionUtilityService {
+class PracticeSessionUtilityService {
+    let databaseManager = DatabaseManager()
+    
     func getPreferredNumberOfPracticeQuizzes() -> Int {
         let selectedValue = UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
         
@@ -43,7 +45,7 @@ struct PracticeSessionUtilityService {
         
         var selectedQuizzes = shuffledQuizzes
         let requiredAmount = numberOfPracticeQuizzesSelected - selectedQuizzes.count
-        let shuffledKnownQuizzes = DatabaseManager.shared.getAllknownQuizzes().shuffled()
+        let shuffledKnownQuizzes = databaseManager.getAllknownQuizzes().shuffled()
         selectedQuizzes += getRandomSlice(from: shuffledKnownQuizzes,
                                           length: requiredAmount)
         

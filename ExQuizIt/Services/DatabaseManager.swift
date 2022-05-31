@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class DatabaseManager {
-    static let shared = DatabaseManager()
+    //static let shared = DatabaseManager()
     var realm = try! Realm()
     
     func storeJSONParsedQuiz(with quizzes: [Quiz]) {

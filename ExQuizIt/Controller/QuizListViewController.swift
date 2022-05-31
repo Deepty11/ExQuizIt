@@ -31,6 +31,8 @@ class QuizListViewController: UIViewController {
     var selectedValueForPracticeQuizzes = 0
     
     let practiceSessionUtilityService = PracticeSessionUtilityService()
+    let databaseManager = DatabaseManager()
+    let jsonManager = JSONManager()
     
     var quizSources = [Quiz]() {
         didSet {
@@ -89,14 +91,14 @@ class QuizListViewController: UIViewController {
     }
     
     private func fetchQuizzes() {
-        guard DatabaseManager.shared.getAllQuiz().isEmpty else {
+        guard databaseManager.getAllQuiz().isEmpty else {
             refreshUI()
             return
         }
         
         showLoading(true)
         
-        JSONManager.shared.getAllQuizzesFromAPIsAndCachingToRealm { [weak self]  in
+        jsonManager.getAllQuizzesFromAPIsAndCachingToRealm { [weak self]  in
             guard let self = self else { return }
             
             self.showLoading(false)
@@ -127,7 +129,7 @@ class QuizListViewController: UIViewController {
     }
     
     private func initiateAnswerViewDisplayedArray() {
-        quizSources = DatabaseManager.shared.getAllQuiz()
+        quizSources = databaseManager.getAllQuiz()
         answerViewDisplayed = Array(repeating: false, count: quizSources.count)
     }
     
@@ -249,7 +251,7 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             tableView.beginUpdates()
             
             answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.updateQuiz(quiz: quizSources[indexPath.row],
+            databaseManager.updateQuiz(quiz: quizSources[indexPath.row],
                                               with: Constants.MinLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
             cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
@@ -263,7 +265,7 @@ extension QuizListViewController: CellButtonInteractionDelegate {
             tableView.beginUpdates()
             
             answerViewDisplayed[indexPath.row] = false
-            DatabaseManager.shared.updateQuiz(quiz: quizSources[indexPath.row],
+            databaseManager.updateQuiz(quiz: quizSources[indexPath.row],
                                               with: Constants.MaxLearningStatus)
             flipCard(from: cell.answerView, to: cell.questionView)
             cell.learningView.isHidden = quizSources[indexPath.row].isKnown ?? false
@@ -310,11 +312,15 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
             
             tableView.beginUpdates()
             
-            self.showAlert(title: "Attention", message: "Do you want to delete the quiz?", cancelTitle: "Cancel") {
-                DatabaseManager.shared.deleteQuiz(quiz: self.quizSources[indexPath.row])
+            self.showAlert(title: "Attention",
+                           message: "Do you want to delete the quiz?",
+                           cancelTitle: "Cancel") { [weak self] in
+                guard let self = self else { return }
+                
+                self.databaseManager.deleteQuiz(quiz: self.quizSources[indexPath.row])
                 
                 self.showToast(title: nil, message: "Deleted Successfully") {
-                    self.quizSources  = DatabaseManager.shared.getAllQuiz()
+                    self.quizSources  = self.databaseManager.getAllQuiz()
                     
                     if self.quizSources.isEmpty {
                         self.tableView.isHidden = true

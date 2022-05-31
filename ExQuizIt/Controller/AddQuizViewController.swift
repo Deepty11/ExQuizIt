@@ -32,6 +32,7 @@ class AddQuizViewController: UIViewController,
     var answerText = ""
     var storeType = StoreType.create
     var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
+    let databaseManager = DatabaseManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,11 +92,11 @@ class AddQuizViewController: UIViewController,
         
         switch(storeType) {
         case .update:
-            let previousQuiz = DatabaseManager.shared.getQuizBy(id: quiz.id ?? "")
-            DatabaseManager.shared.saveQuiz(quiz: previousQuiz, question: questionText, answer: answerText)
+            let previousQuiz = databaseManager.getQuizBy(id: quiz.id ?? "")
+            databaseManager.saveQuiz(quiz: previousQuiz, question: questionText, answer: answerText)
         case .create:
             let quiz = QuizModel()
-            DatabaseManager.shared.saveQuiz(quiz: quiz, question: questionText, answer: answerText)
+            databaseManager.saveQuiz(quiz: quiz, question: questionText, answer: answerText)
             
         }
         
