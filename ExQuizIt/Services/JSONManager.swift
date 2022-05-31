@@ -8,7 +8,6 @@
 import Foundation
 
 class JSONManager {
-    
     static let baseURL = "https://opentdb.com/api.php"
     
     static let vehicleQuizURL = "?amount=50&category=28"
@@ -84,8 +83,7 @@ class JSONManager {
         
         dispatchGroup.notify(queue: .main) {
             completion()
-        }
-        
+        } 
     }
     
 }

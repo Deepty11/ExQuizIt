@@ -30,7 +30,7 @@
 		BF806C06283CE8CB008C5D27 /* UIViewController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */; };
 		BF8D0D8D2810FE66002E8D2C /* PracticeSessionUtilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8D0D8C2810FE66002E8D2C /* PracticeSessionUtilityService.swift */; };
 		BFBFC4962817CE8400FE213D /* PracticeQuizStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */; };
-		BFE8790828436B4D00C3D985 /* PracticeSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790728436B4D00C3D985 /* PracticeSessionModel.swift */; };
+		BFE8790828436B4D00C3D985 /* RLMPracticeSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */; };
 		BFE8790A284371A500C3D985 /* PracticeSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */; };
 		BFE8790C2843797200C3D985 /* Date+TimeFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790B2843797200C3D985 /* Date+TimeFormatting.swift */; };
 		FD6435F428048FC300137173 /* JSONManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6435F328048FC300137173 /* JSONManager.swift */; };
@@ -93,7 +93,7 @@
 		BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Animation.swift"; sourceTree = "<group>"; };
 		BF8D0D8C2810FE66002E8D2C /* PracticeSessionUtilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionUtilityService.swift; sourceTree = "<group>"; };
 		BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuizStatisticsViewController.swift; sourceTree = "<group>"; };
-		BFE8790728436B4D00C3D985 /* PracticeSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionModel.swift; sourceTree = "<group>"; };
+		BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RLMPracticeSessionModel.swift; sourceTree = "<group>"; };
 		BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionRecord.swift; sourceTree = "<group>"; };
 		BFE8790B2843797200C3D985 /* Date+TimeFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+TimeFormatting.swift"; sourceTree = "<group>"; };
 		CCD77A8AFC14F32764A90806 /* Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig"; path = "Target Support Files/Pods-ExQuizIt-ExQuizItUITests/Pods-ExQuizIt-ExQuizItUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 			children = (
 				BF60D23528051D8F00325024 /* QuizJsonModel.swift */,
 				BF60D23728051E5B00325024 /* QuizModel.swift */,
-				BFE8790728436B4D00C3D985 /* PracticeSessionModel.swift */,
+				BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */,
 				BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */,
 			);
 			path = Model;
@@ -545,7 +545,7 @@
 				BF3AD2E227FC126300002E53 /* AppDelegate.swift in Sources */,
 				BFE8790C2843797200C3D985 /* Date+TimeFormatting.swift in Sources */,
 				FDCF756D2815477700F3F9C1 /* GradientView.swift in Sources */,
-				BFE8790828436B4D00C3D985 /* PracticeSessionModel.swift in Sources */,
+				BFE8790828436B4D00C3D985 /* RLMPracticeSessionModel.swift in Sources */,
 				BF806C02283CD660008C5D27 /* UIViewController+Alert.swift in Sources */,
 				BF3AD31827FC31FD00002E53 /* AddQuizViewController.swift in Sources */,
 				BF3AD2E427FC126300002E53 /* SceneDelegate.swift in Sources */,

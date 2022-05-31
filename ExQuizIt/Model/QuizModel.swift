@@ -17,6 +17,12 @@ class QuizModel: Object {
 }
 
 extension QuizModel {
+    convenience init(question: String, answer: String) {
+        self.init()
+        self.question = question
+        self.answer = answer
+    }
+    
     func asQuiz() -> Quiz {
         Quiz(id: id, question: question ?? "", correct_answer: answer ?? "", isKnown: isKnown , learningStatus: learningStatus)
     }
