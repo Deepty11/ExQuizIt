@@ -14,8 +14,7 @@ class RLMPracticeSessionModel: Object {
     @Persisted var endTime: String?
     @Persisted var quizList: List<RLMQuizRecordModel>
     
-    override init() {
-    }
+    override init() {}
     
     init(id: String = "",
          startTime: String = "",

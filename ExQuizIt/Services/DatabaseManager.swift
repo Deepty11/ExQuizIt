@@ -60,14 +60,6 @@ class DatabaseManager {
         }
     }
     
-//    func saveQuiz(quiz: RLMQuizModel, question: String, answer: String) {
-//        writeToRealm {
-//            quiz.question = question
-//            quiz.answer = answer
-//            realm.add(quiz)
-//        }
-//    }
-    
     func savePracticeSession(practiceSession: PracticeSession) {
         let practiceSessionModel = RLMPracticeSessionModel(practiceSession: practiceSession)
         
@@ -76,17 +68,6 @@ class DatabaseManager {
         }
         
     }
-    
-//    func updateQuiz(quiz: Quiz, with learningStatus: Int) {
-//        let quizToBeUpdated = getQuizBy(id: quiz.id ?? "") ?? RLMQuizModel()
-//
-//        writeToRealm {
-//            quizToBeUpdated.learningStatus = learningStatus
-////            quizToBeUpdated.isKnown = learningStatus >= Constants.MaxLearningStatus ? true : false
-//
-//            realm.add(quizToBeUpdated)
-//        }
-//    }
     
     func deleteQuiz(quiz: Quiz) {
         guard let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
