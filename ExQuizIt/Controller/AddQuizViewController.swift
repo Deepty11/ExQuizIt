@@ -31,7 +31,7 @@ class AddQuizViewController: UIViewController,
     var questionText = ""
     var answerText = ""
     var storeType = StoreType.create
-    var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
+    var quiz = Quiz(id: "", question: "", correct_answer: "", learningStatus: 0)
     let databaseManager = DatabaseManager()
     
     override func viewDidLoad() {
@@ -90,15 +90,7 @@ class AddQuizViewController: UIViewController,
             return
         }
         
-        switch(storeType) {
-        case .update:
-            let previousQuiz = databaseManager.getQuizBy(id: quiz.id ?? "")
-            databaseManager.saveQuiz(quiz: previousQuiz, question: questionText, answer: answerText)
-        case .create:
-            let quiz = QuizModel()
-            databaseManager.saveQuiz(quiz: quiz, question: questionText, answer: answerText)
-            
-        }
+        databaseManager.saveQuiz(quiz)
         
         showToast(title: nil, message: storeType.rawValue) { [weak self] in
             self?.navigationController?.popViewController(animated: true)

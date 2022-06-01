@@ -17,7 +17,10 @@ struct Quiz: Decodable {
     var difficulty: String?
     var question: String
     var correct_answer: String
-    var isKnown: Bool? = false
     var learningStatus: Int? = Constants.MinLearningStatus
+    
+    var isKnown: Bool {
+        learningStatus ?? Constants.MinLearningStatus >= Constants.MaxLearningStatus ? true : false
+    }
     
 }

@@ -32,8 +32,7 @@ class RLMQuizRecordModel: Object {
     @Persisted var id: String
     @Persisted var status: PracticeQuizStatus.RawValue?
     
-    override init() {
-    }
+    override init() {}
     
     init(id: String = "", status: String = PracticeQuizStatus.learning.rawValue) {
         self.id = id

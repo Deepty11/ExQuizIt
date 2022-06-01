@@ -19,7 +19,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var quizIndexLabel: UILabel!
     
     var pageIndex = 0
-    var quiz = Quiz(id: "", question: "", correct_answer: "", isKnown: false, learningStatus: 0)
+    var quiz = Quiz(id: "", question: "", correct_answer: "", learningStatus: 0)
     var delegate: PageViewDelegate?
     var quizRecord = QuizRecord(id: "")
     let practiceSessionUtilityService = PracticeSessionUtilityService()
@@ -61,7 +61,8 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleUncommonQuizButtonTapped(sender: UITapGestureRecognizer) {
-        databaseManager.updateQuiz(quiz: quiz, with: Constants.MinLearningStatus)
+        quiz.learningStatus = Constants.MinLearningStatus
+        databaseManager.saveQuiz(quiz)
         setQuizRecordStatus(with: Constants.MinLearningStatus)
         
         flipCard(from: answerView, to: questionView)
@@ -70,19 +71,18 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleCommonQuizButtonTapped(sender: UITapGestureRecognizer) {
-        var learningStatus = 0
         if self.isCheckedCheckBox {
             // update isKnown to true and set learningStatus to 5
-            learningStatus = Constants.MaxLearningStatus
-            databaseManager.updateQuiz(quiz: quiz, with: learningStatus)
+            quiz.learningStatus = Constants.MaxLearningStatus
+            databaseManager.saveQuiz(quiz)
         } else {
             // update increment learning status by 1 and check
             // if learning status >= 5, set isKnown to true
-            learningStatus = increaseLearningStatus(of: quiz)
-            databaseManager.updateQuiz(quiz: quiz, with: learningStatus)
+            quiz.learningStatus = getLearningStatus(of: quiz)
+            databaseManager.saveQuiz(quiz)
         }
         
-        setQuizRecordStatus(with: learningStatus)
+        setQuizRecordStatus(with: quiz.learningStatus ?? Constants.MinLearningStatus)
         
         flipCard(from: answerView, to: questionView)
         
@@ -93,7 +93,7 @@ class CardViewController: UIViewController {
         self.isCheckedCheckBox = !self.isCheckedCheckBox
     }
     
-    func increaseLearningStatus(of quiz: Quiz) -> Int {
+    func getLearningStatus(of quiz: Quiz) -> Int {
         min((quiz.learningStatus ?? Constants.MinLearningStatus) + 1, Constants.MaxLearningStatus)
     }
     

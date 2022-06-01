@@ -8,15 +8,18 @@
 import Foundation
 import RealmSwift
 
-class QuizModel: Object {
+class RLMQuizModel: Object {
     @Persisted var id: String = UUID().uuidString
     @Persisted var question: String?
     @Persisted var answer: String?
-    @Persisted var isKnown: Bool = false
     @Persisted var learningStatus: Int = Constants.MinLearningStatus
+    
+    var isKnown: Bool {
+        learningStatus >= Constants.MaxLearningStatus ? true : false
+    }
 }
 
-extension QuizModel {
+extension RLMQuizModel {
     convenience init(question: String, answer: String) {
         self.init()
         self.question = question
@@ -24,6 +27,14 @@ extension QuizModel {
     }
     
     func asQuiz() -> Quiz {
-        Quiz(id: id, question: question ?? "", correct_answer: answer ?? "", isKnown: isKnown , learningStatus: learningStatus)
+        Quiz(id: id, question: question ?? "",
+             correct_answer: answer ?? "",
+             learningStatus: learningStatus)
+    }
+    
+    func update(with quiz: Quiz) {
+        question = quiz.question
+        answer = quiz.correct_answer
+        learningStatus = quiz.learningStatus ?? Constants.MinLearningStatus
     }
 }

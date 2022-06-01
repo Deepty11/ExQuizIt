@@ -13,7 +13,7 @@ class DatabaseManager {
     
     func storeJSONParsedQuiz(with quizzes: [Quiz]) {
         let quizEntries = quizzes.map {
-            QuizModel(
+            RLMQuizModel(
                 question: processText(for: $0.question),
                 answer: processText(for: $0.correct_answer)
             )
@@ -26,34 +26,47 @@ class DatabaseManager {
     
     // MARK: - GET methods
     
-    func getQuizBy(id: String) -> QuizModel {
-        realm.objects(QuizModel.self).filter("id == %s", id).first ?? QuizModel()
+    func getQuizBy(id: String) -> RLMQuizModel? {
+        realm.objects(RLMQuizModel.self).filter("id == %s", id).first
     }
     
     func getAllQuiz(isKnown: Bool? = nil) -> [Quiz] {
         switch isKnown {
-        case .some(let known):
-            return Array(realm.objects(QuizModel.self).filter("isKnown == \(known)")).map { $0.asQuiz() }
+        case .some(true):
+            return Array(realm.objects(RLMQuizModel.self).filter("learningStatus == \(Constants.MaxLearningStatus)")).map { $0.asQuiz() }
+        case .some(false):
+            return Array(realm.objects(RLMQuizModel.self).filter("learningStatus != \(Constants.MaxLearningStatus)")).map { $0.asQuiz() }
         case .none:
-            return Array(realm.objects(QuizModel.self)).map { $0.asQuiz() }
+            return Array(realm.objects(RLMQuizModel.self)).map { $0.asQuiz() }
         }
     }
     
-//    func getAllUnknownQuizzes()-> [Quiz] {
-//        Array(realm.objects(QuizModel.self).filter("isKnown == false")).map { $0.asQuiz() }
-//    }
-//
-//    func getAllknownQuizzes()-> [Quiz] {
-//        Array(realm.objects(QuizModel.self).filter("isKnown == true")).map { $0.asQuiz() }
-//    }
-    
-    func saveQuiz(quiz: QuizModel, question: String, answer: String) {
-        writeToRealm {
-            quiz.question = question
-            quiz.answer = answer
-            realm.add(quiz)
+    func saveQuiz(_ quiz: Quiz) {
+        // Update
+        if let id = quiz.id,
+           let model = getQuizBy(id: id) {
+            writeToRealm {
+                model.update(with: quiz)
+                realm.add(model)
+            }
+        }
+        // Save new
+        else {
+            writeToRealm {
+                let model = RLMQuizModel()
+                model.update(with: quiz)
+                realm.add(model)
+            }
         }
     }
+    
+//    func saveQuiz(quiz: RLMQuizModel, question: String, answer: String) {
+//        writeToRealm {
+//            quiz.question = question
+//            quiz.answer = answer
+//            realm.add(quiz)
+//        }
+//    }
     
     func savePracticeSession(practiceSession: PracticeSession) {
         let practiceSessionModel = RLMPracticeSessionModel(practiceSession: practiceSession)
@@ -64,19 +77,21 @@ class DatabaseManager {
         
     }
     
-    func updateQuiz(quiz: Quiz, with learningStatus: Int) {
-        let quizToBeUpdated = getQuizBy(id: quiz.id ?? "")
-        
-        writeToRealm {
-            quizToBeUpdated.learningStatus = learningStatus
-            quizToBeUpdated.isKnown = learningStatus >= Constants.MaxLearningStatus ? true : false
-        
-            realm.add(quizToBeUpdated)
-        }
-    }
+//    func updateQuiz(quiz: Quiz, with learningStatus: Int) {
+//        let quizToBeUpdated = getQuizBy(id: quiz.id ?? "") ?? RLMQuizModel()
+//
+//        writeToRealm {
+//            quizToBeUpdated.learningStatus = learningStatus
+////            quizToBeUpdated.isKnown = learningStatus >= Constants.MaxLearningStatus ? true : false
+//
+//            realm.add(quizToBeUpdated)
+//        }
+//    }
     
     func deleteQuiz(quiz: Quiz) {
-        let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
+        guard let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
+        else { return }
+        
         writeToRealm {
             realm.delete(quizToBeDeleted)
             print("deleted!!")
