@@ -41,6 +41,14 @@ class DatabaseManager {
         }
     }
     
+    func getAllPracticeSession() -> [PracticeSession] {
+        Array(realm.objects(RLMPracticeSessionModel.self)).map { $0.asPracticeSession() }
+    }
+    
+    func getPracticeSessionBy(id: String) -> RLMPracticeSessionModel? {
+        realm.objects(RLMPracticeSessionModel.self).filter("id == %s", id).first
+    }
+    
     func saveQuiz(_ quiz: Quiz) {
         // Update
         if let id = quiz.id,

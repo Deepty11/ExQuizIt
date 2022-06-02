@@ -48,11 +48,22 @@ extension RLMPracticeSessionModel {
             quizList: practiceSession.quizRecords.map(RLMQuizRecordModel.init).asList()
         )
     }
+    
+    func asPracticeSession() -> PracticeSession {
+        PracticeSession(id: id,
+                        startTime: startTime ?? "",
+                        endTime: endTime ?? "",
+                        quizRecords: quizList.map { $0.asQuizRecord() })
+    }
 }
 
 extension RLMQuizRecordModel {
     convenience init(quizRecord: QuizRecord) {
         self.init(id: quizRecord.id, status: quizRecord.status)
+    }
+    
+    func asQuizRecord() -> QuizRecord {
+        QuizRecord(id: id, status: status ?? "")
     }
 }
 
@@ -61,6 +72,12 @@ extension Collection where Element: Object {
         let list = List<Element>()
         list.append(objectsIn: self)
         return list
+    }
+    
+    func asArray() -> [Element] {
+        var array = [Element]()
+        array.append(contentsOf: self)
+        return array
     }
 }
 

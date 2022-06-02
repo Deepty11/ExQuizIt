@@ -9,13 +9,9 @@ import Foundation
 
 struct PracticeSession {
     var id: String = UUID().uuidString
-    var startTime: String = ""
+    var startTime: String = Date().getFormattedDate(format: Strings.DateFormat)
     var endTime: String = ""
     var quizRecords:[QuizRecord] = []
-    
-    init() {
-        startTime = Date().getFormattedDate(format: Strings.DateFormat)
-    }
 }
 
 struct QuizRecord {
