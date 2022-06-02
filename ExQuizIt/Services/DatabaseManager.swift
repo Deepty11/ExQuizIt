@@ -30,7 +30,7 @@ class DatabaseManager {
         realm.objects(RLMQuizModel.self).filter("id == %s", id).first
     }
     
-    func getAllQuiz(isKnown: Bool? = nil) -> [Quiz] {
+    func getAllQuizzes(isKnown: Bool? = nil) -> [Quiz] {
         switch isKnown {
         case .some(true):
             return Array(realm.objects(RLMQuizModel.self).filter("learningStatus == \(Constants.MaxLearningStatus)")).map { $0.asQuiz() }
@@ -41,7 +41,7 @@ class DatabaseManager {
         }
     }
     
-    func getAllPracticeSession() -> [PracticeSession] {
+    func getAllPracticeSessions() -> [PracticeSession] {
         Array(realm.objects(RLMPracticeSessionModel.self)).map { $0.asPracticeSession() }
     }
     

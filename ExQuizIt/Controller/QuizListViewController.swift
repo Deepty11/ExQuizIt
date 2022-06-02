@@ -69,8 +69,8 @@ class QuizListViewController: UIViewController {
     
     @IBAction func handlePracticeButtonTapped(_ sender: Any) {
         if let vc = storyboard?.instantiateViewController(
-            withIdentifier: String(describing: PracticePageViewController.self))
-            as? PracticePageViewController {
+            withIdentifier: String(describing: PracticeListViewController.self))
+            as? PracticeListViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -91,7 +91,7 @@ class QuizListViewController: UIViewController {
     }
     
     private func fetchQuizzes() {
-        guard databaseManager.getAllQuiz().isEmpty else {
+        guard databaseManager.getAllQuizzes().isEmpty else {
             refreshUI()
             return
         }
@@ -129,7 +129,7 @@ class QuizListViewController: UIViewController {
     }
     
     private func initiateAnswerViewDisplayedArray() {
-        quizSources = databaseManager.getAllQuiz()
+        quizSources = databaseManager.getAllQuizzes()
         answerViewDisplayed = Array(repeating: false, count: quizSources.count)
     }
     
@@ -322,7 +322,7 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
                 self.databaseManager.deleteQuiz(quiz: self.quizSources[indexPath.row])
                 
                 self.showToast(title: nil, message: "Deleted Successfully") {
-                    self.quizSources  = self.databaseManager.getAllQuiz()
+                    self.quizSources  = self.databaseManager.getAllQuizzes()
                     
                     if self.quizSources.isEmpty {
                         self.tableView.isHidden = true

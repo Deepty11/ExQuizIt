@@ -28,7 +28,7 @@ class PracticePageViewController: UIPageViewController {
     }
     
     func getQuizSource() -> [Quiz] {
-        let unknownQuizArray =  databaseManager.getAllQuiz(isKnown: false)
+        let unknownQuizArray =  databaseManager.getAllQuizzes(isKnown: false)
         return practiceSessionUtilityService.getRandomQuizzes(from: unknownQuizArray)
     }
     

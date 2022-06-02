@@ -45,7 +45,7 @@ class PracticeSessionUtilityService {
         
         var selectedQuizzes = shuffledQuizzes
         let requiredAmount = numberOfPracticeQuizzesSelected - selectedQuizzes.count
-        let shuffledKnownQuizzes = databaseManager.getAllQuiz(isKnown: true).shuffled()
+        let shuffledKnownQuizzes = databaseManager.getAllQuizzes(isKnown: true).shuffled()
         selectedQuizzes += getRandomSlice(from: shuffledKnownQuizzes,
                                           length: requiredAmount)
         

@@ -18,6 +18,10 @@ struct Constants {
 struct Strings {
     static let NumberOfPracticeQuizzes = "NumberOfPracticeQuizzes"
     static let DateFormat = "DD-MM-YYYY, hh:mm:ss"
+    static let practiceNoString = "Practice# "
+    static let totalQuizString = "Total Quizzes# "
+    static let startTimeString = "Start Time: "
+    static let endTimeString = "End Time: "
 }
 
 
