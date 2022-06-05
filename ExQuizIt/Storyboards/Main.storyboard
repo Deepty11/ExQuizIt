@@ -39,40 +39,6 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vC0-lv-C1B" customClass="CardView" customModule="ExQuizIt" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="7" width="384" height="200"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-tv-fib">
-                                                            <rect key="frame" x="0.0" y="150" width="384" height="50"/>
-                                                            <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hiz-td-Y29">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="384" height="25"/>
-                                                                    <color key="backgroundColor" name="UnknownViewBGColor"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <color key="tintColor" name="crossIconColor"/>
-                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
-                                                                    <state key="normal" title="I don't know this answer" image="CrossIcon">
-                                                                        <color key="titleColor" name="crossIconColor"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="handleUnFamiliarQuizButtonTapped:" destination="3Jp-7e-qPs" eventType="touchUpInside" id="tUZ-bh-rY2"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1QV-8U-M3o">
-                                                                    <rect key="frame" x="0.0" y="25" width="384" height="25"/>
-                                                                    <color key="backgroundColor" name="KnownViewBGColor"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <color key="tintColor" name="checkIconColor"/>
-                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
-                                                                    <state key="normal" title="I know this answer" image="CorrectIcon">
-                                                                        <color key="titleColor" name="checkIconColor"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="handleCommonQuizButtonTapped:" destination="3Jp-7e-qPs" eventType="touchUpInside" id="TTU-VG-SLs"/>
-                                                                    </connections>
-                                                                </button>
-                                                            </subviews>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="50" id="dVd-bQ-Hdf"/>
-                                                            </constraints>
-                                                        </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Answer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwv-Lr-PB4">
                                                             <rect key="frame" x="5" y="8" width="374" height="40"/>
                                                             <constraints>
@@ -83,22 +49,45 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRu-j2-wqp">
-                                                            <rect key="frame" x="5" y="56" width="374" height="74"/>
+                                                            <rect key="frame" x="5" y="60" width="374" height="70"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="QCk-PV-ta8">
+                                                            <rect key="frame" x="5" y="140" width="374" height="45"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Appeared in practice: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XwU-Js-8gm">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="21.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Update:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JfQ-vt-EkQ">
+                                                                    <rect key="frame" x="0.0" y="24.5" width="374" height="20.5"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="20.5" id="R5V-1X-fVJ"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="45" id="VJW-Ww-PkE"/>
+                                                            </constraints>
+                                                        </stackView>
                                                     </subviews>
                                                     <color key="backgroundColor" name="CardBackgroundColor"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="QCk-PV-ta8" secondAttribute="trailing" constant="5" id="2Vp-hf-Uue"/>
                                                         <constraint firstItem="lRu-j2-wqp" firstAttribute="leading" secondItem="vC0-lv-C1B" secondAttribute="leading" constant="5" id="5p5-Mr-pOS"/>
                                                         <constraint firstAttribute="trailing" secondItem="jwv-Lr-PB4" secondAttribute="trailing" constant="5" id="ERy-IP-BJG"/>
                                                         <constraint firstItem="jwv-Lr-PB4" firstAttribute="leading" secondItem="vC0-lv-C1B" secondAttribute="leading" constant="5" id="OWz-kr-YEk"/>
-                                                        <constraint firstItem="Wf6-tv-fib" firstAttribute="leading" secondItem="vC0-lv-C1B" secondAttribute="leading" id="PoG-fv-VX9"/>
-                                                        <constraint firstItem="lRu-j2-wqp" firstAttribute="top" secondItem="jwv-Lr-PB4" secondAttribute="bottom" constant="8" id="QvD-tA-8GY"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Wf6-tv-fib" secondAttribute="trailing" id="TPZ-0E-ZMh"/>
-                                                        <constraint firstItem="Wf6-tv-fib" firstAttribute="top" secondItem="lRu-j2-wqp" secondAttribute="bottom" constant="20" id="bcj-BP-zaG"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Wf6-tv-fib" secondAttribute="bottom" id="l4a-wm-wkp"/>
+                                                        <constraint firstAttribute="bottom" secondItem="QCk-PV-ta8" secondAttribute="bottom" constant="15" id="VEd-S1-pGq"/>
+                                                        <constraint firstItem="lRu-j2-wqp" firstAttribute="top" secondItem="jwv-Lr-PB4" secondAttribute="bottom" constant="12" id="aZJ-PG-bDY"/>
+                                                        <constraint firstItem="QCk-PV-ta8" firstAttribute="leading" secondItem="vC0-lv-C1B" secondAttribute="leading" constant="5" id="cEg-g7-1Ss"/>
+                                                        <constraint firstItem="QCk-PV-ta8" firstAttribute="top" secondItem="lRu-j2-wqp" secondAttribute="bottom" constant="10" id="kag-df-Oci"/>
                                                         <constraint firstAttribute="trailing" secondItem="lRu-j2-wqp" secondAttribute="trailing" constant="5" id="l8G-pP-924"/>
                                                         <constraint firstItem="jwv-Lr-PB4" firstAttribute="top" secondItem="vC0-lv-C1B" secondAttribute="top" constant="8" id="sP5-lA-YpG"/>
                                                     </constraints>
@@ -159,11 +148,11 @@
                                         <connections>
                                             <outlet property="answerLabel" destination="lRu-j2-wqp" id="d1X-bO-Fp4"/>
                                             <outlet property="answerView" destination="vC0-lv-C1B" id="Kzw-6w-F8K"/>
-                                            <outlet property="familiarQuizButton" destination="1QV-8U-M3o" id="UVj-dI-ezj"/>
+                                            <outlet property="appearedInPracticeLabel" destination="XwU-Js-8gm" id="s5x-5U-Q08"/>
+                                            <outlet property="lastUpdateLabel" destination="JfQ-vt-EkQ" id="HfN-5X-iVY"/>
                                             <outlet property="learningView" destination="FXP-kn-CkB" id="Zic-OS-67M"/>
                                             <outlet property="questionLabel" destination="VbZ-m9-NyP" id="VhC-Jj-0g3"/>
                                             <outlet property="questionView" destination="TMD-ec-aK9" id="MDc-EI-rv7"/>
-                                            <outlet property="unFamiliarQuizButton" destination="Hiz-td-Y29" id="ssD-9l-v0h"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -714,14 +703,14 @@
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PracticeTableViewCell" id="pp8-Pf-P8M" customClass="PracticeTableViewCell" customModule="ExQuizIt" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="116"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="106"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pp8-Pf-P8M" id="UkU-lC-YWo">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="116"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="106"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p4o-Yd-2ac" customClass="CardView" customModule="ExQuizIt" customModuleProvider="target">
-                                                    <rect key="frame" x="8" y="8" width="398" height="100"/>
+                                                    <rect key="frame" x="8" y="5" width="398" height="100"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Practice # 111" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g9A-TI-AyE">
                                                             <rect key="frame" x="8" y="8" width="250" height="17"/>
@@ -777,8 +766,8 @@
                                             <constraints>
                                                 <constraint firstItem="p4o-Yd-2ac" firstAttribute="leading" secondItem="UkU-lC-YWo" secondAttribute="leading" constant="8" id="4Ib-vW-3K3"/>
                                                 <constraint firstAttribute="trailing" secondItem="p4o-Yd-2ac" secondAttribute="trailing" constant="8" id="5o4-kH-fTN"/>
-                                                <constraint firstAttribute="bottom" secondItem="p4o-Yd-2ac" secondAttribute="bottom" constant="8" id="BfY-3s-9FS"/>
-                                                <constraint firstItem="p4o-Yd-2ac" firstAttribute="top" secondItem="UkU-lC-YWo" secondAttribute="top" constant="8" id="GQ3-Ny-9Rz"/>
+                                                <constraint firstAttribute="bottom" secondItem="p4o-Yd-2ac" secondAttribute="bottom" constant="1" id="BfY-3s-9FS"/>
+                                                <constraint firstItem="p4o-Yd-2ac" firstAttribute="top" secondItem="UkU-lC-YWo" secondAttribute="top" constant="5" id="GQ3-Ny-9Rz"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -786,8 +775,8 @@
                                             <outlet property="endTimeLabel" destination="GkJ-px-fns" id="qTv-f1-uKc"/>
                                             <outlet property="practiceNoLabel" destination="g9A-TI-AyE" id="ECn-d7-hg5"/>
                                             <outlet property="practiceView" destination="p4o-Yd-2ac" id="eWY-4c-ucr"/>
-                                            <outlet property="startTimeLabel" destination="Z8j-Kx-R9L" id="fvk-Kg-kte"/>
-                                            <outlet property="totalNoOfQuizzesLabel" destination="Z8j-Kx-R9L" id="JAu-s0-RrA"/>
+                                            <outlet property="startTimeLabel" destination="Z8j-Kx-R9L" id="u8G-gQ-Pps"/>
+                                            <outlet property="totalNoOfQuizzesLabel" destination="VeW-RS-cVi" id="MBZ-v5-AXR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

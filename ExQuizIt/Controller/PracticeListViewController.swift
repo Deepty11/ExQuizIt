@@ -27,6 +27,7 @@ class PracticeListViewController: UIViewController {
         super.viewWillAppear(animated)
         
         practiceSessions = databaseManager.getAllPracticeSessions()
+        tableView.reloadData()
         
         emptyLabel.isHidden = !practiceSessions.isEmpty
         tableView.isHidden = practiceSessions.isEmpty

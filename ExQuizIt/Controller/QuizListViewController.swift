@@ -245,37 +245,37 @@ extension QuizListViewController {
 }
 
 //MARK: - CellButtonInteractionDelegate
-extension QuizListViewController: CellButtonInteractionDelegate {
-    func handleUnCommonQuizButtonEvent(cell: UITableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
-            tableView.beginUpdates()
-            
-            answerViewDisplayed[indexPath.row] = false
-            quizSources[indexPath.row].learningStatus = Constants.MinLearningStatus
-            databaseManager.saveQuiz(quizSources[indexPath.row])
-            
-            flipCard(from: cell.answerView, to: cell.questionView)
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
-            
-            tableView.endUpdates()
-        }
-    }
-    
-    func handleCommonQuizButtonEvent(cell: UITableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
-            tableView.beginUpdates()
-            
-            answerViewDisplayed[indexPath.row] = false
-            quizSources[indexPath.row].learningStatus = Constants.MaxLearningStatus
-            databaseManager.saveQuiz(quizSources[indexPath.row])
-            
-            flipCard(from: cell.answerView, to: cell.questionView)
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown 
-            
-            tableView.endUpdates()
-        }
-    }
-}
+//extension QuizListViewController: CellButtonInteractionDelegate {
+//    func handleUnCommonQuizButtonEvent(cell: UITableViewCell) {
+//        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
+//            tableView.beginUpdates()
+//
+//            answerViewDisplayed[indexPath.row] = false
+//            quizSources[indexPath.row].learningStatus = Constants.MinLearningStatus
+//            databaseManager.saveQuiz(quizSources[indexPath.row])
+//
+//            flipCard(from: cell.answerView, to: cell.questionView)
+//            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+//
+//            tableView.endUpdates()
+//        }
+//    }
+//
+//    func handleCommonQuizButtonEvent(cell: UITableViewCell) {
+//        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
+//            tableView.beginUpdates()
+//
+//            answerViewDisplayed[indexPath.row] = false
+//            quizSources[indexPath.row].learningStatus = Constants.MaxLearningStatus
+//            databaseManager.saveQuiz(quizSources[indexPath.row])
+//
+//            flipCard(from: cell.answerView, to: cell.questionView)
+//            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+//
+//            tableView.endUpdates()
+//        }
+//    }
+//}
 
 //MARK: -TableView Delegate and DataSource
 extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -289,13 +289,15 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
             let quiz = quizSources[indexPath.row]
             cell.questionLabel.text = quiz.question
             cell.answerLabel.text = quiz.correct_answer
+            cell.appearedInPracticeLabel.text = "Total Appearance: \(String(quiz.numberOfTimesAppeared ?? 0))"
+            cell.lastUpdateLabel.text = "Last Update: \(quiz.latestTimeAppeared ?? "---")"
             
             let isAnswerDisplayed = answerViewDisplayed[indexPath.row]
             cell.questionView.isHidden = isAnswerDisplayed
             cell.answerView.isHidden = !isAnswerDisplayed
             cell.learningView.isHidden = quiz.isKnown
             
-            cell.delegate = self
+            //cell.delegate = self
             
             return cell
         }
@@ -355,18 +357,23 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
     
     //selecting on cell will flip the view
     internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !answerViewDisplayed[indexPath.row] {
-            tableView.beginUpdates()
-            
-            if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
-                answerViewDisplayed[indexPath.row] = true
-                
+        
+        tableView.beginUpdates()
+        
+        if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
+            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            if !answerViewDisplayed[indexPath.row] {
                 flipCard(from: cell.questionView, to: cell.answerView)
-                cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            } else {
+                flipCard(from: cell.answerView, to: cell.questionView)
             }
+            answerViewDisplayed[indexPath.row] = !answerViewDisplayed[indexPath.row]
             
-            tableView.endUpdates()
+            
+            
         }
+        
+        tableView.endUpdates()
         
     }
 }

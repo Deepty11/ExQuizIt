@@ -43,6 +43,10 @@ class CardViewController: UIViewController {
         self.checkBoxButton.tintColor = .black
         self.checkBoxButton.setImage(UIImage(named: "CheckboxCheckedIcon"), for: .selected)
         
+        guard let numberOfTimesAppeared = quiz.numberOfTimesAppeared else { return }
+        quiz.numberOfTimesAppeared = numberOfTimesAppeared + 1
+        quiz.latestTimeAppeared = Date().getFormattedDate(format: Strings.DateFormat)
+        
         self.tapToSeeAnswerView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleTapToSeeAnswerButtonTapped)))
@@ -74,14 +78,14 @@ class CardViewController: UIViewController {
         if self.isCheckedCheckBox {
             // update isKnown to true and set learningStatus to 5
             quiz.learningStatus = Constants.MaxLearningStatus
-            databaseManager.saveQuiz(quiz)
         } else {
             // update increment learning status by 1 and check
             // if learning status >= 5, set isKnown to true
             quiz.learningStatus = getLearningStatus(of: quiz)
-            databaseManager.saveQuiz(quiz)
+            
         }
         
+        databaseManager.saveQuiz(quiz)
         setQuizRecordStatus(with: quiz.learningStatus ?? Constants.MinLearningStatus)
         
         flipCard(from: answerView, to: questionView)
