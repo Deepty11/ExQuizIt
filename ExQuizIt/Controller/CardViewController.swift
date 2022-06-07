@@ -44,8 +44,9 @@ class CardViewController: UIViewController {
         self.checkBoxButton.setImage(UIImage(named: "CheckboxCheckedIcon"), for: .selected)
         
         guard let numberOfTimesAppeared = quiz.numberOfTimesAppeared else { return }
+        
         quiz.numberOfTimesAppeared = numberOfTimesAppeared + 1
-        quiz.latestTimeAppeared = Date().getFormattedDate(format: Strings.DateFormat)
+        quiz.latestTimeAppeared = Date().getCurrentDate(format: Strings.DateFormat)
         
         self.tapToSeeAnswerView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,

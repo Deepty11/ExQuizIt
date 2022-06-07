@@ -67,7 +67,7 @@ extension PracticePageViewController: PageViewDelegate {
                                animated: true)
         } else {
             // set end time and then save the practiceSession in realm
-            practiceSession.endTime = Date().getFormattedDate(format: Strings.DateFormat)
+            practiceSession.endTime = Date().getCurrentDate(format: Strings.DateFormat)
             databaseManager.savePracticeSession(practiceSession: practiceSession)
             
             if let vc = storyboard?.instantiateViewController(
