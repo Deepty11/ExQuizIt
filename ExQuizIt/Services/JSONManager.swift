@@ -16,7 +16,9 @@ class JSONManager {
     
     let databaseManager = DatabaseManager()
     
-    func getDataFrom(urlString: String, baseURLString: String = baseURL, completion: @escaping ([Quiz])-> Void) {
+    func getDataFrom(urlString: String,
+                     baseURLString: String = baseURL,
+                     completion: @escaping ([Quiz])-> Void) {
         if let url = URL(string: baseURLString + urlString) {
             let session = URLSession.shared
             let urlRequest = URLRequest(url: url)
@@ -48,42 +50,28 @@ class JSONManager {
         return quizJsonObjects
     }
     
-    func getAllQuizzesFromAPIsAndCachingToRealm(completion: @escaping ()->() ) {
+    func saveAllQuizzesToDatabase(completion: @escaping ()->() ) {
         let dispatchGroup = DispatchGroup()
         
-        // fetching and storing vehicles Quizzes
-        dispatchGroup.enter()
-        self.getDataFrom(urlString: Self.vehicleQuizURL) { vehicleQuizArray in
-            DispatchQueue.main.async { [weak self] in
-                self?.databaseManager.storeJSONParsedQuiz(with: vehicleQuizArray)
-            }
-            
-            dispatchGroup.leave()
-        }
-        
-        // fetching and storing sports Quizzes
-        dispatchGroup.enter()
-        self.getDataFrom(urlString: Self.sportsQuizURL) { sportsQuizArray in
-            DispatchQueue.main.async { [weak self] in
-                self?.databaseManager.storeJSONParsedQuiz(with: sportsQuizArray)
-            }
-            
-            dispatchGroup.leave()
-        }
-        
-        // fetching and storing computer Quizzes
-        dispatchGroup.enter()
-        self.getDataFrom(urlString: Self.computerQuizURL) { computerQuizArray in
-            DispatchQueue.main.async { [weak self] in
-                self?.databaseManager.storeJSONParsedQuiz(with: computerQuizArray)
-            }
-            
-            dispatchGroup.leave()
-        }
+        fetchAndStoreData(from: Self.vehicleQuizURL, dispatchGroup: dispatchGroup)
+        fetchAndStoreData(from: Self.sportsQuizURL, dispatchGroup: dispatchGroup)
+        fetchAndStoreData(from: Self.computerQuizURL, dispatchGroup: dispatchGroup)
         
         dispatchGroup.notify(queue: .main) {
             completion()
         } 
+    }
+    
+    func fetchAndStoreData(from urlString: String, dispatchGroup: DispatchGroup ){
+        dispatchGroup.enter()
+        
+        self.getDataFrom(urlString: Self.sportsQuizURL) { results in
+            DispatchQueue.main.async { [weak self] in
+                self?.databaseManager.storeJSONParsedQuiz(with: results)
+            }
+            
+            dispatchGroup.leave()
+        }
     }
     
 }

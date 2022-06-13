@@ -98,7 +98,7 @@ class QuizListViewController: UIViewController {
         
         showLoading(true)
         
-        jsonManager.getAllQuizzesFromAPIsAndCachingToRealm { [weak self]  in
+        jsonManager.saveAllQuizzesToDatabase { [weak self]  in
             guard let self = self else { return }
             
             self.showLoading(false)
@@ -317,7 +317,7 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.beginUpdates()
             
             self.showAlert(title: "Attention",
-                           message: "Do you want to delete the quiz?",
+                           message: "Are you sure you want to delete this quiz?",
                            cancelTitle: "Cancel") { [weak self] in
                 guard let self = self else { return }
                 
