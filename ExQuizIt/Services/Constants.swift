@@ -12,7 +12,7 @@ import UIKit
 struct Constants {
     static let MaxLearningStatus = 5
     static let MinLearningStatus = 0
-    static let DefaultNumberOfPracticeQuestions = 20
+    static let DefaultNumberOfPracticeQuizzes = 20
 }
 
 struct Strings {

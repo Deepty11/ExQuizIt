@@ -83,7 +83,7 @@ class QuizListViewController: UIViewController {
         let currentValue = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
         practiceQuizStepper.value = currentValue > 0
             ? Double(currentValue)
-            : Double(Constants.DefaultNumberOfPracticeQuestions)
+            : Double(Constants.DefaultNumberOfPracticeQuizzes)
         
         selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
         selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)

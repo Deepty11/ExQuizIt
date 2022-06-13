@@ -17,13 +17,11 @@ class PracticeSessionUtilityService {
     let databaseManager = DatabaseManager()
     
     func getPreferredNumberOfPracticeQuizzes() -> Int {
-        let selectedValue = UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
+        let selectedNumberOfPracticeQuizzes = UserDefaults.standard.integer(forKey: Strings.NumberOfPracticeQuizzes)
         
-        if selectedValue == 0 {
-            return Constants.DefaultNumberOfPracticeQuestions
-        }
+        if selectedNumberOfPracticeQuizzes == 0 { return Constants.DefaultNumberOfPracticeQuizzes }
         
-        return selectedValue
+        return selectedNumberOfPracticeQuizzes
     }
     
     func getRandomSlice(from quizArray: [Quiz], length: Int)-> [Quiz] {
