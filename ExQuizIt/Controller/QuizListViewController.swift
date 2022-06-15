@@ -23,6 +23,7 @@ class QuizListViewController: UIViewController {
     @IBOutlet weak var practiceQuizStepper: UIStepper!
     @IBOutlet weak var saveSettingsButton: UIButton!
     @IBOutlet weak var practiceButton: UIButton!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var visualEffectView: UIVisualEffectView!
     var originYOfSettingsView = 0.0
@@ -48,8 +49,11 @@ class QuizListViewController: UIViewController {
         setupLoading()
         
         configureNavigationBar()
+        
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
+        
         configurePracticeQuizStepper()
         
         saveSettingsButton.layer.cornerRadius = 5.0
@@ -346,5 +350,16 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
         
         tableView.endUpdates()
         
+    }
+}
+
+//MARK: - Searchbar delegates
+extension QuizListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        //
     }
 }

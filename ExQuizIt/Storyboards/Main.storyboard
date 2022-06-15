@@ -24,7 +24,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="TRI-WF-AWl">
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRI-WF-AWl">
                                 <rect key="frame" x="15" y="88" width="384" height="51"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -308,6 +308,7 @@
                         <outlet property="practiceQuizStepper" destination="VC4-HP-cWE" id="daG-y5-oax"/>
                         <outlet property="quizLoadingActivityIndicatorView" destination="b7J-hk-bjm" id="0CN-wF-giE"/>
                         <outlet property="saveSettingsButton" destination="F3U-vN-JIJ" id="RZl-nh-0VW"/>
+                        <outlet property="searchBar" destination="TRI-WF-AWl" id="bDf-tE-0ch"/>
                         <outlet property="selectedValueForPracticeQuizLabel" destination="rKa-7m-yn0" id="ziV-zX-Bbp"/>
                         <outlet property="settingsView" destination="ZSu-Xo-YOE" id="3EV-Qm-mo4"/>
                         <outlet property="settingsViewBottomConstraint" destination="amB-QA-6kC" id="AkS-61-vU7"/>
