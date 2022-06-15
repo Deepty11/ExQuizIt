@@ -24,8 +24,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="TRI-WF-AWl">
+                                <rect key="frame" x="15" y="88" width="384" height="51"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="searchField.textColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3Il-6H-3nn">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="820"/>
+                                <rect key="frame" x="0.0" y="141" width="414" height="679"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -275,13 +286,16 @@
                             <constraint firstItem="cw7-OK-qKf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="D6I-f1-lX1"/>
                             <constraint firstAttribute="bottom" secondItem="Ife-Uj-Gnw" secondAttribute="bottom" id="FA7-Kl-Yfn"/>
                             <constraint firstItem="Izf-VG-STx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="FEI-4C-MD8"/>
-                            <constraint firstItem="3Il-6H-3nn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Ka2-FK-ZxL"/>
+                            <constraint firstItem="TRI-WF-AWl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Gns-TY-w54"/>
                             <constraint firstAttribute="trailing" secondItem="ZSu-Xo-YOE" secondAttribute="trailing" id="PCa-uV-1I8"/>
+                            <constraint firstItem="TRI-WF-AWl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-15" id="RXy-m1-k9A"/>
                             <constraint firstItem="b7J-hk-bjm" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SX2-UA-Qby"/>
                             <constraint firstAttribute="trailing" secondItem="Ife-Uj-Gnw" secondAttribute="trailing" id="U6n-qB-JIm"/>
                             <constraint firstItem="Ife-Uj-Gnw" firstAttribute="top" secondItem="3Il-6H-3nn" secondAttribute="bottom" id="YQb-yu-SYU"/>
                             <constraint firstItem="ZSu-Xo-YOE" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="amB-QA-6kC"/>
                             <constraint firstItem="3Il-6H-3nn" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="kZ1-Z7-0pv"/>
+                            <constraint firstItem="TRI-WF-AWl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="nfq-pq-nK3"/>
+                            <constraint firstItem="3Il-6H-3nn" firstAttribute="top" secondItem="TRI-WF-AWl" secondAttribute="bottom" constant="2" id="omL-gX-bqy"/>
                             <constraint firstItem="Ife-Uj-Gnw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="tpC-gM-cxM"/>
                             <constraint firstItem="ZSu-Xo-YOE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="uUc-zq-7em"/>
                             <constraint firstItem="3Il-6H-3nn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vpO-IJ-wYw"/>
