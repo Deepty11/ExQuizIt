@@ -20,18 +20,10 @@ class QuizTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.learningView.layer.borderWidth = 1
-        self.learningView.layer.borderColor = UIColor.systemPink.cgColor
-        self.learningView.layer.cornerRadius = 2
+        learningView.layer.borderWidth = 1
+        learningView.layer.borderColor = UIColor.systemPink.cgColor
+        learningView.layer.cornerRadius = 2
         
         selectionStyle = .none
     }
-    
-//    @IBAction func handleUnFamiliarQuizButtonTapped(_ sender: Any) {
-//        delegate?.handleUnCommonQuizButtonEvent(cell: self)
-//    }
-//    
-//    @IBAction func handleCommonQuizButtonTapped(_ sender: Any) {
-//        delegate?.handleCommonQuizButtonEvent(cell: self)
-//    }
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 class PracticeTableViewCell: UITableViewCell {
-
     @IBOutlet weak var practiceView: CardView!
     @IBOutlet weak var practiceNoLabel: UILabel!
     @IBOutlet weak var totalNoOfQuizzesLabel: UILabel!

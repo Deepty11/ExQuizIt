@@ -34,8 +34,8 @@ class CardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.questionLabel.text = self.quiz.question
-        self.quizIndexLabel.text = "\(self.pageIndex + 1)/\(practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes())"
+        self.questionLabel.text = quiz.question
+        self.quizIndexLabel.text = "\(pageIndex + 1)/\(practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes())"
         
         self.questionView.isHidden = false
         self.answerView.isHidden = true
@@ -46,7 +46,7 @@ class CardViewController: UIViewController {
         guard let numberOfTimesAppeared = quiz.numberOfTimesAppeared else { return }
         
         quiz.numberOfTimesAppeared = numberOfTimesAppeared + 1
-        quiz.latestTimeAppeared = Date().getCurrentDate(format: Strings.DateFormat)
+        quiz.latestTimeAppeared = Date().formatted(with: Strings.DateFormat)
         
         self.tapToSeeAnswerView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,

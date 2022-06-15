@@ -32,7 +32,7 @@ class QuizListViewController: UIViewController {
     
     let practiceSessionUtilityService = PracticeSessionUtilityService()
     let databaseManager = DatabaseManager()
-    let jsonManager = JSONManager()
+    let apiManager = APIManager()
     
     var quizSources = [Quiz]() {
         didSet {
@@ -98,7 +98,7 @@ class QuizListViewController: UIViewController {
         
         showLoading(true)
         
-        jsonManager.saveAllQuizzesToDatabase { [weak self]  in
+        apiManager.saveAllQuizzesToDatabase { [weak self]  in
             guard let self = self else { return }
             
             self.showLoading(false)
@@ -178,18 +178,19 @@ class QuizListViewController: UIViewController {
     }
     
     @objc private func handleSettingsButtonTapped() {
-        isSettingsViewVisible ? self.hideSettingsView() : self.showSettingsView()
+        isSettingsViewVisible ? hideSettingsView() : showSettingsView()
     }
     
     private func storeNumberOfPracticeQuizzes() {
-        UserDefaults.standard.set(selectedValueForPracticeQuizzes, forKey: Strings.NumberOfPracticeQuizzes)
+        UserDefaults.standard.set(selectedValueForPracticeQuizzes,
+                                  forKey: Strings.NumberOfPracticeQuizzes)
     }
     
     private func addVisualEffectSubview() {
         let blurrEffect = UIBlurEffect(style: .dark)
         visualEffectView = UIVisualEffectView(effect: blurrEffect)
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(self.visualEffectView)
+        view.addSubview(visualEffectView)
         
         NSLayoutConstraint.activate([
             visualEffectView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0.0),
@@ -202,6 +203,41 @@ class QuizListViewController: UIViewController {
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleViewDidTapped(_:))))
         visualEffectView.isHidden = true
+    }
+    
+    // MARK: - Private Utils
+    
+    fileprivate func deleteQuiz(atIndexPath indexPath: IndexPath) {
+        tableView.beginUpdates()
+        
+        self.showAlert(title: "Attention",
+                       message: "Are you sure you want to delete this quiz?",
+                       cancelTitle: "Cancel") { [weak self] in
+            guard let self = self else { return }
+            
+            self.databaseManager.deleteQuiz(quiz: self.quizSources[indexPath.row])
+            
+            self.showToast(title: nil, message: "Deleted Successfully") {
+                self.quizSources  = self.databaseManager.getAllQuizzes()
+                
+                if self.quizSources.isEmpty {
+                    self.tableView.isHidden = true
+                    self.emptyQuizLabel.isHidden = false
+                }
+            }
+        }
+        
+        tableView.endUpdates()
+    }
+    
+    fileprivate func editQuiz(atIndexPath indexPath: IndexPath) {
+        if let vc = self.storyboard?.instantiateViewController(
+            withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
+            vc.storeType = .update
+            vc.quiz = self.quizSources[indexPath.row]
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        }
     }
 }
 
@@ -232,8 +268,8 @@ extension QuizListViewController {
             self.visualEffectView.isHidden = true
         }
         
-        self.isSettingsViewVisible = false
-        self.storeNumberOfPracticeQuizzes()
+        isSettingsViewVisible = false
+        storeNumberOfPracticeQuizzes()
     }
     
     @IBAction func handleStepperTapped(_ sender: Any) {
@@ -243,39 +279,6 @@ extension QuizListViewController {
         }
     }
 }
-
-//MARK: - CellButtonInteractionDelegate
-//extension QuizListViewController: CellButtonInteractionDelegate {
-//    func handleUnCommonQuizButtonEvent(cell: UITableViewCell) {
-//        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
-//            tableView.beginUpdates()
-//
-//            answerViewDisplayed[indexPath.row] = false
-//            quizSources[indexPath.row].learningStatus = Constants.MinLearningStatus
-//            databaseManager.saveQuiz(quizSources[indexPath.row])
-//
-//            flipCard(from: cell.answerView, to: cell.questionView)
-//            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
-//
-//            tableView.endUpdates()
-//        }
-//    }
-//
-//    func handleCommonQuizButtonEvent(cell: UITableViewCell) {
-//        if let indexPath = tableView.indexPath(for: cell), let cell = cell as? QuizTableViewCell {
-//            tableView.beginUpdates()
-//
-//            answerViewDisplayed[indexPath.row] = false
-//            quizSources[indexPath.row].learningStatus = Constants.MaxLearningStatus
-//            databaseManager.saveQuiz(quizSources[indexPath.row])
-//
-//            flipCard(from: cell.answerView, to: cell.questionView)
-//            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
-//
-//            tableView.endUpdates()
-//        }
-//    }
-//}
 
 //MARK: -TableView Delegate and DataSource
 extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -287,17 +290,18 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: QuizTableViewCell.self),
                                                     for: indexPath) as? QuizTableViewCell {
             let quiz = quizSources[indexPath.row]
+            
             cell.questionLabel.text = quiz.question
             cell.answerLabel.text = quiz.correct_answer
-            cell.appearedInPracticeLabel.text = "Total Appearance: \(String(quiz.numberOfTimesAppeared ?? 0))"
-            cell.lastUpdateLabel.text = "Last Update: \(quiz.latestTimeAppeared ?? "---")"
+            cell.appearedInPracticeLabel.text = Strings.AppearedInPracticeString
+                + String(quiz.numberOfTimesAppeared ?? Constants.DefaultNumberOfTimesAppeared)
+            cell.lastUpdateLabel.text = Strings.LastUpdateString
+                + (quiz.latestTimeAppeared ?? Strings.DefaultAppearedInPracticeString)
             
             let isAnswerDisplayed = answerViewDisplayed[indexPath.row]
             cell.questionView.isHidden = isAnswerDisplayed
             cell.answerView.isHidden = !isAnswerDisplayed
             cell.learningView.isHidden = quiz.isKnown
-            
-            //cell.delegate = self
             
             return cell
         }
@@ -310,46 +314,14 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     internal func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .destructive,
-                                          title: "Delete") { [weak self] action, indexPath in
-            guard let self = self else { return }
-            
-            tableView.beginUpdates()
-            
-            self.showAlert(title: "Attention",
-                           message: "Are you sure you want to delete this quiz?",
-                           cancelTitle: "Cancel") { [weak self] in
-                guard let self = self else { return }
-                
-                self.databaseManager.deleteQuiz(quiz: self.quizSources[indexPath.row])
-                
-                self.showToast(title: nil, message: "Deleted Successfully") {
-                    self.quizSources  = self.databaseManager.getAllQuizzes()
-                    
-                    if self.quizSources.isEmpty {
-                        self.tableView.isHidden = true
-                        self.emptyQuizLabel.isHidden = false
-                    }
-                    
-                }
-            }
-            
-            tableView.endUpdates()
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { [weak self] _, indexPath in
+            self?.deleteQuiz(atIndexPath: indexPath)
         }
-        
-        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { [weak self] action, indexPath in
-            guard let self = self else{ return }
-            
-            if let vc = self.storyboard?.instantiateViewController(
-                withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
-                vc.storeType = .update
-                vc.quiz = self.quizSources[indexPath.row]
-                self.navigationController?.pushViewController(vc, animated: true)
-                
-            }
-        }
-        
         deleteAction.backgroundColor = .red
+        
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { [weak self] _, indexPath in
+            self?.editQuiz(atIndexPath: indexPath)
+        }
         editAction.backgroundColor = .green
         
         return [deleteAction, editAction]
@@ -357,20 +329,19 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
     
     //selecting on cell will flip the view
     internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         tableView.beginUpdates()
         
         if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
-            cell.learningView.isHidden = quizSources[indexPath.row].isKnown
+            let quiz = quizSources[indexPath.row]
+            cell.learningView.isHidden = quiz.isKnown
+            
             if !answerViewDisplayed[indexPath.row] {
                 flipCard(from: cell.questionView, to: cell.answerView)
             } else {
                 flipCard(from: cell.answerView, to: cell.questionView)
             }
+            
             answerViewDisplayed[indexPath.row] = !answerViewDisplayed[indexPath.row]
-            
-            
-            
         }
         
         tableView.endUpdates()

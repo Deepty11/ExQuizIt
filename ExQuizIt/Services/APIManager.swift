@@ -7,7 +7,7 @@
 
 import Foundation
 
-class JSONManager {
+class APIManager {
     static let baseURL = "https://opentdb.com/api.php"
     
     static let vehicleQuizURL = "?amount=50&category=28"
@@ -25,9 +25,7 @@ class JSONManager {
             var quizzes = [Quiz]()
             
             session.dataTask(with: urlRequest) { data, response, error in
-                guard error == nil else {
-                    return
-                }
+                guard error == nil else { return }
                 
                 if let data = data {
                     quizzes = self.parseJsonFrom(data: data)
@@ -65,7 +63,7 @@ class JSONManager {
     func fetchAndStoreData(from urlString: String, dispatchGroup: DispatchGroup ){
         dispatchGroup.enter()
         
-        self.getDataFrom(urlString: Self.sportsQuizURL) { results in
+        self.getDataFrom(urlString: urlString) { results in
             DispatchQueue.main.async { [weak self] in
                 self?.databaseManager.storeJSONParsedQuiz(with: results)
             }

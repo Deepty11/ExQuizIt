@@ -23,8 +23,7 @@ protocol CellInteractionDelegte {
     func textViewDidChanged(cell: UITableViewCell)
 }
 
-class AddQuizViewController: UIViewController,
-                             UIScrollViewDelegate {
+class AddQuizViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     

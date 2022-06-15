@@ -9,7 +9,7 @@ import Foundation
 
 struct PracticeSession {
     var id: String = UUID().uuidString
-    var startTime: String = Date().getCurrentDate(format: Strings.DateFormat)
+    var startTime: String = Date().formatted(with: Strings.DateFormat)
     var endTime: String = ""
     var quizRecords:[QuizRecord] = []
 }

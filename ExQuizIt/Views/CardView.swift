@@ -10,16 +10,16 @@ import UIKit
 class CardView: UIView {
 
     override func layoutSubviews() {
-        self.setRoundedBorderAndShadow()
+        setRoundedBorderAndShadow()
     }
     
     func setRoundedBorderAndShadow() {
-        self.layer.cornerRadius = 5.0
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-        self.layer.shadowRadius = 3.0
-        self.layer.shadowOffset = CGSize(width: 3, height: 3)
-        self.layer.shadowOpacity = 0.65
+        layer.cornerRadius = 5.0
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shadowRadius = 3.0
+        layer.shadowOffset = CGSize(width: 3, height: 3)
+        layer.shadowOpacity = 0.65
     }
 
 }

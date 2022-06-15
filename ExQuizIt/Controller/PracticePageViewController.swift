@@ -44,6 +44,7 @@ class PracticePageViewController: UIPageViewController {
             vc.quiz = quizzes[index]
             vc.quizRecord = QuizRecord(id: quizzes[index].id ?? "")
             vc.delegate = self
+            
             return vc
         }
         
@@ -67,7 +68,7 @@ extension PracticePageViewController: PageViewDelegate {
                                animated: true)
         } else {
             // set end time and then save the practiceSession in realm
-            practiceSession.endTime = Date().getCurrentDate(format: Strings.DateFormat)
+            practiceSession.endTime = Date().formatted(with: Strings.DateFormat)
             databaseManager.savePracticeSession(practiceSession: practiceSession)
             
             if let vc = storyboard?.instantiateViewController(

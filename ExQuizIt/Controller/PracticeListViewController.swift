@@ -8,7 +8,6 @@
 import UIKit
 
 class PracticeListViewController: UIViewController {
-
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyLabel: UILabel!
     
@@ -27,10 +26,7 @@ class PracticeListViewController: UIViewController {
         super.viewWillAppear(animated)
         
         practiceSessions = databaseManager.getAllPracticeSessions()
-        tableView.reloadData()
-        
-        emptyLabel.isHidden = !practiceSessions.isEmpty
-        tableView.isHidden = practiceSessions.isEmpty
+        reload()
     }
     
     @IBAction func handleTakeAQuizTapped(_ sender: Any) {
@@ -41,6 +37,12 @@ class PracticeListViewController: UIViewController {
         }
     }
 
+    fileprivate func reload() {
+        tableView.reloadData()
+        
+        emptyLabel.isHidden = !practiceSessions.isEmpty
+        tableView.isHidden = practiceSessions.isEmpty
+    }
 }
 
  // MARK: - TableView Delegates and Datasource
@@ -54,10 +56,10 @@ extension PracticeListViewController: UITableViewDelegate, UITableViewDataSource
                                                     for: indexPath) as? PracticeTableViewCell {
             let practiceRecord = practiceSessions[indexPath.row]
             
-            cell.practiceNoLabel.text = Strings.practiceNoString + String(indexPath.row + 1)
-            cell.totalNoOfQuizzesLabel.text = Strings.totalQuizString + String(practiceRecord.quizRecords.count)
-            cell.startTimeLabel.text = Strings.startTimeString + practiceRecord.startTime
-            cell.endTimeLabel.text = Strings.endTimeString + practiceRecord.endTime
+            cell.practiceNoLabel.text = Strings.PracticeNoString + String(indexPath.row + 1)
+            cell.totalNoOfQuizzesLabel.text = Strings.TotalQuizString + String(practiceRecord.quizRecords.count)
+            cell.startTimeLabel.text = Strings.StartTimeString + practiceRecord.startTime
+            cell.endTimeLabel.text = Strings.EndTimeString + practiceRecord.endTime
             
             return cell
         }

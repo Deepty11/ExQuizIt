@@ -19,11 +19,11 @@ class GradientView: UIView {
         }
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [self.fromColor.cgColor , self.toColor.cgColor]
+        gradientLayer.colors = [fromColor.cgColor , toColor.cgColor]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0)
-        gradientLayer.frame = self.bounds
+        gradientLayer.frame = bounds
         
-        self.layer.insertSublayer(gradientLayer, at: 0)
+        layer.insertSublayer(gradientLayer, at: 0)
     }
 }

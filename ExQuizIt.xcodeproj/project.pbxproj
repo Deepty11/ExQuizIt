@@ -35,7 +35,7 @@
 		BFE8790828436B4D00C3D985 /* RLMPracticeSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */; };
 		BFE8790A284371A500C3D985 /* PracticeSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */; };
 		BFE8790C2843797200C3D985 /* Date+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790B2843797200C3D985 /* Date+Format.swift */; };
-		FD6435F428048FC300137173 /* JSONManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6435F328048FC300137173 /* JSONManager.swift */; };
+		FD6435F428048FC300137173 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6435F328048FC300137173 /* APIManager.swift */; };
 		FD6F1DAD280C20F400C9DFC6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD6F1DAC280C20F300C9DFC6 /* Main.storyboard */; };
 		FD894AAD280B3BA300C43AF8 /* PracticePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAC280B3BA300C43AF8 /* PracticePageViewController.swift */; };
 		FD894AAF280B3E3500C43AF8 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAE280B3E3500C43AF8 /* CardViewController.swift */; };
@@ -104,7 +104,7 @@
 		F495C154D69D67BE1700BCE5 /* Pods-ExQuizItTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExQuizItTests.release.xcconfig"; path = "Target Support Files/Pods-ExQuizItTests/Pods-ExQuizItTests.release.xcconfig"; sourceTree = "<group>"; };
 		F5584D5512A1F88DF15AAF8C /* Pods-NotesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesApp.release.xcconfig"; path = "Target Support Files/Pods-NotesApp/Pods-NotesApp.release.xcconfig"; sourceTree = "<group>"; };
 		FBE21741A1334B68CE390925 /* Pods_ExQuizIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExQuizIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FD6435F328048FC300137173 /* JSONManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONManager.swift; sourceTree = "<group>"; };
+		FD6435F328048FC300137173 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD6F1DAC280C20F300C9DFC6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FD769E1476FFAA6AA94EB3A0 /* Pods-NotesApp-NotesAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesApp-NotesAppUITests.release.xcconfig"; path = "Target Support Files/Pods-NotesApp-NotesAppUITests/Pods-NotesApp-NotesAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FD894AAC280B3BA300C43AF8 /* PracticePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticePageViewController.swift; sourceTree = "<group>"; };
@@ -284,7 +284,7 @@
 		FD6435F228048F9E00137173 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				FD6435F328048FC300137173 /* JSONManager.swift */,
+				FD6435F328048FC300137173 /* APIManager.swift */,
 				BF60D2392805223F00325024 /* DatabaseManager.swift */,
 				BF60D23B280527EA00325024 /* Constants.swift */,
 				BF8D0D8C2810FE66002E8D2C /* PracticeSessionUtilityService.swift */,
@@ -541,7 +541,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF3AD31627FC1FE900002E53 /* QuizListViewController.swift in Sources */,
-				FD6435F428048FC300137173 /* JSONManager.swift in Sources */,
+				FD6435F428048FC300137173 /* APIManager.swift in Sources */,
 				BFDC08782848B23200FC2780 /* PracticeTableViewCell.swift in Sources */,
 				BF60D23A2805223F00325024 /* DatabaseManager.swift in Sources */,
 				BFBFC4962817CE8400FE213D /* PracticeQuizStatisticsViewController.swift in Sources */,

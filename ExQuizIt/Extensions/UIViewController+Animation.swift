@@ -10,13 +10,13 @@ import UIKit
 
 extension UIViewController {
     func flipCard(from source: UIView, to destination: UIView) {
-        animateTransition(for: source, hideView: true)
-        animateTransition(for: destination, hideView: false)
+        animateTransition(for: source, shouldHide: true)
+        animateTransition(for: destination, shouldHide: false)
     }
 
-    func animateTransition(for view: UIView, hideView: Bool) {
+    func animateTransition(for view: UIView, shouldHide: Bool) {
         UIView.transition(with: view, duration: 0.25, options: .defaultTransitionOption) {
-            view.isHidden = hideView
+            view.isHidden = shouldHide
         }
     }
 }

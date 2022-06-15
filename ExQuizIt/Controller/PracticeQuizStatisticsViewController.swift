@@ -36,7 +36,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
             (vc) -> Bool in
             if vc.isKind(of: PracticePageViewController.self){
                 return true
-            } else{
+            } else {
                 return false
             }
         })
