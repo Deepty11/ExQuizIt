@@ -11,7 +11,7 @@ import RealmSwift
 class DatabaseManager {
     var realm = try! Realm()
     
-    func storeJSONParsedQuiz(with quizzes: [Quiz]) {
+    func storeQuizzes(_ quizzes: [Quiz]) {
         let quizEntries = quizzes.map {
             RLMQuizModel(
                 question: processText(for: $0.question),

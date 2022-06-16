@@ -16,6 +16,8 @@ class APIManager {
     
     let databaseManager = DatabaseManager()
     
+    var quizzes: [Quiz] = []
+    
     func getDataFrom(urlString: String,
                      baseURLString: String = baseURL,
                      completion: @escaping ([Quiz])-> Void) {
@@ -48,27 +50,26 @@ class APIManager {
         return quizJsonObjects
     }
     
-    func saveAllQuizzesToDatabase(completion: @escaping ()->() ) {
+    func getQuizzesFromAPI(completion: @escaping ([Quiz])->() ) {
         let dispatchGroup = DispatchGroup()
         
         fetchAndStoreData(from: Self.vehicleQuizURL, dispatchGroup: dispatchGroup)
         fetchAndStoreData(from: Self.sportsQuizURL, dispatchGroup: dispatchGroup)
         fetchAndStoreData(from: Self.computerQuizURL, dispatchGroup: dispatchGroup)
         
-        dispatchGroup.notify(queue: .main) {
-            completion()
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            completion(self.quizzes)
         } 
     }
     
     func fetchAndStoreData(from urlString: String, dispatchGroup: DispatchGroup ){
         dispatchGroup.enter()
         
-        self.getDataFrom(urlString: urlString) { results in
-            DispatchQueue.main.async { [weak self] in
-                self?.databaseManager.storeJSONParsedQuiz(with: results)
-            }
-            
+        getDataFrom(urlString: urlString) { [weak self] results in
+            self?.quizzes.append(contentsOf: results)
             dispatchGroup.leave()
+            
         }
     }
     

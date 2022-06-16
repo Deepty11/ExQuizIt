@@ -102,9 +102,10 @@ class QuizListViewController: UIViewController {
         
         showLoading(true)
         
-        apiManager.saveAllQuizzesToDatabase { [weak self]  in
+        apiManager.getQuizzesFromAPI { [weak self] quizzes in
             guard let self = self else { return }
             
+            self.databaseManager.storeQuizzes(quizzes)
             self.showLoading(false)
             self.refreshUI()
         }
