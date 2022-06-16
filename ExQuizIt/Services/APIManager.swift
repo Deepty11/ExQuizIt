@@ -14,8 +14,6 @@ class APIManager {
     static let sportsQuizURL = "?amount=50&category=21"
     static let computerQuizURL = "?amount=30&category=18"
     
-    let databaseManager = DatabaseManager()
-    
     var quizzes: [Quiz] = []
     
     func getDataFrom(urlString: String,

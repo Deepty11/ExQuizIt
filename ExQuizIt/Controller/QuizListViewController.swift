@@ -357,10 +357,18 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - Searchbar delegates
 extension QuizListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        //
+        quizSources = searchText.isEmpty
+            ? databaseManager.getAllQuizzes()
+        : databaseManager.filterQuizzes(with: searchText)
+        
+        tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        //
+        searchBar.text = ""
+        quizSources = databaseManager.getAllQuizzes()
+        
+        view.endEditing(true)
+        tableView.reloadData()
     }
 }
