@@ -43,20 +43,17 @@ class DatabaseManager {
     
     func filterQuizzes(with searchText: String ) -> [Quiz]{
         getAllQuizzes().filter({
-            // first search in questions
-            // if found nil, search in answers and then return the results
-            var filteredQuizzes = $0.question.range(of: searchText,
-                                                    options: .caseInsensitive,
-                                                    range: nil ,
-                                                    locale: nil)
-            if filteredQuizzes == nil {
-                filteredQuizzes = $0.correct_answer.range(of: searchText,
-                                                          options: .caseInsensitive,
-                                                          range: nil ,
-                                                          locale: nil)
-            }
-            
-            return filteredQuizzes != nil
+            let searchableText = $0.question + $0.correct_answer
+            return searchableText.range(of: searchText,
+                                        options: .caseInsensitive,
+                                        range: nil ,
+                                        locale: nil) != nil
+//            if filteredQuizzes == nil {
+//                filteredQuizzes = $0.correct_answer.range(of: searchText,
+//                                                          options: .caseInsensitive,
+//                                                          range: nil ,
+//                                                          locale: nil)
+//            }
             
         })
     }

@@ -25,7 +25,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRI-WF-AWl">
-                                <rect key="frame" x="15" y="88" width="384" height="51"/>
+                                <rect key="frame" x="15" y="93" width="384" height="51"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
@@ -36,7 +37,7 @@
                                 </userDefinedRuntimeAttributes>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3Il-6H-3nn">
-                                <rect key="frame" x="0.0" y="141" width="414" height="679"/>
+                                <rect key="frame" x="0.0" y="146" width="414" height="674"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -286,7 +287,7 @@
                             <constraint firstItem="cw7-OK-qKf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="D6I-f1-lX1"/>
                             <constraint firstAttribute="bottom" secondItem="Ife-Uj-Gnw" secondAttribute="bottom" id="FA7-Kl-Yfn"/>
                             <constraint firstItem="Izf-VG-STx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="FEI-4C-MD8"/>
-                            <constraint firstItem="TRI-WF-AWl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Gns-TY-w54"/>
+                            <constraint firstItem="TRI-WF-AWl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="5" id="Gns-TY-w54"/>
                             <constraint firstAttribute="trailing" secondItem="ZSu-Xo-YOE" secondAttribute="trailing" id="PCa-uV-1I8"/>
                             <constraint firstItem="TRI-WF-AWl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-15" id="RXy-m1-k9A"/>
                             <constraint firstItem="b7J-hk-bjm" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SX2-UA-Qby"/>
@@ -303,6 +304,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="nDp-uc-rcy"/>
                     <connections>
+                        <outlet property="actionContainer" destination="Ife-Uj-Gnw" id="LLJ-Ga-I0G"/>
                         <outlet property="emptyQuizLabel" destination="cw7-OK-qKf" id="0Do-fC-0Pf"/>
                         <outlet property="practiceButton" destination="Izf-VG-STx" id="sD0-Fa-4t9"/>
                         <outlet property="practiceQuizStepper" destination="VC4-HP-cWE" id="daG-y5-oax"/>
@@ -313,6 +315,7 @@
                         <outlet property="settingsView" destination="ZSu-Xo-YOE" id="3EV-Qm-mo4"/>
                         <outlet property="settingsViewBottomConstraint" destination="amB-QA-6kC" id="AkS-61-vU7"/>
                         <outlet property="tableView" destination="3Il-6H-3nn" id="u5o-eF-U2f"/>
+                        <outlet property="tableViewBottomConstraints" destination="YQb-yu-SYU" id="fT0-aL-1Bc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

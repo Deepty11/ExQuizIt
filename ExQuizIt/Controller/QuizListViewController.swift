@@ -24,16 +24,18 @@ class QuizListViewController: UIViewController {
     @IBOutlet weak var saveSettingsButton: UIButton!
     @IBOutlet weak var practiceButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableViewBottomConstraints: NSLayoutConstraint!
+    @IBOutlet weak var actionContainer: UIView!
     
     var visualEffectView: UIVisualEffectView!
     var originYOfSettingsView = 0.0
-    var answerViewDisplayed : [Bool] = []
     var isSettingsViewVisible = false
     var selectedValueForPracticeQuizzes = 0
     
     let practiceSessionUtilityService = PracticeSessionUtilityService()
     let databaseManager = DatabaseManager()
     let apiManager = APIManager()
+    var flippedQuizzesSet: Set<String> = []
     
     var quizSources = [Quiz]() {
         didSet {
@@ -58,11 +60,19 @@ class QuizListViewController: UIViewController {
         
         saveSettingsButton.layer.cornerRadius = 5.0
         
-        practiceButton.isUserInteractionEnabled = true
-        practiceButton.addGestureRecognizer(UITapGestureRecognizer(
-            target: self,
-            action: #selector(handlePracticeButtonTapped)
-        ))
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyBoardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyBoardWillHide),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+        
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                         action: #selector(handleViewDidTapped(_:))))
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +106,7 @@ class QuizListViewController: UIViewController {
     
     private func fetchQuizzes() {
         guard databaseManager.getAllQuizzes().isEmpty else {
+            quizSources = databaseManager.getAllQuizzes()
             refreshUI()
             return
         }
@@ -106,6 +117,7 @@ class QuizListViewController: UIViewController {
             guard let self = self else { return }
             
             self.databaseManager.storeQuizzes(quizzes)
+            self.quizSources = self.databaseManager.getAllQuizzes()
             self.showLoading(false)
             self.refreshUI()
         }
@@ -133,13 +145,8 @@ class QuizListViewController: UIViewController {
         }
     }
     
-    private func initiateAnswerViewDisplayedArray() {
-        quizSources = databaseManager.getAllQuizzes()
-        answerViewDisplayed = Array(repeating: false, count: quizSources.count)
-    }
-    
     private func refreshUI() {
-        initiateAnswerViewDisplayedArray()
+        //initiateAnswerViewDisplayedArray()
         
         tableView.reloadData()
         tableView.isHidden = quizSources.isEmpty
@@ -170,7 +177,12 @@ class QuizListViewController: UIViewController {
     }
                                                             
     @objc private func handleViewDidTapped(_ sender: UITapGestureRecognizer) {
-        hideSettingsView()
+        if isSettingsViewVisible {
+            hideSettingsView()
+        } else {
+            view.endEditing(true)
+        }
+        
     }
     
     @objc private func handleAddButtonTapped() {
@@ -184,6 +196,28 @@ class QuizListViewController: UIViewController {
     
     @objc private func handleSettingsButtonTapped() {
         isSettingsViewVisible ? hideSettingsView() : showSettingsView()
+    }
+    
+    @objc func handleCellViewTapped(_ sender: UITapGestureRecognizer) {
+        tableView.beginUpdates()
+        
+        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)),
+            let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
+            let quiz = quizSources[indexPath.row]
+            cell.learningView.isHidden = quiz.isKnown
+            
+            guard let quidId = quiz.id else { return }
+            
+            if !flippedQuizzesSet.contains(quidId) {
+                flipCard(from: cell.questionView, to: cell.answerView)
+                flippedQuizzesSet.insert(quidId)
+            } else {
+                flipCard(from: cell.answerView, to: cell.questionView)
+                flippedQuizzesSet.remove(quidId)
+            }
+        }
+        
+        tableView.endUpdates()
     }
     
     private func storeNumberOfPracticeQuizzes() {
@@ -244,6 +278,12 @@ class QuizListViewController: UIViewController {
             
         }
     }
+    
+    func addTapGestureRecognizer(_ view: UIView) {
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                         action: #selector(handleCellViewTapped(_:))))
+    }
 }
 
 //MARK: - Settings View
@@ -283,6 +323,7 @@ extension QuizListViewController {
             selectedValueForPracticeQuizzes = Int(sender.value)
         }
     }
+    
 }
 
 //MARK: -TableView Delegate and DataSource
@@ -303,10 +344,16 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
             cell.lastUpdateLabel.text = Strings.LastUpdateString
                 + (quiz.latestTimeAppeared ?? Strings.DefaultAppearedInPracticeString)
             
-            let isAnswerDisplayed = answerViewDisplayed[indexPath.row]
+            guard let quizId = quiz.id else { return UITableViewCell() }
+            
+            let isAnswerDisplayed = flippedQuizzesSet.contains(quizId)
+            
             cell.questionView.isHidden = isAnswerDisplayed
             cell.answerView.isHidden = !isAnswerDisplayed
             cell.learningView.isHidden = quiz.isKnown
+            
+            addTapGestureRecognizer(cell.questionView)
+            addTapGestureRecognizer(cell.answerView)
             
             return cell
         }
@@ -331,27 +378,6 @@ extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
         
         return [deleteAction, editAction]
     }
-    
-    //selecting on cell will flip the view
-    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.beginUpdates()
-        
-        if let cell =  tableView.cellForRow(at: indexPath) as? QuizTableViewCell {
-            let quiz = quizSources[indexPath.row]
-            cell.learningView.isHidden = quiz.isKnown
-            
-            if !answerViewDisplayed[indexPath.row] {
-                flipCard(from: cell.questionView, to: cell.answerView)
-            } else {
-                flipCard(from: cell.answerView, to: cell.questionView)
-            }
-            
-            answerViewDisplayed[indexPath.row] = !answerViewDisplayed[indexPath.row]
-        }
-        
-        tableView.endUpdates()
-        
-    }
 }
 
 //MARK: - Searchbar delegates
@@ -359,7 +385,7 @@ extension QuizListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         quizSources = searchText.isEmpty
             ? databaseManager.getAllQuizzes()
-        : databaseManager.filterQuizzes(with: searchText)
+            : databaseManager.filterQuizzes(with: searchText)
         
         tableView.reloadData()
     }
@@ -370,5 +396,21 @@ extension QuizListViewController: UISearchBarDelegate {
         
         view.endEditing(true)
         tableView.reloadData()
+    }
+}
+
+//MARK: - Keyboard hide/show notification
+extension QuizListViewController {
+    @objc private func keyBoardWillShow(notification: Notification) {
+        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
+            tableViewBottomConstraints.constant = keyboardHeight - actionContainer.frame.height
+        }
+    }
+    
+    @objc private func keyBoardWillHide(notification: Notification) {
+        if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            tableViewBottomConstraints.constant = 0
+        }
     }
 }
