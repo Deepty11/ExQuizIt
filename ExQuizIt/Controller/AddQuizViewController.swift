@@ -73,13 +73,13 @@ class AddQuizViewController: UIViewController {
     @objc private func keyBoardWillShow(notification: Notification) {
         if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
-            self.tableViewBottomConstraint.constant = keyboardHeight
+            tableViewBottomConstraint.constant = keyboardHeight
         }
     }
     
     @objc private func keyBoardWillHide(notification: Notification) {
         if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            self.tableViewBottomConstraint.constant = 0
+            tableViewBottomConstraint.constant = 0
         }
     }
     

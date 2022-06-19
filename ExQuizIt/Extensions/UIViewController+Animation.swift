@@ -10,18 +10,17 @@ import UIKit
 
 extension UIViewController {
     func flipCard(from source: UIView, to destination: UIView) {
-        animateTransition(for: source, shouldHide: true)
-        animateTransition(for: destination, shouldHide: false)
-    }
-
-    func animateTransition(for view: UIView, shouldHide: Bool) {
-        UIView.transition(with: view, duration: 0.25, options: .defaultTransitionOption) {
-            view.isHidden = shouldHide
-        }
+        UIView.transition(from: source,
+                          to: destination,
+                          duration: 0.25,
+                          options: .defaultTransitionOption,
+                          completion: nil)
     }
 }
 
 extension UIView.AnimationOptions {
     static let defaultTransitionOption : UIView.AnimationOptions = [.showHideTransitionViews,
-                                                                    .transitionFlipFromRight]
+                                                                    .transitionFlipFromLeft]
+    static let defaultTransitionOption2 : UIView.AnimationOptions = [.showHideTransitionViews,
+                                                                     .transitionFlipFromLeft]
 }
