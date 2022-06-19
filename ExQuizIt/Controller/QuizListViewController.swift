@@ -182,7 +182,6 @@ class QuizListViewController: UIViewController {
         } else {
             view.endEditing(true)
         }
-        
     }
     
     @objc private func handleAddButtonTapped() {
