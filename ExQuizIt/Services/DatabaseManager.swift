@@ -109,6 +109,8 @@ class DatabaseManager {
         return text
             .replacingOccurrences(of: "&#039;", with: "'")
             .replacingOccurrences(of: "&quot;", with: "\"")
+            .replacingOccurrences(of: "&ldquo;", with: "\"")
+            .replacingOccurrences(of: "&rdquo;", with: "\"")
     }
     
     private func writeToRealm(_ writeBlock: () -> ()) {
