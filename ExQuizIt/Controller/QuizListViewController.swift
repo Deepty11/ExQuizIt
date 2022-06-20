@@ -146,8 +146,6 @@ class QuizListViewController: UIViewController {
     }
     
     private func refreshUI() {
-        //initiateAnswerViewDisplayedArray()
-        
         tableView.reloadData()
         tableView.isHidden = quizSources.isEmpty
         emptyQuizLabel.isHidden = !quizSources.isEmpty

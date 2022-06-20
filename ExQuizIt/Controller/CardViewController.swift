@@ -60,7 +60,7 @@ class CardViewController: UIViewController {
     }
     
     @objc func handleTapToSeeAnswerButtonTapped(sender: UITapGestureRecognizer) {
-        answerLabel.text = self.quiz.correct_answer
+        answerLabel.text = quiz.correct_answer
         
         flipCard(from: questionView, to: answerView)
     }
@@ -69,8 +69,6 @@ class CardViewController: UIViewController {
         quiz.learningStatus = Constants.MinLearningStatus
         databaseManager.saveQuiz(quiz)
         setQuizRecordStatus(with: Constants.MinLearningStatus)
-        
-        flipCard(from: answerView, to: questionView)
         
         delegate?.sendQuizRecordBackToSession(record: quizRecord, for: pageIndex)
     }
@@ -88,8 +86,6 @@ class CardViewController: UIViewController {
         
         databaseManager.saveQuiz(quiz)
         setQuizRecordStatus(with: quiz.learningStatus ?? Constants.MinLearningStatus)
-        
-        flipCard(from: answerView, to: questionView)
         
         delegate?.sendQuizRecordBackToSession(record: quizRecord, for: pageIndex)
     }

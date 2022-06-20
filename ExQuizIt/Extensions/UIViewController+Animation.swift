@@ -2,7 +2,7 @@
 //  UIViewController+Animation.swift
 //  ExQuizIt
 //
-//  Created by rehnuma.deepty on 24/5/22.
+//  Created by Rehnuma Reza on 24/5/22.
 //
 
 import Foundation
@@ -21,6 +21,4 @@ extension UIViewController {
 extension UIView.AnimationOptions {
     static let defaultTransitionOption : UIView.AnimationOptions = [.showHideTransitionViews,
                                                                     .transitionFlipFromLeft]
-    static let defaultTransitionOption2 : UIView.AnimationOptions = [.showHideTransitionViews,
-                                                                     .transitionFlipFromLeft]
 }
