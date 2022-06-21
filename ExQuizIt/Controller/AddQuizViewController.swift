@@ -21,6 +21,7 @@ enum StoreType: String {
 protocol CellInteractionDelegte {
     func textViewDidBeginEditing(cell: UITableViewCell)
     func textViewDidChanged(cell: UITableViewCell)
+    func textFieldDidChanged(cell: UITableViewCell)
 }
 
 class AddQuizViewController: UIViewController {
@@ -29,6 +30,7 @@ class AddQuizViewController: UIViewController {
     
     var questionText = ""
     var answerText = ""
+    var selectedCategory = ""
     var storeType = StoreType.create
     var quiz = Quiz(id: "", question: "", correct_answer: "", learningStatus: 0)
     let databaseManager = DatabaseManager()
@@ -101,21 +103,33 @@ class AddQuizViewController: UIViewController {
 //MARK: -TableView Delegate and DataSource
 extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
+            return getCellForCategory(for: indexPath)
+        } else if indexPath.row == 1 {
             return getCell(for: indexPath, inputType: .question)
         }
         
         return getCell(for: indexPath, inputType: .answer)
     }
     
+    private func getCellForCategory(for indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddCategoryTableViewCell.self),
+                                                    for: indexPath) as? AddCategoryTableViewCell {
+            cell.categoryTextField.text = selectedCategory
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
     private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self), for: indexPath) as? AddQuizTableViewCell {
             cell.inputType = inputType
-            cell.quizTextView.text = inputType == .question ? quiz.question : quiz.correct_answer
+            cell.quizLabel.text = inputType == .question ? quiz.question : quiz.correct_answer
             cell.configureCell()
             cell.delegate = self
             return cell
@@ -137,11 +151,18 @@ extension AddQuizViewController: CellInteractionDelegte {
            let cell = cell as? AddQuizTableViewCell {
             let text = cell.quizTextView.text
             
-            if indexPath.row == 0 {
+            if indexPath.row == 1 {
                 questionText = text ?? ""
             } else {
                 answerText = text ??  ""
             }
+        }
+    }
+    
+    func textFieldDidChanged(cell: UITableViewCell) {
+        if let indexPath = tableView.indexPath(for: cell),
+           let cell = cell as? AddCategoryTableViewCell {
+            selectedCategory = cell.categoryTextField.text ?? ""
         }
     }
 }

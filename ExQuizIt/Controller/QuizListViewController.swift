@@ -36,6 +36,7 @@ class QuizListViewController: UIViewController {
     var originYOfSettingsView = 0.0
     var isSettingsViewVisible = false
     var selectedValueForPracticeQuizzes = 0
+    var selectedCategory = ""
     
     let practiceSessionUtilityService = PracticeSessionUtilityService()
     let databaseManager = DatabaseManager()
@@ -222,6 +223,8 @@ class QuizListViewController: UIViewController {
         if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
             isSettingsViewVisible = false
+            
+            vc.selectedCategory = selectedCategory
             hideSettingsView()
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -256,6 +259,7 @@ class QuizListViewController: UIViewController {
     @objc func handleCategorySelected(_ sender: UITapGestureRecognizer) {
         if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
             contentType = .quizzes
+            selectedCategory = quizCategories[indexPath.row]
             quizSources = databaseManager.getAllQuizzesBy(category: quizCategories[indexPath.row])
             refreshUI()
         }
@@ -264,6 +268,7 @@ class QuizListViewController: UIViewController {
     @objc func handleSwipeToBack(_ sender: UISwipeGestureRecognizer) {
         if contentType == .quizzes {
             contentType = .categories
+            selectedCategory = ""
             refreshUI()
         }
     }
