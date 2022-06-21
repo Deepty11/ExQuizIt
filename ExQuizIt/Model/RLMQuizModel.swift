@@ -7,9 +7,11 @@
 
 import Foundation
 import RealmSwift
+import DeveloperToolsSupport
 
 class RLMQuizModel: Object {
     @Persisted var id: String = UUID().uuidString
+    @Persisted var category: String?
     @Persisted var question: String?
     @Persisted var answer: String?
     @Persisted var learningStatus: Int = Constants.MinLearningStatus
@@ -22,14 +24,17 @@ class RLMQuizModel: Object {
 }
 
 extension RLMQuizModel {
-    convenience init(question: String, answer: String) {
+    convenience init(category: String, question: String, answer: String) {
         self.init()
+        self.category = category
         self.question = question
         self.answer = answer
     }
     
     func asQuiz() -> Quiz {
-        Quiz(id: id, question: question ?? "",
+        Quiz(id: id,
+             category: category,
+             question: question ?? "",
              correct_answer: answer ?? "",
              learningStatus: learningStatus,
              numberOfTimesAppeared: numberOfTimesAppeared,

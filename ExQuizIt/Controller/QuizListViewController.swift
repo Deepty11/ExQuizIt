@@ -8,6 +8,11 @@
 import UIKit
 import RealmSwift
 
+enum ContentType: String {
+    case categories = "Categories"
+    case quizzes = "Quizzes"
+}
+
 protocol CellButtonInteractionDelegate {
     func handleUnCommonQuizButtonEvent(cell: UITableViewCell)
     func handleCommonQuizButtonEvent(cell: UITableViewCell)
@@ -36,6 +41,8 @@ class QuizListViewController: UIViewController {
     let databaseManager = DatabaseManager()
     let apiManager = APIManager()
     var flippedQuizzesSet: Set<String> = []
+    var quizCategories: [String] = []
+    var contentType = ContentType.categories
     
     var quizSources = [Quiz]() {
         didSet {
@@ -70,14 +77,16 @@ class QuizListViewController: UIViewController {
                                                object: nil)
         
         view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self,
-                                                         action: #selector(handleViewDidTapped(_:))))
+        
+        addGestureRecognizerToView()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         fetchQuizzes()
+        
         
     }
     
@@ -106,7 +115,7 @@ class QuizListViewController: UIViewController {
     
     private func fetchQuizzes() {
         guard databaseManager.getAllQuizzes().isEmpty else {
-            quizSources = databaseManager.getAllQuizzes()
+            setViewSources()
             refreshUI()
             return
         }
@@ -117,9 +126,17 @@ class QuizListViewController: UIViewController {
             guard let self = self else { return }
             
             self.databaseManager.storeQuizzes(quizzes)
-            self.quizSources = self.databaseManager.getAllQuizzes()
+            self.setViewSources()
             self.showLoading(false)
             self.refreshUI()
+        }
+    }
+    
+    func setViewSources() {
+        if self.contentType == .categories {
+            self.quizCategories = self.databaseManager.getAllQuizCategories()
+        } else {
+            self.quizSources = self.databaseManager.getAllQuizzes()
         }
     }
     
@@ -147,13 +164,21 @@ class QuizListViewController: UIViewController {
     
     private func refreshUI() {
         tableView.reloadData()
-        tableView.isHidden = quizSources.isEmpty
-        emptyQuizLabel.isHidden = !quizSources.isEmpty
+        switch contentType {
+        case .categories:
+            tableView.isHidden = quizCategories.isEmpty
+            emptyQuizLabel.isHidden = !quizCategories.isEmpty
+            actionContainer.isHidden = true
+        case .quizzes:
+            tableView.isHidden = quizSources.isEmpty
+            emptyQuizLabel.isHidden = !quizSources.isEmpty
+            actionContainer.isHidden = false
+        }
     }
     
     private func configureNavigationBar() {
         navigationController?.navigationBar.tintColor = .white
-        navigationItem.title = "Quizzes"
+        navigationItem.title = contentType.rawValue
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -167,6 +192,17 @@ class QuizListViewController: UIViewController {
             target: self,
             action: #selector(handleSettingsButtonTapped)
         )
+    }
+    
+    func addGestureRecognizerToView() {
+        view.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(handleViewDidTapped(_:))))
+        
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
+                                                              action: #selector(handleSwipeToBack))
+        swipeGestureRecognizer.direction = .right
+        view.addGestureRecognizer(swipeGestureRecognizer)
     }
 
     @IBAction private func handleSaveButtonTapped(_ sender: Any) {
@@ -215,6 +251,21 @@ class QuizListViewController: UIViewController {
         }
         
         tableView.endUpdates()
+    }
+    
+    @objc func handleCategorySelected(_ sender: UITapGestureRecognizer) {
+        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
+            contentType = .quizzes
+            quizSources = databaseManager.getAllQuizzesBy(category: quizCategories[indexPath.row])
+            refreshUI()
+        }
+    }
+    
+    @objc func handleSwipeToBack(_ sender: UISwipeGestureRecognizer) {
+        if contentType == .quizzes {
+            contentType = .categories
+            refreshUI()
+        }
     }
     
     private func storeNumberOfPracticeQuizzes() {
@@ -326,31 +377,44 @@ extension QuizListViewController {
 //MARK: -TableView Delegate and DataSource
 extension QuizListViewController: UITableViewDelegate, UITableViewDataSource {
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return quizSources.count
+        return contentType == .categories ? quizCategories.count : quizSources.count
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: QuizTableViewCell.self),
                                                     for: indexPath) as? QuizTableViewCell {
-            let quiz = quizSources[indexPath.row]
+            if contentType == .categories {
+                cell.questionLabel.text = quizCategories[indexPath.row]
+                
+                cell.answerView.isHidden =  true
+                cell.learningView.isHidden = true
+                
+                cell.questionView.isUserInteractionEnabled = true
+                cell.questionView.addGestureRecognizer(
+                    UITapGestureRecognizer(target: self,
+                                           action: #selector(handleCategorySelected)))
+            } else {
+                let quiz = quizSources[indexPath.row]
+                
+                cell.questionLabel.text = quiz.question
+                cell.answerLabel.text = quiz.correct_answer
+                cell.appearedInPracticeLabel.text = Strings.AppearedInPracticeString
+                    + String(quiz.numberOfTimesAppeared ?? Constants.DefaultNumberOfTimesAppeared)
+                cell.lastUpdateLabel.text = Strings.LastUpdateString
+                    + (quiz.latestTimeAppeared ?? Strings.DefaultAppearedInPracticeString)
+                
+                guard let quizId = quiz.id else { return UITableViewCell() }
+                
+                let isAnswerDisplayed = flippedQuizzesSet.contains(quizId)
+                
+                cell.questionView.isHidden = isAnswerDisplayed
+                cell.answerView.isHidden = !isAnswerDisplayed
+                cell.learningView.isHidden = quiz.isKnown
+                
+                addTapGestureRecognizer(cell.questionView)
+                addTapGestureRecognizer(cell.answerView)
+            }
             
-            cell.questionLabel.text = quiz.question
-            cell.answerLabel.text = quiz.correct_answer
-            cell.appearedInPracticeLabel.text = Strings.AppearedInPracticeString
-                + String(quiz.numberOfTimesAppeared ?? Constants.DefaultNumberOfTimesAppeared)
-            cell.lastUpdateLabel.text = Strings.LastUpdateString
-                + (quiz.latestTimeAppeared ?? Strings.DefaultAppearedInPracticeString)
-            
-            guard let quizId = quiz.id else { return UITableViewCell() }
-            
-            let isAnswerDisplayed = flippedQuizzesSet.contains(quizId)
-            
-            cell.questionView.isHidden = isAnswerDisplayed
-            cell.answerView.isHidden = !isAnswerDisplayed
-            cell.learningView.isHidden = quiz.isKnown
-            
-            addTapGestureRecognizer(cell.questionView)
-            addTapGestureRecognizer(cell.answerView)
             
             return cell
         }

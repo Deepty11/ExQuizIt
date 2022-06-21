@@ -14,6 +14,7 @@ class DatabaseManager {
     func storeQuizzes(_ quizzes: [Quiz]) {
         let quizEntries = quizzes.map {
             RLMQuizModel(
+                category: processText(for: $0.category ?? ""),
                 question: processText(for: $0.question),
                 answer: processText(for: $0.correct_answer)
             )
@@ -41,19 +42,27 @@ class DatabaseManager {
         }
     }
     
-    func filterQuizzes(with searchText: String ) -> [Quiz]{
+    func getAllQuizCategories() -> [String] {
+        var categoriesSet: Set<String> = []
+        let _ = getAllQuizzes().map {
+            categoriesSet.insert($0.category ?? "" )
+        }
+        return Array(categoriesSet)
+    }
+    
+    func getAllQuizzesBy(category: String) -> [Quiz] {
+        return Array(realm.objects(RLMQuizModel.self)
+            .filter("category == %s", category))
+        .map { $0.asQuiz() }
+    }
+    
+    func filterQuizzes(with searchText: String) -> [Quiz]{
         getAllQuizzes().filter({
             let searchableText = $0.question + $0.correct_answer
             return searchableText.range(of: searchText,
                                         options: .caseInsensitive,
                                         range: nil ,
                                         locale: nil) != nil
-//            if filteredQuizzes == nil {
-//                filteredQuizzes = $0.correct_answer.range(of: searchText,
-//                                                          options: .caseInsensitive,
-//                                                          range: nil ,
-//                                                          locale: nil)
-//            }
             
         })
     }
@@ -61,10 +70,6 @@ class DatabaseManager {
     func getAllPracticeSessions() -> [PracticeSession] {
         Array(realm.objects(RLMPracticeSessionModel.self)).map { $0.asPracticeSession() }
     }
-    
-//    func getPracticeSessionBy(id: String) -> RLMPracticeSessionModel? {
-//        realm.objects(RLMPracticeSessionModel.self).filter("id == %s", id).first
-//    }
     
     func saveQuiz(_ quiz: Quiz) {
         // Update
@@ -111,6 +116,7 @@ class DatabaseManager {
             .replacingOccurrences(of: "&quot;", with: "\"")
             .replacingOccurrences(of: "&ldquo;", with: "\"")
             .replacingOccurrences(of: "&rdquo;", with: "\"")
+            .replacingOccurrences(of: "Science: ", with: "")
     }
     
     private func writeToRealm(_ writeBlock: () -> ()) {

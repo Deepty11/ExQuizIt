@@ -10,9 +10,15 @@ import Foundation
 class APIManager {
     static let baseURL = "https://opentdb.com/api.php"
     
-    static let vehicleQuizURL = "?amount=50&category=28"
+    static let computerQuizURL = "?amount=50&category=18"
+    static let matheMaticsQuizURL = "?amount=50&category=19"
     static let sportsQuizURL = "?amount=50&category=21"
-    static let computerQuizURL = "?amount=30&category=18"
+    static let vehicleQuizURL = "?amount=50&category=28"
+    
+    static let quizCategories = [computerQuizURL,
+                                 matheMaticsQuizURL,
+                                 sportsQuizURL,
+                                 vehicleQuizURL]
     
     var quizzes: [Quiz] = []
     
@@ -51,9 +57,9 @@ class APIManager {
     func getQuizzesFromAPI(completion: @escaping ([Quiz])->() ) {
         let dispatchGroup = DispatchGroup()
         
-        fetchAndStoreData(from: Self.vehicleQuizURL, dispatchGroup: dispatchGroup)
-        fetchAndStoreData(from: Self.sportsQuizURL, dispatchGroup: dispatchGroup)
-        fetchAndStoreData(from: Self.computerQuizURL, dispatchGroup: dispatchGroup)
+        for category in Self.quizCategories {
+            fetchQuizzes(from: category, dispatchGroup: dispatchGroup)
+        }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
@@ -61,7 +67,7 @@ class APIManager {
         } 
     }
     
-    func fetchAndStoreData(from urlString: String, dispatchGroup: DispatchGroup ){
+    func fetchQuizzes(from urlString: String, dispatchGroup: DispatchGroup ){
         dispatchGroup.enter()
         
         getDataFrom(urlString: urlString) { [weak self] results in
