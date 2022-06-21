@@ -129,7 +129,8 @@ extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
     private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self), for: indexPath) as? AddQuizTableViewCell {
             cell.inputType = inputType
-            cell.quizLabel.text = inputType == .question ? quiz.question : quiz.correct_answer
+            cell.quizLabel.text = inputType.rawValue
+            cell.quizTextView.text = inputType == .question ? quiz.question : quiz.correct_answer
             cell.configureCell()
             cell.delegate = self
             return cell
@@ -160,8 +161,7 @@ extension AddQuizViewController: CellInteractionDelegte {
     }
     
     func textFieldDidChanged(cell: UITableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell),
-           let cell = cell as? AddCategoryTableViewCell {
+        if let cell = cell as? AddCategoryTableViewCell {
             selectedCategory = cell.categoryTextField.text ?? ""
         }
     }
