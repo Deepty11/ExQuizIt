@@ -85,10 +85,8 @@ class QuizListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        contentType = .categories
         fetchQuizzes()
-        
-        
     }
     
     @IBAction func handlePracticeButtonTapped(_ sender: Any) {
@@ -170,10 +168,12 @@ class QuizListViewController: UIViewController {
             tableView.isHidden = quizCategories.isEmpty
             emptyQuizLabel.isHidden = !quizCategories.isEmpty
             actionContainer.isHidden = true
+            tableViewBottomConstraints.constant = 0 - actionContainer.frame.height
         case .quizzes:
             tableView.isHidden = quizSources.isEmpty
             emptyQuizLabel.isHidden = !quizSources.isEmpty
             actionContainer.isHidden = false
+            tableViewBottomConstraints.constant = 0
         }
     }
     
@@ -326,8 +326,9 @@ class QuizListViewController: UIViewController {
         if let vc = self.storyboard?.instantiateViewController(
             withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
             vc.storeType = .update
-            vc.quiz = self.quizSources[indexPath.row]
-            self.navigationController?.pushViewController(vc, animated: true)
+            vc.selectedCategory = quizSources[indexPath.row].category ?? ""
+            vc.quiz = quizSources[indexPath.row]
+            navigationController?.pushViewController(vc, animated: true)
             
         }
     }

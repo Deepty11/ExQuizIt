@@ -32,7 +32,7 @@ class AddQuizViewController: UIViewController {
     var answerText = ""
     var selectedCategory = ""
     var storeType = StoreType.create
-    var quiz = Quiz(id: "", question: "", correct_answer: "", learningStatus: 0)
+    var quiz = Quiz(id: "", category: "", question: "", correct_answer: "", learningStatus: 0)
     let databaseManager = DatabaseManager()
     
     override func viewDidLoad() {
@@ -86,16 +86,24 @@ class AddQuizViewController: UIViewController {
     }
     
     @objc private func handleSaveButtonTapped() {
-        if questionText.isVisuallyEmpty || answerText.isVisuallyEmpty {
+        if questionText.isVisuallyEmpty
+            || answerText.isVisuallyEmpty
+            || selectedCategory.isVisuallyEmpty {
             showAlert(title: "Attention", message: "Unable to save if any field is empty")
             return
         }
-        
+        setQuiz()
         databaseManager.saveQuiz(quiz)
         
         showToast(title: nil, message: storeType.rawValue) { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    func setQuiz() {
+        quiz.question = questionText
+        quiz.correct_answer = answerText
+        quiz.category = selectedCategory
     }
     
 }
@@ -120,6 +128,7 @@ extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddCategoryTableViewCell.self),
                                                     for: indexPath) as? AddCategoryTableViewCell {
             cell.categoryTextField.text = selectedCategory
+            cell.delegate = self
             return cell
         }
         

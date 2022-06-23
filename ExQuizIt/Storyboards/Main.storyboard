@@ -408,6 +408,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="textFieldDidChange:" destination="9ah-sc-y6w" eventType="editingChanged" id="TAU-Vq-2IA"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>

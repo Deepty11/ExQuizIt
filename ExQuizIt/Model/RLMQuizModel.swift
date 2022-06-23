@@ -42,6 +42,7 @@ extension RLMQuizModel {
     }
     
     func update(with quiz: Quiz) {
+        category = quiz.category
         question = quiz.question
         answer = quiz.correct_answer
         learningStatus = quiz.learningStatus ?? Constants.MinLearningStatus
