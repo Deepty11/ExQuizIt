@@ -56,15 +56,41 @@ class DatabaseManager {
         .map { $0.asQuiz() }
     }
     
-    func filterQuizzes(with searchText: String) -> [Quiz]{
-        getAllQuizzes().filter({
+    func getFilteredQuizzes(by searchText: String, of category: String) -> [Quiz]{
+        getAllQuizzesBy(category: category).filter({
             let searchableText = $0.question + $0.correct_answer
+            
             return searchableText.range(of: searchText,
                                         options: .caseInsensitive,
                                         range: nil ,
                                         locale: nil) != nil
             
         })
+    }
+    
+    func getFilteredCategories(by searchText: String) -> [String]{
+        getAllQuizCategories().filter {
+            return $0.range(of: searchText,
+                            options: .caseInsensitive,
+                            range: nil ,
+                            locale: nil) != nil
+        }
+    }
+
+    
+    func filteredQuizzes(by searchText: String,
+                       in quizzes: [Quiz]) -> [Quiz] {
+        
+        quizzes.filter({
+            let searchableText = $0.question + $0.correct_answer
+            
+            return searchableText.range(of: searchText,
+                                        options: .caseInsensitive,
+                                        range: nil ,
+                                        locale: nil) != nil
+            
+        })
+        
     }
     
     func getAllPracticeSessions() -> [PracticeSession] {
@@ -104,6 +130,20 @@ class DatabaseManager {
         
         writeToRealm {
             realm.delete(quizToBeDeleted)
+            print("deleted!!")
+        }
+    }
+    
+    func deleteQuiz(by category: String) {
+        var quizzes = [RLMQuizModel]()
+        let _ = getAllQuizzesBy(category: category).map {
+            let quizModel = RLMQuizModel()
+            quizModel.update(with: $0)
+            quizzes.append(quizModel)
+        }
+        
+        writeToRealm {
+            realm.delete(quizzes)
             print("deleted!!")
         }
     }

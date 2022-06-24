@@ -13,8 +13,7 @@ class PracticeListViewController: UIViewController {
     
     var practiceSessions = [PracticeSession]()
     var databaseManager = DatabaseManager()
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

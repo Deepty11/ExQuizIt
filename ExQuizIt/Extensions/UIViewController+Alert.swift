@@ -11,13 +11,23 @@ import UIKit
 extension UIViewController {
     func showAlert(title: String?,
                    message: String?,
+                   placeHolder: String? = nil,
                    okTitle: String = "Ok",
                    cancelTitle: String? = nil,
-                   onConfirm: (() -> ())? = nil) {
+                   onConfirm: ((String?) -> ())? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-       
+        
+        if let placeHolder = placeHolder {
+            alert.addTextField { textField in
+                textField.placeholder = placeHolder
+            }
+        }
+        
         let okAction = UIAlertAction(title: okTitle, style: .default) { _ in
-            onConfirm?()
+            if let textField = alert.textFields?.first as? UITextField {
+                onConfirm?(textField.text)
+            }
+            
         }
         
         if let cancelTitle = cancelTitle {
@@ -45,5 +55,12 @@ extension UIViewController {
                 }
             }
         }
+    }
+    
+    func showAlertWithTextField(title: String?,
+                                message: String?,
+                                placeHolder: String,
+                                onConfirm: (String)-> ()) {
+        
     }
 }
