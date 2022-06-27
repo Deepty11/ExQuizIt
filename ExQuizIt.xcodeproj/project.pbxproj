@@ -43,6 +43,7 @@
 		FD894AAF280B3E3500C43AF8 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAE280B3E3500C43AF8 /* CardViewController.swift */; };
 		FDC57F432802C28D008D51CA /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC57F422802C28D008D51CA /* CardView.swift */; };
 		FDCF756D2815477700F3F9C1 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCF756C2815477700F3F9C1 /* GradientView.swift */; };
+		FDF18DDA286A2AA500359F36 /* RLMCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF18DD9286A2AA500359F36 /* RLMCategoryModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		FD894AAE280B3E3500C43AF8 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		FDC57F422802C28D008D51CA /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		FDCF756C2815477700F3F9C1 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		FDF18DD9286A2AA500359F36 /* RLMCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RLMCategoryModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +240,7 @@
 				BF60D23728051E5B00325024 /* RLMQuizModel.swift */,
 				BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */,
 				BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */,
+				FDF18DD9286A2AA500359F36 /* RLMCategoryModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -557,6 +560,7 @@
 				FD894AAD280B3BA300C43AF8 /* PracticePageViewController.swift in Sources */,
 				BF3AD2E227FC126300002E53 /* AppDelegate.swift in Sources */,
 				BFE8790C2843797200C3D985 /* Date+Format.swift in Sources */,
+				FDF18DDA286A2AA500359F36 /* RLMCategoryModel.swift in Sources */,
 				BF99D0A428643D0A001AA8EF /* CategoryTableViewCell.swift in Sources */,
 				BF99D0A22864376A001AA8EF /* CategoriesViewController.swift in Sources */,
 				BFDC08762848AFD900FC2780 /* PracticeListViewController.swift in Sources */,
