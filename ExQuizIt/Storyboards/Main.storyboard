@@ -387,47 +387,6 @@
                                             <outlet property="quizTextView" destination="zdf-2z-rjs" id="TYD-fQ-bpd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddCategoryTableViewCell" rowHeight="58" id="9ah-sc-y6w" customClass="AddCategoryTableViewCell" customModule="ExQuizIt" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="444.5" width="414" height="58"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9ah-sc-y6w" id="MRL-BX-mXV">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="58"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ejt-5j-BR4">
-                                                    <rect key="frame" x="20" y="2" width="374" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="slJ-Gx-bj3">
-                                                    <rect key="frame" x="15" y="26" width="384" height="30"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="EAC-eO-d5X"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                    <connections>
-                                                        <action selector="textFieldDidChange:" destination="9ah-sc-y6w" eventType="editingChanged" id="TAU-Vq-2IA"/>
-                                                    </connections>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="ejt-5j-BR4" firstAttribute="top" secondItem="MRL-BX-mXV" secondAttribute="top" constant="2" id="3K9-fN-qKf"/>
-                                                <constraint firstItem="slJ-Gx-bj3" firstAttribute="leading" secondItem="MRL-BX-mXV" secondAttribute="leading" constant="15" id="3r0-9w-Hls"/>
-                                                <constraint firstAttribute="trailing" secondItem="slJ-Gx-bj3" secondAttribute="trailing" constant="15" id="7hm-uR-DKc"/>
-                                                <constraint firstItem="slJ-Gx-bj3" firstAttribute="top" secondItem="ejt-5j-BR4" secondAttribute="bottom" constant="8" id="HZM-BB-gRQ"/>
-                                                <constraint firstItem="ejt-5j-BR4" firstAttribute="leading" secondItem="MRL-BX-mXV" secondAttribute="leading" constant="20" id="UdU-c6-2CO"/>
-                                                <constraint firstAttribute="trailing" secondItem="ejt-5j-BR4" secondAttribute="trailing" constant="20" id="YLv-Lb-bwq"/>
-                                                <constraint firstAttribute="bottom" secondItem="slJ-Gx-bj3" secondAttribute="bottom" constant="2" id="hQN-vn-oyz"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="categoryTextField" destination="slJ-Gx-bj3" id="366-nY-L1c"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>

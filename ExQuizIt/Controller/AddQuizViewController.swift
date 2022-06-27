@@ -21,7 +21,6 @@ enum StoreType: String {
 protocol CellInteractionDelegte {
     func textViewDidBeginEditing(cell: UITableViewCell)
     func textViewDidChanged(cell: UITableViewCell)
-    func textFieldDidChanged(cell: UITableViewCell)
 }
 
 class AddQuizViewController: UIViewController {
@@ -87,8 +86,7 @@ class AddQuizViewController: UIViewController {
     
     @objc private func handleSaveButtonTapped() {
         if questionText.isVisuallyEmpty
-            || answerText.isVisuallyEmpty
-            || selectedCategory.isVisuallyEmpty {
+            || answerText.isVisuallyEmpty {
             showAlert(title: "Attention", message: "Unable to save if any field is empty")
             return
         }
@@ -111,28 +109,15 @@ class AddQuizViewController: UIViewController {
 //MARK: -TableView Delegate and DataSource
 extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            return getCellForCategory(for: indexPath)
-        } else if indexPath.row == 1 {
             return getCell(for: indexPath, inputType: .question)
         }
         
         return getCell(for: indexPath, inputType: .answer)
-    }
-    
-    private func getCellForCategory(for indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddCategoryTableViewCell.self),
-                                                    for: indexPath) as? AddCategoryTableViewCell {
-            cell.categoryTextField.text = selectedCategory
-            cell.delegate = self
-            return cell
-        }
-        
-        return UITableViewCell()
     }
     
     private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
@@ -166,12 +151,6 @@ extension AddQuizViewController: CellInteractionDelegte {
             } else {
                 answerText = text ??  ""
             }
-        }
-    }
-    
-    func textFieldDidChanged(cell: UITableViewCell) {
-        if let cell = cell as? AddCategoryTableViewCell {
-            selectedCategory = cell.categoryTextField.text ?? ""
         }
     }
 }

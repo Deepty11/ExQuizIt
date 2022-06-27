@@ -207,7 +207,6 @@ class QuizListViewController: UIViewController {
             isSettingsViewVisible = false
             
             vc.selectedCategory = selectedCategory
-            hideSettingsView()
             navigationController?.pushViewController(vc, animated: true)
         }
     }
