@@ -31,7 +31,7 @@ class AddQuizViewController: UIViewController {
     var answerText = ""
     var selectedCategory = ""
     var storeType = StoreType.create
-    var quiz = Quiz(id: "", category: "", question: "", correct_answer: "", learningStatus: 0)
+    var quiz = Quiz(category: "", question: "", correct_answer: "", learningStatus: 0)
     let databaseManager = DatabaseManager()
     
     override func viewDidLoad() {
@@ -146,7 +146,7 @@ extension AddQuizViewController: CellInteractionDelegte {
            let cell = cell as? AddQuizTableViewCell {
             let text = cell.quizTextView.text
             
-            if indexPath.row == 1 {
+            if indexPath.row == 0 {
                 questionText = text ?? ""
             } else {
                 answerText = text ??  ""

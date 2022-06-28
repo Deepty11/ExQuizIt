@@ -9,7 +9,8 @@ import Foundation
 import RealmSwift
 
 class RLMPracticeSessionModel: Object {
-    @Persisted var id: String 
+    @Persisted var id: String
+    @Persisted var category: String?
     @Persisted var startTime: String?
     @Persisted var endTime: String?
     @Persisted var quizList: List<RLMQuizRecordModel>
@@ -17,10 +18,12 @@ class RLMPracticeSessionModel: Object {
     override init() {}
     
     init(id: String = "",
+         category:String = "",
          startTime: String = "",
          endTime: String = "",
          quizList: List<RLMQuizRecordModel> = .init()) {
         self.id = id
+        self.category = category
         self.startTime = startTime
         self.endTime = endTime
         self.quizList = quizList
@@ -43,6 +46,7 @@ extension RLMPracticeSessionModel {
     convenience init(practiceSession: PracticeSession) {
         self.init(
             id: practiceSession.id,
+            category: practiceSession.category,
             startTime: practiceSession.startTime,
             endTime: practiceSession.endTime,
             quizList: practiceSession.quizRecords.map(RLMQuizRecordModel.init).asList()
@@ -51,6 +55,7 @@ extension RLMPracticeSessionModel {
     
     func asPracticeSession() -> PracticeSession {
         PracticeSession(id: id,
+                        category: category ?? "",
                         startTime: startTime ?? "",
                         endTime: endTime ?? "",
                         quizRecords: quizList.map { $0.asQuizRecord() })

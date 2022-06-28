@@ -42,7 +42,6 @@ extension RLMQuizModel {
     }
     
     func update(with quiz: Quiz) {
-        id = quiz.id ?? self.id
         category = quiz.category
         question = quiz.question
         answer = quiz.correct_answer

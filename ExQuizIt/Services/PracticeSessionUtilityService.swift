@@ -26,14 +26,19 @@ class PracticeSessionUtilityService {
     
     func getRandomSlice(from quizArray: [Quiz], length: Int)-> [Quiz] {
         let totalAvailableQuiz = quizArray.count
+        if totalAvailableQuiz == 0 {
+            return []
+        }
+        
         let startIndex = Int.random(in: 0 ... (totalAvailableQuiz - length) )
         let endIndex = startIndex + length - 1
         return Array(quizArray[startIndex...endIndex])
     }
     
-    func getRandomQuizzes(from quizArray: [Quiz]) -> [Quiz] {
-        let shuffledQuizzes = quizArray.shuffled()
-        let totalAvailableUnknownQuizzes = quizArray.count
+    func getRandomQuizzes(by category: String) -> [Quiz] {
+        let shuffledQuizzes = databaseManager.getAllQuizzes(isKnown: false,
+                                                            category: category).shuffled()
+        let totalAvailableUnknownQuizzes = shuffledQuizzes.count
         let numberOfPracticeQuizzesSelected = getPreferredNumberOfPracticeQuizzes()
         
         if numberOfPracticeQuizzesSelected <= totalAvailableUnknownQuizzes {
@@ -43,9 +48,16 @@ class PracticeSessionUtilityService {
         
         var selectedQuizzes = shuffledQuizzes
         let requiredAmount = numberOfPracticeQuizzesSelected - selectedQuizzes.count
-        let shuffledKnownQuizzes = databaseManager.getAllQuizzes(isKnown: true).shuffled()
-        selectedQuizzes += getRandomSlice(from: shuffledKnownQuizzes,
-                                          length: requiredAmount)
+        let shuffledKnownQuizzes = databaseManager.getAllQuizzes(isKnown: true,
+                                                                 category: category).shuffled()
+        if requiredAmount > shuffledKnownQuizzes.count {
+            selectedQuizzes += getRandomSlice(from: shuffledKnownQuizzes,
+                                              length: shuffledKnownQuizzes.count)
+        } else {
+            selectedQuizzes += getRandomSlice(from: shuffledKnownQuizzes,
+                                              length: requiredAmount)
+        }
+        
         
         return selectedQuizzes
     }

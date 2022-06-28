@@ -21,6 +21,7 @@ class PracticeQuizStatisticsViewController: UIViewController {
     var numberOfMastered = 0
     var totalNumberOfPracticeQuizzes = 0
     
+    
     var practiceSession = PracticeSession()
     let practiceSessionUtilityService = PracticeSessionUtilityService()
     
@@ -28,7 +29,6 @@ class PracticeQuizStatisticsViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         
-        totalNumberOfPracticeQuizzes = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
         calculateProgress()
         setProgressViews()
         

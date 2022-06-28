@@ -13,6 +13,7 @@ class PracticeListViewController: UIViewController {
     
     var practiceSessions = [PracticeSession]()
     var databaseManager = DatabaseManager()
+    var selectedCategory = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ class PracticeListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        practiceSessions = databaseManager.getAllPracticeSessions()
+        practiceSessions = databaseManager.getAllPracticeSessions(by: selectedCategory)
         reload()
     }
     
@@ -32,6 +33,7 @@ class PracticeListViewController: UIViewController {
         if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: PracticePageViewController.self))
             as? PracticePageViewController {
+            vc.selectedCategory = selectedCategory
             navigationController?.pushViewController(vc, animated: true)
         }
     }

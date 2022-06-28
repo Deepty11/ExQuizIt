@@ -16,20 +16,16 @@ class PracticePageViewController: UIPageViewController {
     var practiceSession = PracticeSession()
     let practiceSessionUtilityService = PracticeSessionUtilityService()
     let databaseManager = DatabaseManager()
+    var selectedCategory = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         
-        quizzes = getQuizSource()
+        quizzes = practiceSessionUtilityService.getRandomQuizzes(by: selectedCategory)
         
         setViewControllers([getViewController(for: 0)], direction: .forward, animated: true)
         
-    }
-    
-    func getQuizSource() -> [Quiz] {
-        let unknownQuizArray =  databaseManager.getAllQuizzes(isKnown: false)
-        return practiceSessionUtilityService.getRandomQuizzes(from: unknownQuizArray)
     }
     
     func configureNavigationBar() {
@@ -41,6 +37,7 @@ class PracticePageViewController: UIPageViewController {
         if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: CardViewController.self)) as? CardViewController {
             vc.pageIndex = index
+            vc.totalQuizzes = quizzes.count
             vc.quiz = quizzes[index]
             vc.quizRecord = QuizRecord(id: quizzes[index].id ?? "")
             vc.delegate = self
@@ -68,6 +65,7 @@ extension PracticePageViewController: PageViewDelegate {
                                animated: true)
         } else {
             // set end time and then save the practiceSession in realm
+            practiceSession.category = selectedCategory
             practiceSession.endTime = Date().formatted(with: Strings.DateFormat)
             databaseManager.savePracticeSession(practiceSession: practiceSession)
             
@@ -75,6 +73,8 @@ extension PracticePageViewController: PageViewDelegate {
                 withIdentifier: String(describing: PracticeQuizStatisticsViewController.self))
                 as? PracticeQuizStatisticsViewController {
                 vc.practiceSession = practiceSession
+                vc.totalNumberOfPracticeQuizzes = quizzes.count
+                
                 navigationController?.pushViewController(vc, animated: true)
             }
         }

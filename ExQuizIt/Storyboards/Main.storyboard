@@ -484,9 +484,8 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMG-cn-e4n">
-                                <rect key="frame" x="192" y="561" width="30" height="20.5"/>
+                                <rect key="frame" x="195.5" y="561" width="23.5" height="20.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="KBY-ie-Egi"/>
                                     <constraint firstAttribute="height" constant="20.5" id="gfL-bq-p9Y"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>

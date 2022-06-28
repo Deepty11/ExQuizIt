@@ -82,6 +82,8 @@ class QuizListViewController: UIViewController {
         if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: PracticeListViewController.self))
             as? PracticeListViewController {
+            vc.selectedCategory = selectedCategory
+            
             navigationController?.pushViewController(vc, animated: true)
         }
     }

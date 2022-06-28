@@ -40,18 +40,26 @@ class DatabaseManager {
     // MARK: - GET methods
     
     func getQuizBy(id: String) -> RLMQuizModel? {
-        realm.objects(RLMQuizModel.self).filter("id == %s", id).first
+        getAllQuizModelObjects().filter("id == %s", id).first
     }
     
-    func getAllQuizzes(isKnown: Bool? = nil) -> [Quiz] {
+    func getAllQuizzes(isKnown: Bool? = nil, category: String? = nil) -> [Quiz] {
+        guard let category = category else {
+            return Array(getAllQuizModelObjects()).map { $0.asQuiz() }
+        }
+
         switch isKnown {
         case .some(true):
-            return Array(realm.objects(RLMQuizModel.self).filter("learningStatus == \(Constants.MaxLearningStatus)")).map { $0.asQuiz() }
+            return Array(getAllQuizModelObjects().filter("category == %s AND learningStatus == \(Constants.MaxLearningStatus)", category)).map { $0.asQuiz() }
         case .some(false):
-            return Array(realm.objects(RLMQuizModel.self).filter("learningStatus != \(Constants.MaxLearningStatus)")).map { $0.asQuiz() }
+            return Array(getAllQuizModelObjects().filter("category == %s AND learningStatus != \(Constants.MaxLearningStatus)", category)).map { $0.asQuiz() }
         case .none:
-            return Array(realm.objects(RLMQuizModel.self)).map { $0.asQuiz() }
+            return Array(getAllQuizModelObjects()).map { $0.asQuiz() }
         }
+    }
+    
+    func getAllQuizModelObjects() -> Results<RLMQuizModel> {
+        return realm.objects(RLMQuizModel.self)
     }
     
     func getAllQuizCategories(by categoryName: String? = nil) -> [Category] {
@@ -69,7 +77,7 @@ class DatabaseManager {
     }
     
     func getAllQuizzesBy(category: String) -> [RLMQuizModel] {
-        return realm.objects(RLMQuizModel.self).filter("category == %s", category).asArray()
+        return getAllQuizModelObjects().filter("category == %s", category).asArray()
     }
     
     func getFilteredQuizzes(by searchText: String, of category: String) -> [Quiz]{
@@ -109,8 +117,9 @@ class DatabaseManager {
         
     }
     
-    func getAllPracticeSessions() -> [PracticeSession] {
-        Array(realm.objects(RLMPracticeSessionModel.self)).map { $0.asPracticeSession() }
+    func getAllPracticeSessions(by category: String) -> [PracticeSession] {
+        Array(realm.objects(RLMPracticeSessionModel.self).filter("category == %s", category))
+            .map { $0.asPracticeSession() }
     }
     
     func getAllCategoryNamesFromQuizzes() -> Set<String>{

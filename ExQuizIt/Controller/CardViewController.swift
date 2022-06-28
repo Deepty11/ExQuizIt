@@ -19,6 +19,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var quizIndexLabel: UILabel!
     
     var pageIndex = 0
+    var totalQuizzes = 0
     var quiz = Quiz(id: "", question: "", correct_answer: "", learningStatus: 0)
     var delegate: PageViewDelegate?
     var quizRecord = QuizRecord(id: "")
@@ -35,7 +36,7 @@ class CardViewController: UIViewController {
         super.viewDidLoad()
         
         self.questionLabel.text = quiz.question
-        self.quizIndexLabel.text = "\(pageIndex + 1)/\(practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes())"
+        self.quizIndexLabel.text = "\(pageIndex + 1)/\(totalQuizzes)"
         
         self.questionView.isHidden = false
         self.answerView.isHidden = true
