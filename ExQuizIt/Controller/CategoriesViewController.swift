@@ -39,6 +39,7 @@ class CategoriesViewController: UIViewController {
         super.viewDidLoad()
         
         saveSettingsButton.layer.cornerRadius = 5.0
+        searchBar.showsCancelButton = false
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -47,6 +48,9 @@ class CategoriesViewController: UIViewController {
         setupLoading()
         configureNavigationBar()
         configurePracticeQuizStepper()
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                         action: #selector(handleViewDidTapped)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,10 +76,6 @@ class CategoriesViewController: UIViewController {
             action: #selector(handleSettingsButtonTapped)
         )
     }
-    
-//    func setViewSources() {
-//        categories = databaseManager.getAllQuizCategories()
-//    }
     
     private func setupLoading() {
         addVisualEffectSubview()
@@ -290,6 +290,7 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - Searchbar delegates
 extension CategoriesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchBar.showsCancelButton = true
         categories = searchText.isEmpty
             ? databaseManager.getAllQuizCategories()
             : databaseManager.getFilteredCategories(by: searchText)
@@ -298,7 +299,7 @@ extension CategoriesViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
+        searchBar.showsCancelButton = false
         categories = databaseManager.getAllQuizCategories()
         
         view.endEditing(true)
