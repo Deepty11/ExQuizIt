@@ -25,6 +25,18 @@ class DatabaseManager {
         }
     }
     
+    func storeCategories() {
+        let categoryNames = getAllCategoryNamesFromQuizzes()
+        var categories: [RLMCategoryModel] = []
+        let _ = categoryNames.map {
+            categories.append(RLMCategoryModel(category: Category(name: $0)))
+        }
+        
+        writeToRealm {
+            realm.add(categories)
+        }
+    }
+    
     // MARK: - GET methods
     
     func getQuizBy(id: String) -> RLMQuizModel? {
@@ -42,22 +54,26 @@ class DatabaseManager {
         }
     }
     
-    func getAllQuizCategories() -> [String] {
-        var categoriesSet: Set<String> = []
-        let _ = getAllQuizzes().map {
-            categoriesSet.insert($0.category ?? "" )
+    func getAllQuizCategories(by categoryName: String? = nil) -> [Category] {
+        guard let categoryName = categoryName else {
+            return Array(realm.objects(RLMCategoryModel.self).map { $0.asCategory() })
         }
-        return Array(categoriesSet)
+        
+        return Array(realm.objects(RLMCategoryModel.self)
+            .filter("name == %s", categoryName)
+            .map { $0.asCategory() })
     }
     
-    func getAllQuizzesBy(category: String) -> [Quiz] {
-        return Array(realm.objects(RLMQuizModel.self)
-            .filter("category == %s", category))
-        .map { $0.asQuiz() }
+    func getCategory(by id: String) -> RLMCategoryModel? {
+        return realm.objects(RLMCategoryModel.self).filter("id == %s", id).first
+    }
+    
+    func getAllQuizzesBy(category: String) -> [RLMQuizModel] {
+        return realm.objects(RLMQuizModel.self).filter("category == %s", category).asArray()
     }
     
     func getFilteredQuizzes(by searchText: String, of category: String) -> [Quiz]{
-        getAllQuizzesBy(category: category).filter({
+        getAllQuizzesBy(category: category).map { $0.asQuiz() }.filter({
             let searchableText = $0.question + $0.correct_answer
             
             return searchableText.range(of: searchText,
@@ -68,9 +84,9 @@ class DatabaseManager {
         })
     }
     
-    func getFilteredCategories(by searchText: String) -> [String]{
+    func getFilteredCategories(by searchText: String) -> [Category]{
         getAllQuizCategories().filter {
-            return $0.range(of: searchText,
+            return $0.name?.range(of: searchText,
                             options: .caseInsensitive,
                             range: nil ,
                             locale: nil) != nil
@@ -97,6 +113,15 @@ class DatabaseManager {
         Array(realm.objects(RLMPracticeSessionModel.self)).map { $0.asPracticeSession() }
     }
     
+    func getAllCategoryNamesFromQuizzes() -> Set<String>{
+        var categoriesSet: Set<String> = []
+        let _ = getAllQuizzes().map {
+            categoriesSet.insert($0.category ?? "" )
+        }
+        
+        return categoriesSet
+    }
+    
     func saveQuiz(_ quiz: Quiz) {
         // Update
         if let id = quiz.id,
@@ -111,6 +136,33 @@ class DatabaseManager {
             writeToRealm {
                 let model = RLMQuizModel()
                 model.update(with: quiz)
+                realm.add(model)
+            }
+        }
+    }
+    
+    func saveCategory(_ category: Category) {
+        // Update
+        if let id = category.id,
+           let model = getCategory(by: id) {
+            let quizzes = getAllQuizzesBy(category: model.name)
+            
+            writeToRealm {
+                model.update(with: category)
+                
+                for quiz in quizzes {
+                    quiz.category = category.name
+                }
+                
+                realm.add(model)
+                realm.add(quizzes)
+            }
+        }
+        // Save new
+        else {
+            writeToRealm {
+                let model = RLMCategoryModel()
+                model.update(with: category)
                 realm.add(model)
             }
         }
@@ -134,17 +186,22 @@ class DatabaseManager {
         }
     }
     
-    func deleteQuiz(by category: String) {
-        var quizzes = [RLMQuizModel]()
-        let _ = getAllQuizzesBy(category: category).map {
-            let quizModel = RLMQuizModel()
-            quizModel.update(with: $0)
-            quizzes.append(quizModel)
-        }
+    func deleteQuizzes(by category: String) {
+        let quizzes = getAllQuizzesBy(category: category)
         
         writeToRealm {
             realm.delete(quizzes)
             print("deleted!!")
+        }
+    }
+    
+    func deleteCategory(by id: String) {
+        guard let category = getCategory(by: id) else { return }
+        
+        deleteQuizzes(by: category.name)
+        
+        writeToRealm {
+            realm.delete(category)
         }
     }
     

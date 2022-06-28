@@ -21,12 +21,6 @@ protocol CellButtonInteractionDelegate {
 class QuizListViewController: UIViewController {
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var settingsView: UIView!
-    @IBOutlet weak var settingsViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
-    @IBOutlet weak var practiceQuizStepper: UIStepper!
-    @IBOutlet weak var saveSettingsButton: UIButton!
     @IBOutlet weak var practiceButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableViewBottomConstraints: NSLayoutConstraint!
@@ -63,10 +57,6 @@ class QuizListViewController: UIViewController {
         tableView.dataSource = self
         searchBar.delegate = self
         
-        configurePracticeQuizStepper()
-        
-        saveSettingsButton.layer.cornerRadius = 5.0
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyBoardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -84,7 +74,7 @@ class QuizListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        quizSources = databaseManager.getAllQuizzesBy(category: selectedCategory)
+        quizSources = databaseManager.getAllQuizzesBy(category: selectedCategory).map { $0.asQuiz()}
         refreshUI()
     }
     
@@ -96,20 +86,20 @@ class QuizListViewController: UIViewController {
         }
     }
     
-    private func configurePracticeQuizStepper() {
-        practiceQuizStepper.layer.cornerRadius = 5.0
-        practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
-        practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
-    
-        let currentValue = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
-        practiceQuizStepper.value = currentValue > 0
-            ? Double(currentValue)
-            : Double(Constants.DefaultNumberOfPracticeQuizzes)
-        
-        selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
-        selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)
-        
-    }
+//    private func configurePracticeQuizStepper() {
+//        practiceQuizStepper.layer.cornerRadius = 5.0
+//        practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
+//        practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
+//
+//        let currentValue = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
+//        practiceQuizStepper.value = currentValue > 0
+//            ? Double(currentValue)
+//            : Double(Constants.DefaultNumberOfPracticeQuizzes)
+//
+//        selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
+//        selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)
+//
+//    }
     
 //    private func fetchQuizzes() {
 //        guard databaseManager.getAllQuizzes().isEmpty else {
@@ -187,17 +177,10 @@ class QuizListViewController: UIViewController {
                                    action: #selector(handleViewDidTapped(_:))))
     }
 
-    @IBAction private func handleSaveButtonTapped(_ sender: Any) {
-        storeNumberOfPracticeQuizzes()
-        hideSettingsView()
-    }
+    
                                                             
     @objc private func handleViewDidTapped(_ sender: UITapGestureRecognizer) {
-        if isSettingsViewVisible {
-            hideSettingsView()
-        } else {
-            view.endEditing(true)
-        }
+        view.endEditing(true)
     }
     
     @objc private func handleAddButtonTapped() {
@@ -211,9 +194,9 @@ class QuizListViewController: UIViewController {
         }
     }
     
-    @objc private func handleSettingsButtonTapped() {
-        isSettingsViewVisible ? hideSettingsView() : showSettingsView()
-    }
+//    @objc private func handleSettingsButtonTapped() {
+//        isSettingsViewVisible ? hideSettingsView() : showSettingsView()
+//    }
     
     @objc func handleCellViewTapped(_ sender: UITapGestureRecognizer) {
         tableView.beginUpdates()
@@ -318,46 +301,6 @@ class QuizListViewController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                          action: #selector(handleCellViewTapped(_:))))
     }
-}
-
-//MARK: - Settings View
-extension QuizListViewController {
-    func showSettingsView() {
-        settingsView.backgroundColor = .black
-        settingsView.alpha = 0.80
-        
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self = self else { return }
-            
-            self.visualEffectView.isHidden = false
-            self.originYOfSettingsView = self.settingsView.frame.origin.y
-            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
-            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
-            self.isSettingsViewVisible = true
-            self.view.bringSubviewToFront(self.settingsView)
-        }
-    }
-    
-    func hideSettingsView() {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            guard let self = self else { return }
-            
-            self.settingsView.frame.origin.y = self.originYOfSettingsView
-            self.settingsViewBottomConstraint.constant = 0
-            self.visualEffectView.isHidden = true
-        }
-        
-        isSettingsViewVisible = false
-        storeNumberOfPracticeQuizzes()
-    }
-    
-    @IBAction func handleStepperTapped(_ sender: Any) {
-        if let sender = sender as? UIStepper {
-            selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
-            selectedValueForPracticeQuizzes = Int(sender.value)
-        }
-    }
-    
 }
 
 //MARK: -TableView Delegate and DataSource

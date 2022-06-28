@@ -28,6 +28,7 @@ extension UIViewController {
                 onConfirm?(textField.text)
             }
             
+            onConfirm?(nil)
         }
         
         if let cancelTitle = cancelTitle {

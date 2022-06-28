@@ -7,12 +7,22 @@
 
 import UIKit
 
+enum ActionType: String {
+    case edit = "Edit"
+    case add = "Add new"
+}
+
 class CategoriesViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var tableViewBottomConstraints: NSLayoutConstraint!
+    @IBOutlet weak var settingsView: UIView!
+    @IBOutlet weak var settingsViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
+    @IBOutlet weak var practiceQuizStepper: UIStepper!
+    @IBOutlet weak var saveSettingsButton: UIButton!
     
     var visualEffectView: UIVisualEffectView!
     var originYOfSettingsView = 0.0
@@ -20,12 +30,15 @@ class CategoriesViewController: UIViewController {
     var selectedValueForPracticeQuizzes = 0
     
     var contentType = ContentType.categories
-    var categories: [String] = []
+    var categories: [Category] = []
     let apiManager = APIManager()
     let databaseManager = DatabaseManager()
+    let practiceSessionUtilityService = PracticeSessionUtilityService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        saveSettingsButton.layer.cornerRadius = 5.0
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -33,12 +46,13 @@ class CategoriesViewController: UIViewController {
         
         setupLoading()
         configureNavigationBar()
+        configurePracticeQuizStepper()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchQuizzes()
+        fetchCategories()
     }
     
     private func configureNavigationBar() {
@@ -91,7 +105,7 @@ class CategoriesViewController: UIViewController {
         emptyQuizLabel.isHidden = !categories.isEmpty
     }
     
-    private func fetchQuizzes() {
+    private func fetchCategories() {
         guard databaseManager.getAllQuizzes().isEmpty else {
             categories = databaseManager.getAllQuizCategories()
             refreshUI()
@@ -104,6 +118,7 @@ class CategoriesViewController: UIViewController {
             guard let self = self else { return }
             
             self.databaseManager.storeQuizzes(quizzes)
+            self.databaseManager.storeCategories()
             self.categories = self.databaseManager.getAllQuizCategories()
             self.showLoading(false)
             self.refreshUI()
@@ -130,17 +145,12 @@ class CategoriesViewController: UIViewController {
     }
     
     @objc private func handleAddButtonTapped() {
-        if let vc = storyboard?.instantiateViewController(
-            withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
-            isSettingsViewVisible = false
-            
-            //hideSettingsView()
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        getInputAndUpdateCategory()
+        
     }
     
     @objc private func handleSettingsButtonTapped() {
-        //isSettingsViewVisible ? hideSettingsView() : showSettingsView()
+        isSettingsViewVisible ? hideSettingsView() : showSettingsView()
     }
     
     @objc private func handleViewDidTapped(_ sender: UITapGestureRecognizer) {
@@ -152,10 +162,22 @@ class CategoriesViewController: UIViewController {
             if let vc = storyboard?.instantiateViewController(
                 withIdentifier: String(describing: QuizListViewController.self))
                 as? QuizListViewController {
-                vc.selectedCategory = categories[indexPath.row]
+                vc.selectedCategory = categories[indexPath.row].name ?? ""
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
+    }
+    
+    @IBAction func handleStepperTapped(_ sender: Any) {
+        if let sender = sender as? UIStepper {
+            selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
+            selectedValueForPracticeQuizzes = Int(sender.value)
+        }
+    }
+    
+    @IBAction private func handleSaveButtonTapped(_ sender: Any) {
+        storeNumberOfPracticeQuizzes()
+        hideSettingsView()
     }
     
     // MARK: - Edit and delete Utils
@@ -167,15 +189,10 @@ class CategoriesViewController: UIViewController {
                        cancelTitle: "Cancel") { [weak self] _ in
             guard let self = self else { return }
             
-            self.databaseManager.deleteQuiz(by: self.categories[indexPath.row])
+            self.databaseManager.deleteCategory(by: self.categories[indexPath.row].id ?? "")
             
             self.showToast(title: nil, message: "Deleted Successfully") {
-                self.categories  = self.databaseManager.getAllQuizCategories()
-                
-                if self.categories.isEmpty {
-                    self.tableView.isHidden = true
-                    self.emptyQuizLabel.isHidden = false
-                }
+                self.fetchCategories()
             }
         }
         
@@ -183,32 +200,44 @@ class CategoriesViewController: UIViewController {
     }
     
     fileprivate func editQuiz(atIndexPath indexPath: IndexPath) {
-        showAlert(title: "Edit",
+        getInputAndUpdateCategory(selectedCategory: categories[indexPath.row])
+        fetchCategories()
+    }
+    
+    func getInputAndUpdateCategory(selectedCategory: Category? = nil) {
+        let action = selectedCategory != nil
+            ? ActionType.edit.rawValue
+            : ActionType.add.rawValue
+        
+        let placeHolder = selectedCategory != nil ? selectedCategory?.name : ""
+        
+        showAlert(title: "\(action) category",
                   message: "Please enter category name",
-                  placeHolder: categories[indexPath.row],
+                  placeHolder: placeHolder,
                   okTitle: "Confirm",
-                  cancelTitle: "Cancel") { [weak self] category in
+                  cancelTitle: "Cancel") { [weak self] categoryName in
             guard let self = self else { return }
             
-            guard let category = category else { return }
+            guard let categoryName = categoryName else { return }
             
-            if self.databaseManager.getAllQuizCategories().contains(category)
-                && category != self.categories[indexPath.row] {
-                
+            if categoryName != selectedCategory?.name
+                && !self.databaseManager.getAllQuizCategories(by: categoryName).isEmpty {
+                self.showAlert(title: "Attention",
+                          message: "\(categoryName) already exists",
+                          okTitle: "Ok")
+            } else {
+                //edit or add
+                //let categoryFound = self.databaseManager.getAllQuizCategories(by: selectedCategory).first
+                var category = selectedCategory
+                category?.name = categoryName
+                self.databaseManager.saveCategory(category ?? Category(name: categoryName))
             }
+            
+            self.fetchCategories()
         }
-//        if let vc = self.storyboard?.instantiateViewController(
-//            withIdentifier: String(describing: AddQuizViewController.self)) as? AddQuizViewController {
-//            vc.storeType = .update
-//            vc.selectedCategory = quizSources[indexPath.row].category ?? ""
-//            vc.quiz = quizSources[indexPath.row]
-//            navigationController?.pushViewController(vc, animated: true)
-//
-//        }
     }
 
 }
-
 
 //MARK: -TableView Delegate and DataSource
 extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -219,7 +248,7 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CategoryTableViewCell.self),
                                                     for: indexPath) as? CategoryTableViewCell {
-            cell.categoryLabel.text = categories[indexPath.row]
+            cell.categoryLabel.text = categories[indexPath.row].name
             cell.cellView.addGestureRecognizer(
                 UITapGestureRecognizer(target: self,
                                        action: #selector(handleCategorySelected)))
@@ -252,7 +281,7 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         if let vc = storyboard?.instantiateViewController(
             withIdentifier: String(describing: QuizListViewController.self))
             as? QuizListViewController {
-            vc.selectedCategory = categories[indexPath.row]
+            vc.selectedCategory = categories[indexPath.row].name ?? ""
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -291,5 +320,65 @@ extension CategoriesViewController {
             tableViewBottomConstraints.constant = 0
         }
     }
+    
+}
+
+//MARK: - Settings View
+extension CategoriesViewController {
+    private func configurePracticeQuizStepper() {
+        practiceQuizStepper.layer.cornerRadius = 5.0
+        practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
+        practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
+    
+        let currentValue = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
+        practiceQuizStepper.value = currentValue > 0
+            ? Double(currentValue)
+            : Double(Constants.DefaultNumberOfPracticeQuizzes)
+        
+        selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
+        selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)
+        
+    }
+    
+    func showSettingsView() {
+        settingsView.backgroundColor = .black
+        settingsView.alpha = 0.80
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            
+            self.visualEffectView.isHidden = false
+            self.originYOfSettingsView = self.settingsView.frame.origin.y
+            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
+            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
+            self.isSettingsViewVisible = true
+            self.view.bringSubviewToFront(self.settingsView)
+        }
+    }
+    
+    func hideSettingsView() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let self = self else { return }
+            
+            self.settingsView.frame.origin.y = self.originYOfSettingsView
+            self.settingsViewBottomConstraint.constant = 0
+            self.visualEffectView.isHidden = true
+        }
+        
+        isSettingsViewVisible = false
+        storeNumberOfPracticeQuizzes()
+    }
+    
+    private func storeNumberOfPracticeQuizzes() {
+        UserDefaults.standard.set(selectedValueForPracticeQuizzes,
+                                  forKey: Strings.NumberOfPracticeQuizzes)
+    }
+    
+    
+    
+    
+    
+    
+    
 }
 
