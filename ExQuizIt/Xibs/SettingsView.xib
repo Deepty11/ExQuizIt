@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingsViewController" customModule="ExQuizIt" customModuleProvider="target">
+            <connections>
+                <outlet property="practiceQuizSelectionStepper" destination="ml1-O5-FeR" id="iOw-oA-cFH"/>
+                <outlet property="saveButton" destination="PWE-00-D5f" id="tEU-P3-8Yh"/>
+                <outlet property="selectedPreferredNumberLabel" destination="b7A-Qw-xWt" id="h0B-1l-x1j"/>
+                <outlet property="view" destination="iN0-l3-epB" id="5Bc-47-4VJ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="439" height="287"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLV-VF-UiX">
+                    <rect key="frame" x="15" y="59" width="418" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="o9y-oG-MR6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bo6-5w-DjL">
+                    <rect key="frame" x="257.5" y="128.5" width="166.5" height="32"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7A-Qw-xWt">
+                            <rect key="frame" x="0.0" y="0.0" width="62.5" height="32"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minimumValue="1" maximumValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="ml1-O5-FeR">
+                            <rect key="frame" x="72.5" y="0.0" width="94" height="32"/>
+                            <color key="backgroundColor" name="AccentColor"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <variation key="heightClass=regular-widthClass=compact">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </variation>
+                            <connections>
+                                <action selector="handleStepperTapped:" destination="-1" eventType="valueChanged" id="n9c-Jx-S36"/>
+                            </connections>
+                        </stepper>
+                    </subviews>
+                </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select number of practice quizzes" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rfo-k9-q76">
+                    <rect key="frame" x="15" y="124" width="235" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="235" id="azA-Ax-ZS4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bbO-wf-ONd">
+                    <rect key="frame" x="189.5" y="9" width="60" height="4"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="MAw-AM-lgk"/>
+                        <constraint firstAttribute="height" constant="4" id="h4v-X6-vLe"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PWE-00-D5f">
+                    <rect key="frame" x="179.5" y="237" width="80" height="30"/>
+                    <color key="backgroundColor" name="AccentColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="3Sy-an-kyE"/>
+                        <constraint firstAttribute="width" constant="80" id="xWp-9B-xrY"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Save">
+                        <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </buttonConfiguration>
+                    <connections>
+                        <action selector="handleSaveButtonTapped:" destination="-1" eventType="touchUpInside" id="LZi-9K-DBQ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="BackgroundColor"/>
+            <constraints>
+                <constraint firstItem="bbO-wf-ONd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="1Zy-rr-TFO"/>
+                <constraint firstItem="Rfo-k9-q76" firstAttribute="top" secondItem="nLV-VF-UiX" secondAttribute="bottom" constant="25" id="7cX-vk-Fgb"/>
+                <constraint firstItem="PWE-00-D5f" firstAttribute="top" secondItem="Rfo-k9-q76" secondAttribute="bottom" constant="72" id="F6c-g6-SeO"/>
+                <constraint firstItem="Bo6-5w-DjL" firstAttribute="leading" secondItem="Rfo-k9-q76" secondAttribute="trailing" constant="7.5" id="MBF-Tr-ag2"/>
+                <constraint firstItem="nLV-VF-UiX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="15" id="OKD-eK-3By"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nLV-VF-UiX" secondAttribute="trailing" constant="6" id="Qdb-ZM-vP1"/>
+                <constraint firstItem="bbO-wf-ONd" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="TNa-oc-F7V"/>
+                <constraint firstItem="PWE-00-D5f" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="gi6-LS-0SS"/>
+                <constraint firstItem="nLV-VF-UiX" firstAttribute="top" secondItem="bbO-wf-ONd" secondAttribute="bottom" constant="46" id="jna-MG-vmh"/>
+                <constraint firstItem="Rfo-k9-q76" firstAttribute="centerY" secondItem="ml1-O5-FeR" secondAttribute="centerY" id="pTM-7X-19j"/>
+                <constraint firstItem="Rfo-k9-q76" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="15" id="rxc-dx-5jE"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Bo6-5w-DjL" secondAttribute="trailing" constant="15" id="w66-hR-0Dg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="129.71014492753625" y="347.87946428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BackgroundColor">
+            <color red="0.42100000381469727" green="0.43700000643730164" blue="0.50900000333786011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

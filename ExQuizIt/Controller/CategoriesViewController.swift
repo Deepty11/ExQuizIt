@@ -38,7 +38,6 @@ class CategoriesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        saveSettingsButton.layer.cornerRadius = 5.0
         searchBar.showsCancelButton = false
         
         tableView.dataSource = self
@@ -47,7 +46,6 @@ class CategoriesViewController: UIViewController {
         
         setupLoading()
         configureNavigationBar()
-        configurePracticeQuizStepper()
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                          action: #selector(handleViewDidTapped)))
@@ -150,7 +148,11 @@ class CategoriesViewController: UIViewController {
     }
     
     @objc private func handleSettingsButtonTapped() {
-        isSettingsViewVisible ? hideSettingsView() : showSettingsView()
+        let view = SettingsViewController()
+        view.modalPresentationStyle = .custom
+        view.transitioningDelegate = self
+        present(view, animated: true, completion: nil)
+        //isSettingsViewVisible ? hideSettingsView() : showSettingsView()
     }
     
     @objc private func handleViewDidTapped(_ sender: UITapGestureRecognizer) {
@@ -166,18 +168,6 @@ class CategoriesViewController: UIViewController {
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
-    }
-    
-    @IBAction func handleStepperTapped(_ sender: Any) {
-        if let sender = sender as? UIStepper {
-            selectedValueForPracticeQuizLabel.text = String(Int(sender.value))
-            selectedValueForPracticeQuizzes = Int(sender.value)
-        }
-    }
-    
-    @IBAction private func handleSaveButtonTapped(_ sender: Any) {
-        storeNumberOfPracticeQuizzes()
-        hideSettingsView()
     }
     
     // MARK: - Edit and delete Utils
@@ -324,62 +314,11 @@ extension CategoriesViewController {
     
 }
 
-//MARK: - Settings View
-extension CategoriesViewController {
-    private func configurePracticeQuizStepper() {
-        practiceQuizStepper.layer.cornerRadius = 5.0
-        practiceQuizStepper.setIncrementImage(UIImage(named: "AddIcon"), for: .normal)
-        practiceQuizStepper.setDecrementImage(UIImage(named: "MinusIcon"), for: .normal)
-    
-        let currentValue = practiceSessionUtilityService.getPreferredNumberOfPracticeQuizzes()
-        practiceQuizStepper.value = currentValue > 0
-            ? Double(currentValue)
-            : Double(Constants.DefaultNumberOfPracticeQuizzes)
-        
-        selectedValueForPracticeQuizzes = Int(practiceQuizStepper.value)
-        selectedValueForPracticeQuizLabel.text = String(selectedValueForPracticeQuizzes)
-        
-    }
-    
-    func showSettingsView() {
-        settingsView.backgroundColor = .black
-        settingsView.alpha = 0.80
-        
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self = self else { return }
-            
-            self.visualEffectView.isHidden = false
-            self.originYOfSettingsView = self.settingsView.frame.origin.y
-            self.settingsView.frame.origin.y = self.view.frame.height - self.settingsView.frame.height
-            self.settingsViewBottomConstraint.constant = -self.settingsView.frame.height
-            self.isSettingsViewVisible = true
-            self.view.bringSubviewToFront(self.settingsView)
-        }
-    }
-    
-    func hideSettingsView() {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            guard let self = self else { return }
-            
-            self.settingsView.frame.origin.y = self.originYOfSettingsView
-            self.settingsViewBottomConstraint.constant = 0
-            self.visualEffectView.isHidden = true
-        }
-        
-        isSettingsViewVisible = false
-        storeNumberOfPracticeQuizzes()
-    }
-    
-    private func storeNumberOfPracticeQuizzes() {
-        UserDefaults.standard.set(selectedValueForPracticeQuizzes,
-                                  forKey: Strings.NumberOfPracticeQuizzes)
-    }
-    
-    
-    
-    
-    
-    
-    
-}
+//MARK: - UIViewControllerTransitioningDelegate
 
+extension CategoriesViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        FilterPresentationController(presentedViewController: presented,
+                                     presenting: presenting ?? UIViewController())
+    }
+}

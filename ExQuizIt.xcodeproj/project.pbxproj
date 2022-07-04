@@ -37,6 +37,10 @@
 		BFE8790828436B4D00C3D985 /* RLMPracticeSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */; };
 		BFE8790A284371A500C3D985 /* PracticeSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE87909284371A500C3D985 /* PracticeSessionRecord.swift */; };
 		BFE8790C2843797200C3D985 /* Date+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790B2843797200C3D985 /* Date+Format.swift */; };
+		FD4FDBB628717CEB008A9B11 /* FilterPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4FDBB528717CEB008A9B11 /* FilterPresentationController.swift */; };
+		FD4FDBB82871A666008A9B11 /* UIView+RoundCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4FDBB72871A666008A9B11 /* UIView+RoundCorner.swift */; };
+		FD4FDBBA2872BAAE008A9B11 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD4FDBB92872BAAE008A9B11 /* SettingsView.xib */; };
+		FD4FDBC02872C4AA008A9B11 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4FDBBF2872C4AA008A9B11 /* SettingsViewController.swift */; };
 		FD6435F428048FC300137173 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6435F328048FC300137173 /* APIManager.swift */; };
 		FD6F1DAD280C20F400C9DFC6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD6F1DAC280C20F300C9DFC6 /* Main.storyboard */; };
 		FD894AAD280B3BA300C43AF8 /* PracticePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD894AAC280B3BA300C43AF8 /* PracticePageViewController.swift */; };
@@ -109,6 +113,10 @@
 		F495C154D69D67BE1700BCE5 /* Pods-ExQuizItTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExQuizItTests.release.xcconfig"; path = "Target Support Files/Pods-ExQuizItTests/Pods-ExQuizItTests.release.xcconfig"; sourceTree = "<group>"; };
 		F5584D5512A1F88DF15AAF8C /* Pods-NotesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesApp.release.xcconfig"; path = "Target Support Files/Pods-NotesApp/Pods-NotesApp.release.xcconfig"; sourceTree = "<group>"; };
 		FBE21741A1334B68CE390925 /* Pods_ExQuizIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExQuizIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD4FDBB528717CEB008A9B11 /* FilterPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPresentationController.swift; sourceTree = "<group>"; };
+		FD4FDBB72871A666008A9B11 /* UIView+RoundCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorner.swift"; sourceTree = "<group>"; };
+		FD4FDBB92872BAAE008A9B11 /* SettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
+		FD4FDBBF2872C4AA008A9B11 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FD6435F328048FC300137173 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD6F1DAC280C20F300C9DFC6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FD769E1476FFAA6AA94EB3A0 /* Pods-NotesApp-NotesAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesApp-NotesAppUITests.release.xcconfig"; path = "Target Support Files/Pods-NotesApp-NotesAppUITests/Pods-NotesApp-NotesAppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +209,7 @@
 		BF3AD2E027FC126300002E53 /* ExQuizIt */ = {
 			isa = PBXGroup;
 			children = (
+				FD4FDBBC2872C420008A9B11 /* Xibs */,
 				BF806C00283CD63F008C5D27 /* Extensions */,
 				FD6435F228048F9E00137173 /* Services */,
 				FDC57F3F2802C211008D51CA /* Views */,
@@ -255,6 +264,8 @@
 				BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */,
 				BFDC08752848AFD900FC2780 /* PracticeListViewController.swift */,
 				BF99D0A12864376A001AA8EF /* CategoriesViewController.swift */,
+				FD4FDBB528717CEB008A9B11 /* FilterPresentationController.swift */,
+				FD4FDBBF2872C4AA008A9B11 /* SettingsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -277,6 +288,7 @@
 				BF806C03283CD6EA008C5D27 /* String+Utils.swift */,
 				BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */,
 				BFE8790B2843797200C3D985 /* Date+Format.swift */,
+				FD4FDBB72871A666008A9B11 /* UIView+RoundCorner.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -288,6 +300,14 @@
 				BF3AD2EC27FC126800002E53 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		FD4FDBBC2872C420008A9B11 /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				FD4FDBB92872BAAE008A9B11 /* SettingsView.xib */,
+			);
+			path = Xibs;
 			sourceTree = "<group>";
 		};
 		FD6435F228048F9E00137173 /* Services */ = {
@@ -420,6 +440,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD6F1DAD280C20F400C9DFC6 /* Main.storyboard in Resources */,
+				FD4FDBBA2872BAAE008A9B11 /* SettingsView.xib in Resources */,
 				BF3AD2EE27FC126800002E53 /* LaunchScreen.storyboard in Resources */,
 				BF3AD2EB27FC126800002E53 /* Assets.xcassets in Resources */,
 			);
@@ -551,7 +572,9 @@
 			files = (
 				BF3AD31627FC1FE900002E53 /* QuizListViewController.swift in Sources */,
 				FD6435F428048FC300137173 /* APIManager.swift in Sources */,
+				FD4FDBB628717CEB008A9B11 /* FilterPresentationController.swift in Sources */,
 				BFDC08782848B23200FC2780 /* PracticeTableViewCell.swift in Sources */,
+				FD4FDBB82871A666008A9B11 /* UIView+RoundCorner.swift in Sources */,
 				BF60D23A2805223F00325024 /* DatabaseManager.swift in Sources */,
 				BFBFC4962817CE8400FE213D /* PracticeQuizStatisticsViewController.swift in Sources */,
 				BFE8790A284371A500C3D985 /* PracticeSessionRecord.swift in Sources */,
@@ -567,6 +590,7 @@
 				FDCF756D2815477700F3F9C1 /* GradientView.swift in Sources */,
 				BFE8790828436B4D00C3D985 /* RLMPracticeSessionModel.swift in Sources */,
 				BF806C02283CD660008C5D27 /* UIViewController+Alert.swift in Sources */,
+				FD4FDBC02872C4AA008A9B11 /* SettingsViewController.swift in Sources */,
 				BF3AD31827FC31FD00002E53 /* AddQuizViewController.swift in Sources */,
 				BF3AD2E427FC126300002E53 /* SceneDelegate.swift in Sources */,
 				BF806C04283CD6EA008C5D27 /* String+Utils.swift in Sources */,
