@@ -18,11 +18,6 @@ class CategoriesViewController: UIViewController {
     @IBOutlet weak var emptyQuizLabel: UILabel!
     @IBOutlet weak var quizLoadingActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var tableViewBottomConstraints: NSLayoutConstraint!
-    @IBOutlet weak var settingsView: UIView!
-    @IBOutlet weak var settingsViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var selectedValueForPracticeQuizLabel: UILabel!
-    @IBOutlet weak var practiceQuizStepper: UIStepper!
-    @IBOutlet weak var saveSettingsButton: UIButton!
     
     var visualEffectView: UIVisualEffectView!
     var originYOfSettingsView = 0.0
