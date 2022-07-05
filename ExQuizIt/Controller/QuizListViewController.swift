@@ -187,7 +187,7 @@ class QuizListViewController: UIViewController {
                        cancelTitle: "Cancel") { [weak self] _ in
             guard let self = self else { return }
             
-            self.databaseManager.deleteQuiz(quiz: self.quizSources[indexPath.row])
+            self.databaseManager.delete(quiz: self.quizSources[indexPath.row])
             
             self.showToast(title: nil, message: "Deleted Successfully") {
                 self.quizSources  = self.databaseManager.getAllQuizzes()

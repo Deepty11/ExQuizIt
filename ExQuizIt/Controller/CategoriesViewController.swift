@@ -131,7 +131,7 @@ class CategoriesViewController: UIViewController {
             visualEffectView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0.0)
         ])
         
-        self.visualEffectView.addGestureRecognizer(
+        visualEffectView.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(handleViewDidTapped(_:))))
         visualEffectView.isHidden = true
@@ -147,7 +147,6 @@ class CategoriesViewController: UIViewController {
         view.modalPresentationStyle = .custom
         view.transitioningDelegate = self
         present(view, animated: true, completion: nil)
-        //isSettingsViewVisible ? hideSettingsView() : showSettingsView()
     }
     
     @objc private func handleViewDidTapped(_ sender: UITapGestureRecognizer) {
@@ -212,7 +211,6 @@ class CategoriesViewController: UIViewController {
                           okTitle: "Ok")
             } else {
                 //edit or add
-                //let categoryFound = self.databaseManager.getAllQuizCategories(by: selectedCategory).first
                 var category = selectedCategory
                 category?.name = categoryName
                 self.databaseManager.saveCategory(category ?? Category(name: categoryName))
@@ -230,7 +228,8 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         return categories.count
     }
     
-    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    internal func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CategoryTableViewCell.self),
                                                     for: indexPath) as? CategoryTableViewCell {
             cell.categoryLabel.text = categories[indexPath.row].name
@@ -248,15 +247,20 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         return true
     }
     
-    internal func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { [weak self] _, indexPath in
+    internal func tableView(_ tableView: UITableView,
+                            editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive,
+                                                title: "Delete") { [weak self] _, indexPath in
             self?.deleteQuiz(atIndexPath: indexPath)
         }
+        
         deleteAction.backgroundColor = .red
         
-        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { [weak self] _, indexPath in
+        let editAction = UITableViewRowAction(style: .normal,
+                                              title: "Edit") { [weak self] _, indexPath in
             self?.editQuiz(atIndexPath: indexPath)
         }
+        
         editAction.backgroundColor = .green
         
         return [deleteAction, editAction]
@@ -295,7 +299,8 @@ extension CategoriesViewController: UISearchBarDelegate {
 //MARK: - Keyboard hide/show notification
 extension CategoriesViewController {
     @objc private func keyBoardWillShow(notification: Notification) {
-        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+            as? NSValue {
             let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
             tableViewBottomConstraints.constant = keyboardHeight
         }
@@ -312,7 +317,9 @@ extension CategoriesViewController {
 //MARK: - UIViewControllerTransitioningDelegate
 
 extension CategoriesViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController,
+                                presenting: UIViewController?,
+                                source: UIViewController) -> UIPresentationController? {
         FilterPresentationController(presentedViewController: presented,
                                      presenting: presenting ?? UIViewController())
     }

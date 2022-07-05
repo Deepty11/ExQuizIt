@@ -60,36 +60,23 @@ class AddQuizViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationItem.title = "Add Quiz"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save,
-                                                                 target: self,
-                                                                 action: #selector(handleSaveButtonTapped))
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = "Add Quiz"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save,
+                                                            target: self,
+                                                            action: #selector(handleSaveButtonTapped))
     }
     
     @objc private func handleTableViewTapped(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
-    
-    @objc private func keyBoardWillShow(notification: Notification) {
-        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
-            tableViewBottomConstraint.constant = keyboardHeight
-        }
-    }
-    
-    @objc private func keyBoardWillHide(notification: Notification) {
-        if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            tableViewBottomConstraint.constant = 0
-        }
+        view.endEditing(true)
     }
     
     @objc private func handleSaveButtonTapped() {
-        if questionText.isVisuallyEmpty
-            || answerText.isVisuallyEmpty {
+        if questionText.isVisuallyEmpty || answerText.isVisuallyEmpty {
             showAlert(title: "Attention", message: "Unable to save if any field is empty")
             return
         }
+        
         setQuiz()
         databaseManager.saveQuiz(quiz)
         
@@ -121,12 +108,14 @@ extension AddQuizViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func getCell(for indexPath: IndexPath, inputType: InputType) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self), for: indexPath) as? AddQuizTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddQuizTableViewCell.self),
+                                                    for: indexPath) as? AddQuizTableViewCell {
             cell.inputType = inputType
             cell.quizLabel.text = inputType.rawValue
             cell.quizTextView.text = inputType == .question ? quiz.question : quiz.correct_answer
             cell.configureCell()
             cell.delegate = self
+            
             return cell
         }
         
@@ -151,6 +140,23 @@ extension AddQuizViewController: CellInteractionDelegte {
             } else {
                 answerText = text ??  ""
             }
+        }
+    }
+}
+
+// MARK: - Keyboard show/hide notification
+extension AddQuizViewController {
+    @objc private func keyBoardWillShow(notification: Notification) {
+        if let keyBoardFrameInfo = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+            as? NSValue {
+            let keyboardHeight = keyBoardFrameInfo.cgRectValue.height
+            tableViewBottomConstraint.constant = keyboardHeight
+        }
+    }
+    
+    @objc private func keyBoardWillHide(notification: Notification) {
+        if let _ = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            tableViewBottomConstraint.constant = 0
         }
     }
 }

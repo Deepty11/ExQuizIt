@@ -50,9 +50,13 @@ class DatabaseManager {
 
         switch isKnown {
         case .some(true):
-            return Array(getAllQuizModelObjects().filter("category == %s AND learningStatus == \(Constants.MaxLearningStatus)", category)).map { $0.asQuiz() }
+            return Array(getAllQuizModelObjects()
+                .filter("category == %s AND learningStatus == \(Constants.MaxLearningStatus)", category))
+            .map { $0.asQuiz() }
         case .some(false):
-            return Array(getAllQuizModelObjects().filter("category == %s AND learningStatus != \(Constants.MaxLearningStatus)", category)).map { $0.asQuiz() }
+            return Array(getAllQuizModelObjects()
+                .filter("category == %s AND learningStatus != \(Constants.MaxLearningStatus)", category))
+            .map { $0.asQuiz() }
         case .none:
             return Array(getAllQuizModelObjects()).map { $0.asQuiz() }
         }
@@ -64,9 +68,11 @@ class DatabaseManager {
     
     func getAllQuizCategories(by categoryName: String? = nil) -> [Category] {
         guard let categoryName = categoryName else {
+            // get all categories
             return Array(realm.objects(RLMCategoryModel.self).map { $0.asCategory() })
         }
         
+        //get quizzes by category name
         return Array(realm.objects(RLMCategoryModel.self)
             .filter("name == %s", categoryName)
             .map { $0.asCategory() })
@@ -80,41 +86,21 @@ class DatabaseManager {
         return getAllQuizModelObjects().filter("category == %s", category).asArray()
     }
     
-    func getFilteredQuizzes(by searchText: String, of category: String) -> [Quiz]{
+    func getFilteredQuizzes(by searchText: String, of category: String) -> [Quiz] {
         getAllQuizzesBy(category: category).map { $0.asQuiz() }.filter({
             let searchableText = $0.question + $0.correct_answer
             
-            return searchableText.range(of: searchText,
-                                        options: .caseInsensitive,
-                                        range: nil ,
-                                        locale: nil) != nil
+            return searchableText.filter(with: searchText)
             
         })
     }
     
-    func getFilteredCategories(by searchText: String) -> [Category]{
+    func getFilteredCategories(by searchText: String) -> [Category] {
         getAllQuizCategories().filter {
-            return $0.name?.range(of: searchText,
-                            options: .caseInsensitive,
-                            range: nil ,
-                            locale: nil) != nil
+            guard let name = $0.name else { return false }
+            
+            return name.filter(with: searchText)
         }
-    }
-
-    
-    func filteredQuizzes(by searchText: String,
-                       in quizzes: [Quiz]) -> [Quiz] {
-        
-        quizzes.filter({
-            let searchableText = $0.question + $0.correct_answer
-            
-            return searchableText.range(of: searchText,
-                                        options: .caseInsensitive,
-                                        range: nil ,
-                                        locale: nil) != nil
-            
-        })
-        
     }
     
     func getAllPracticeSessions(by category: String) -> [PracticeSession] {
@@ -122,7 +108,7 @@ class DatabaseManager {
             .map { $0.asPracticeSession() }
     }
     
-    func getAllCategoryNamesFromQuizzes() -> Set<String>{
+    func getAllCategoryNamesFromQuizzes() -> Set<String> {
         var categoriesSet: Set<String> = []
         let _ = getAllQuizzes().map {
             categoriesSet.insert($0.category ?? "" )
@@ -185,7 +171,7 @@ class DatabaseManager {
         }
     }
     
-    func deleteQuiz(quiz: Quiz) {
+    func delete(quiz: Quiz) {
         guard let quizToBeDeleted = getQuizBy(id: quiz.id ?? "")
         else { return }
         

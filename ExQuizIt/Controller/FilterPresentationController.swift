@@ -9,19 +9,14 @@ import UIKit
 
 class FilterPresentationController: UIPresentationController {
     var blurEffectView: UIVisualEffectView!
-    var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
     
-    init(presentedViewController: UIViewController!, presenting presentingViewController: UIViewController) {
-        let blurEffect = UIBlurEffect(style: .dark)
-        blurEffectView = UIVisualEffectView(effect: blurEffect)
-        
+    init(presentedViewController: UIViewController!,
+         presenting presentingViewController: UIViewController) {
         super.init(presentedViewController: presentedViewController,
                    presenting: presentingViewController)
-        tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                      action: #selector(dissmissController))
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.isUserInteractionEnabled = true
-        blurEffectView.addGestureRecognizer(tapGestureRecognizer)
+        
+        configureBlurEffectView()
+        
     }
     
     override var frameOfPresentedViewInContainerView: CGRect {
@@ -33,15 +28,19 @@ class FilterPresentationController: UIPresentationController {
     override func presentationTransitionWillBegin() {
         blurEffectView.alpha = 0
         containerView?.addSubview(blurEffectView)
-        presentedViewController.transitionCoordinator?.animate(alongsideTransition: {[weak self] (UIViewControllerTransitionCoordinatorContext)  in
-            self?.blurEffectView.alpha = 1
-        }, completion: { (UIViewControllerTransitionCoordinatorContext) in
-            
-        })
+        presentedViewController
+            .transitionCoordinator?
+            .animate(alongsideTransition: {
+                [weak self] (UIViewControllerTransitionCoordinatorContext)  in
+                self?.blurEffectView.alpha = 1
+            })
     }
     
     override func dismissalTransitionWillBegin() {
-        presentedViewController.transitionCoordinator?.animate(alongsideTransition: {[weak self]  (UIViewControllerTransitionCoordinatorContext) in
+        presentedViewController
+            .transitionCoordinator?
+            .animate(alongsideTransition: {
+                [weak self] (UIViewControllerTransitionCoordinatorContext) in
             self?.blurEffectView.alpha = 0
         }, completion: {[weak self] (UIViewControllerTransitionCoordinatorContext) in
             self?.blurEffectView.removeFromSuperview()
@@ -50,18 +49,28 @@ class FilterPresentationController: UIPresentationController {
     
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
-        presentedView!.roundCorners(corners: [.topLeft, .topRight], radius: 22)
+        presentedView?.roundCorners(corners: [.topLeft, .topRight], radius: 22)
     }
     
     override func containerViewDidLayoutSubviews() {
         super.containerViewDidLayoutSubviews()
         presentedView?.frame = frameOfPresentedViewInContainerView
-        blurEffectView.frame = containerView!.bounds
+        blurEffectView.frame = containerView?.bounds ?? CGRect()
+    }
+    
+    func configureBlurEffectView() {
+        let blurEffect = UIBlurEffect(style: .dark)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.isUserInteractionEnabled = true
+        
+        blurEffectView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(dissmissController)))
     }
     
     @objc func dissmissController(_ sender: UITapGestureRecognizer) {
         presentedViewController.dismiss(animated: true, completion: nil)
     }
-               
-
+    
 }
