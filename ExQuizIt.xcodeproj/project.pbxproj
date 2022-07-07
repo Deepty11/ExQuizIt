@@ -32,7 +32,7 @@
 		BF99D0A22864376A001AA8EF /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99D0A12864376A001AA8EF /* CategoriesViewController.swift */; };
 		BF99D0A428643D0A001AA8EF /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99D0A328643D0A001AA8EF /* CategoryTableViewCell.swift */; };
 		BFBFC4962817CE8400FE213D /* PracticeQuizStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */; };
-		BFCD0E152873E8DC00C36B09 /* String+FilterMatched.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD0E142873E8DC00C36B09 /* String+FilterMatched.swift */; };
+		BFCD0E152873E8DC00C36B09 /* String+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD0E142873E8DC00C36B09 /* String+Filter.swift */; };
 		BFDC08762848AFD900FC2780 /* PracticeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC08752848AFD900FC2780 /* PracticeListViewController.swift */; };
 		BFDC08782848B23200FC2780 /* PracticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC08772848B23200FC2780 /* PracticeTableViewCell.swift */; };
 		BFE8790828436B4D00C3D985 /* RLMPracticeSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */; };
@@ -105,7 +105,7 @@
 		BF99D0A12864376A001AA8EF /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		BF99D0A328643D0A001AA8EF /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		BFBFC4952817CE8400FE213D /* PracticeQuizStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuizStatisticsViewController.swift; sourceTree = "<group>"; };
-		BFCD0E142873E8DC00C36B09 /* String+FilterMatched.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+FilterMatched.swift"; sourceTree = "<group>"; };
+		BFCD0E142873E8DC00C36B09 /* String+Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Filter.swift"; sourceTree = "<group>"; };
 		BFDC08752848AFD900FC2780 /* PracticeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeListViewController.swift; sourceTree = "<group>"; };
 		BFDC08772848B23200FC2780 /* PracticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeTableViewCell.swift; sourceTree = "<group>"; };
 		BFE8790728436B4D00C3D985 /* RLMPracticeSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RLMPracticeSessionModel.swift; sourceTree = "<group>"; };
@@ -291,7 +291,7 @@
 				BF806C05283CE8CB008C5D27 /* UIViewController+Animation.swift */,
 				BFE8790B2843797200C3D985 /* Date+Format.swift */,
 				FD4FDBB72871A666008A9B11 /* UIView+RoundCorner.swift */,
-				BFCD0E142873E8DC00C36B09 /* String+FilterMatched.swift */,
+				BFCD0E142873E8DC00C36B09 /* String+Filter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -595,7 +595,7 @@
 				BF806C02283CD660008C5D27 /* UIViewController+Alert.swift in Sources */,
 				FD4FDBC02872C4AA008A9B11 /* SettingsViewController.swift in Sources */,
 				BF3AD31827FC31FD00002E53 /* AddQuizViewController.swift in Sources */,
-				BFCD0E152873E8DC00C36B09 /* String+FilterMatched.swift in Sources */,
+				BFCD0E152873E8DC00C36B09 /* String+Filter.swift in Sources */,
 				BF3AD2E427FC126300002E53 /* SceneDelegate.swift in Sources */,
 				BF806C04283CD6EA008C5D27 /* String+Utils.swift in Sources */,
 				BF60D23C280527EA00325024 /* Constants.swift in Sources */,

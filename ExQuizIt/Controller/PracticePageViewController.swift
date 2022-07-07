@@ -53,7 +53,7 @@ class PracticePageViewController: UIPageViewController {
 // MARK: - PageViewDelegate Method
 extension PracticePageViewController: PageViewDelegate {
     func sendQuizRecordBackToSession(record: QuizRecord, for pageIndex: Int) {
-        //update quizRecords in the practiceSession
+        // update quizRecords in the practiceSession
         practiceSession.quizRecords.append(record)
         gotoNextPage(for: pageIndex)
     }
